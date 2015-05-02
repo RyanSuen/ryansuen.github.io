@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04e9ace7-0537-481a-8f20-2641bdbc0c6f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/stylesheets/github-light.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/stylesheets/normalize.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/stylesheets/stylesheet.css" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/favicon.ico" afterPath="$PROJECT_DIR$/favicon.ico" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="ryansuen.github.io.iws" />
@@ -33,8 +29,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68095237" vertical-offset="0" max-vertical-offset="962">
-              <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.28809524" vertical-offset="18" max-vertical-offset="962">
+              <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -237,8 +233,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68095237" vertical-offset="0" max-vertical-offset="962">
-          <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.28809524" vertical-offset="18" max-vertical-offset="962">
+          <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
           <folding />
         </state>
       </provider>
