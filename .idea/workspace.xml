@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04e9ace7-0537-481a-8f20-2641bdbc0c6f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/responsivenav.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/responsivenav.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/responsivenav.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/part/home.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/us/mossdare.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/us/mossdare.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/lib/responseNav/responsive-nav.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/lib/responseNav/responsive-nav.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/icons/responsivenav.svg" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/css/github-light.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/css/normalize.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/css/stylesheet.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/main.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/us/mossdare.html" afterPath="$PROJECT_DIR$/views/us/mossdare.html" />
     </list>
     <ignored path="ryansuen.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,8 +61,8 @@
       <file leaf-file-name="mossdare.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/us/mossdare.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15476191" vertical-offset="1300" max-vertical-offset="10166">
-              <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.24761905" vertical-offset="0" max-vertical-offset="10166">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -268,7 +253,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="983" extended-state="7" />
+    <frame x="0" y="23" width="1920" height="983" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -710,8 +695,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/us/mossdare.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15476191" vertical-offset="1300" max-vertical-offset="10166">
-          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.24761905" vertical-offset="0" max-vertical-offset="10166">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding />
         </state>
       </provider>
