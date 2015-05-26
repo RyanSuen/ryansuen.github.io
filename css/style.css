@@ -1,0 +1,14 @@
+html,body {
+    font-size:16px;
+    font-family:"Microsoft yahei", arial;
+}
+/*header*/
+.header {
+    background-color:#A5D5B7;
+    line-height:3rem;
+    font-size:1.2rem;
+    color:#eee;
+}
+#header-box {
+    padding: 0 1.5rem;
+}
