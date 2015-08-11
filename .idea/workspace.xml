@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="04e9ace7-0537-481a-8f20-2641bdbc0c6f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/resume/index.html" afterPath="$PROJECT_DIR$/views/resume/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ryansuen.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +39,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/resume/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5662148" vertical-offset="4189" max-vertical-offset="5252">
-              <caret line="211" column="41" selection-start-line="211" selection-start-column="41" selection-end-line="211" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.40354535" vertical-offset="3149" max-vertical-offset="5252">
+              <caret line="165" column="59" selection-start-line="165" selection-start-column="59" selection-end-line="165" selection-end-column="59" />
               <folding>
                 <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
               </folding>
@@ -807,8 +806,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/resume/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5662148" vertical-offset="4189" max-vertical-offset="5252">
-          <caret line="211" column="41" selection-start-line="211" selection-start-column="41" selection-end-line="211" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.40354535" vertical-offset="3149" max-vertical-offset="5252">
+          <caret line="165" column="59" selection-start-line="165" selection-start-column="59" selection-end-line="165" selection-end-column="59" />
           <folding>
             <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
