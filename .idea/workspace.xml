@@ -2,14 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04e9ace7-0537-481a-8f20-2641bdbc0c6f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/360云盘 - 孙毅个人简历.pdf_files/1141.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/360云盘 - 孙毅个人简历.pdf_files/ea6cc7be390bf57bc6c744ae7e6e8091d603f7eb.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/360云盘 - 孙毅个人简历.pdf_files/m.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/360云盘 - 孙毅个人简历.pdf_files/pdf.src.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/360云盘 - 孙毅个人简历.pdf_files/pdfBrowser_datauri.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/个人简历.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/个人简历_files/bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/lib/require/个人简历_files/jquery-1.9.1.min.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/resume/index.html" afterPath="$PROJECT_DIR$/views/resume/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -38,8 +30,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="935" max-vertical-offset="1794">
-              <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1143" max-vertical-offset="2002">
+              <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -48,8 +40,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/resume/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.1251549" vertical-offset="3279" max-vertical-offset="5252">
-              <caret line="159" column="30" selection-start-line="159" selection-start-column="30" selection-end-line="159" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.5662148" vertical-offset="4189" max-vertical-offset="5252">
+              <caret line="211" column="41" selection-start-line="211" selection-start-column="41" selection-end-line="211" selection-end-column="41" />
               <folding>
                 <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
               </folding>
@@ -133,10 +125,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="259" />
-    <option name="y" value="23" />
-    <option name="width" value="1112" />
-    <option name="height" value="950" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -303,7 +293,7 @@
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="LayoutCode.rearrangeEntriesHTML" value="false" />
     <property name="SearchEverywhereHistoryKey" value="respon&#9;FILE&#9;file:///Users/xieruiluo/Documents/sun/github/ryansuen.github.io/js/lib/responseNav/responsive-nav.css" />
-    <property name="FullScreen" value="false" />
+    <property name="FullScreen" value="true" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
   </component>
   <component name="RecentsManager">
@@ -371,7 +361,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="259" y="23" width="1112" height="950" extended-state="1" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -379,7 +369,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24280575" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.140625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -801,8 +791,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="935" max-vertical-offset="1794">
-          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1143" max-vertical-offset="2002">
+          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -817,8 +807,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/resume/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1251549" vertical-offset="3279" max-vertical-offset="5252">
-          <caret line="159" column="30" selection-start-line="159" selection-start-column="30" selection-end-line="159" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.5662148" vertical-offset="4189" max-vertical-offset="5252">
+          <caret line="211" column="41" selection-start-line="211" selection-start-column="41" selection-end-line="211" selection-end-column="41" />
           <folding>
             <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
