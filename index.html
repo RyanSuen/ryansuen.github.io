@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html ng-app lang="en-us">
+<html lang="en-us">
 <head>
 	<meta charset="UTF-8">
 	<title>RyanSuen`s blog</title>
 	<link ref="shortcut icon" href="favicon.ico">
-	<link rel="stylesheet" href="css/normalize/normalize-3.0.3.min.css"/>
+	<!--<link rel="stylesheet" href="css/normalize/normalize-3.0.3.min.css"/>
 	<link rel="stylesheet" href="js/lib/bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/style.css"/>
-	<script>
-	    var _hmt = _hmt || [];
-	    (function() {
-	        var hm = document.createElement("script");
-		hm.src = "//hm.baidu.com/hm.js?561049e8a164275dda8e4f09b32f372a";
-		var s = document.getElementsByTagName("script")[0]; 
-		s.parentNode.insertBefore(hm, s);
-	    })();
-	</script>
-	<script src="js/lib/require/require-2.1.17.js"></script>
+	<link rel="stylesheet" href="css/style.css"/>-->
+	<!--<script src="js/lib/require/require-2.1.17.js"></script>-->
 </head>
 <body>
-<div class="header">
+    <div id="page-index"></div>
+<!--<div class="header">
 	<div class="container-fluids">
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 clearfix" id="header-box">
@@ -45,8 +37,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-<script>
+</div>-->
+<!--<script>
 	require.config({
 		paths: {
 			'jquery': 'js/lib/jquery/jquery-1.9.1.min',
@@ -65,7 +57,17 @@
 	require(['home'], function(home) {
 		
 	});
-</script>
+</script>-->
+    <script src="./js/part/index.bundle.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?561049e8a164275dda8e4f09b32f372a";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </body>
 </html>
 
