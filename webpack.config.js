@@ -3,11 +3,12 @@
  */
 var webpack = require('webpack'),
     path = require('path'),
-    env = 'dev';    //'production'
+    env = 'production';    //'production'
 
 var config = {
     entry: {
-        'index': path.resolve(__dirname, 'build/component/container/Index')
+        'index': path.resolve(__dirname, 'build/component/container/Index'),
+        'race': path.resolve(__dirname, 'build/component/container/Race')
     },
     output: {
         path: path.resolve(__dirname, 'js/part'),
