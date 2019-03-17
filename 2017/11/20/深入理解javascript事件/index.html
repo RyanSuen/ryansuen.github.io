@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>深入理解javascript事件 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="事件的调度如果想让 JavaScript 中的某段代码将来再运行，可以将它放在回调中。回调就是一种普通函数，只不过它是传给像 setTimeout 这样的函数，或者绑定为像 document.onready 这样的属性。运行回调时，我们称已触发某事件（譬如延时结束或页面加载完毕）。  当然，可怕的总是那些细节，哪怕是像 setTimeout 这样看起来很简单的东西。对 setTimeout 的描述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解javascript事件">
+<meta property="og:url" content="https://ryansuen.github.io/2017/11/20/深入理解javascript事件/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="事件的调度如果想让 JavaScript 中的某段代码将来再运行，可以将它放在回调中。回调就是一种普通函数，只不过它是传给像 setTimeout 这样的函数，或者绑定为像 document.onready 这样的属性。运行回调时，我们称已触发某事件（譬如延时结束或页面加载完毕）。  当然，可怕的总是那些细节，哪怕是像 setTimeout 这样看起来很简单的东西。对 setTimeout 的描述">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解javascript事件">
+<meta name="twitter:description" content="事件的调度如果想让 JavaScript 中的某段代码将来再运行，可以将它放在回调中。回调就是一种普通函数，只不过它是传给像 setTimeout 这样的函数，或者绑定为像 document.onready 这样的属性。运行回调时，我们称已触发某事件（譬如延时结束或页面加载完毕）。  当然，可怕的总是那些细节，哪怕是像 setTimeout 这样看起来很简单的东西。对 setTimeout 的描述">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深入理解javascript事件</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深入理解javascript事件</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-20T14:53:22.000Z" itemprop="datePublished" class="page-time">
+  2017-11-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#事件的调度"><span class="post-toc-number">1.</span> <span class="post-toc-text">事件的调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#现在还是将来"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">现在还是将来</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#线程的阻塞"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">线程的阻塞</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#队列"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">队列</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步函数的类型"><span class="post-toc-number">2.</span> <span class="post-toc-text">异步函数的类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#异步的I-O函数"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">异步的I/O函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#console-log是异步的吗？"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">console.log是异步的吗？</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#异步的计时函数"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">异步的计时函数</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-深入理解javascript事件" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深入理解javascript事件</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-20 22:53:22" datetime="2017-11-20T14:53:22.000Z" itemprop="datePublished">2017-11-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="事件的调度"><a href="#事件的调度" class="headerlink" title="事件的调度"></a>事件的调度</h3><p>如果想让 JavaScript 中的某段代码将来再运行，可以将它放在回调中。<br>回调就是一种普通函数，只不过它是传给像 setTimeout 这样的函<br>数，或者绑定为像 document.onready 这样的属性。运行回调时，我们称已触发某事件（譬如延时结束或页面加载完毕）。 </p>
+<p>当然，可怕的总是那些细节，哪怕是像 setTimeout 这样看起来很简<br>单的东西。对 setTimeout 的描述通常像这样： </p>
+<blockquote>
+<p>给定一个回调及 n 毫秒的延迟，setTimeout 就会在 n 毫秒后运<br>行该回调。</p>
+</blockquote>
+<p>但是，正如我们将在这一节乃至这一章里看到的，以上描述存在严重<br>缺陷。大多数情况下，该描述只能算接近正确，而在其他情况下则完<br>全是谬误。要想真正理解 setTimeout，必须先大体理解 JavaScript<br>事件模型。 </p>
+<h4 id="现在还是将来"><a href="#现在还是将来" class="headerlink" title="现在还是将来"></a>现在还是将来</h4><p>在探究 setTimeout 之前，先来看一个简单的例子。该情形常常会迷<br>惑 JavaScript 新手，特别是那些刚刚从 Java 和 Ruby 等多线程语言迁<br>移过来的新手。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (var i = 1; i &lt;= 3; i++) &#123;</span><br><span class="line"> setTimeout(function()&#123; console.log(i); &#125;, 0);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>4<br>4<br>4 </p>
+</blockquote>
+<p>大多数刚接触 JavaScript 语言的人都会认为以上循环会输出 1，2，3，<br>或者重复输出这 3 个数字，因为这里的 3 次延时都抢着要第一个触发<br>（每次暂停都调度为 0 毫秒后到时）。 </p>
+<p>要理解为什么输出是 4，4，4，需要知道以下 3 件事。</p>
+<ul>
+<li>这里只有一个名为 i 的变量，其作用域由声明语句 var i 定义（该<br>声明语句在不经意间让 i 的作用域不是循环内部，而是扩散至蕴含<br>循环的那个最内侧函数）。 </li>
+<li>循环结束后，i===4 一直递增，直到不再满足条件 i&lt;=3 为止。 </li>
+<li><strong>JavaScript 事件处理器在线程空闲之前不会运行。</strong></li>
+</ul>
+<h4 id="线程的阻塞"><a href="#线程的阻塞" class="headerlink" title="线程的阻塞"></a>线程的阻塞</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var start = new Date;</span><br><span class="line">setTimeout(function()&#123;</span><br><span class="line"> var end = new Date;</span><br><span class="line"> console.log(&apos;Time elapsed:&apos;, end - start, &apos;ms&apos;);</span><br><span class="line">&#125;, 500);</span><br><span class="line">while (new Date - start &lt; 1000) &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>按照多线程的思维定势，我会预计 500 毫秒后计时函数就会运行。不<br>过这要求中断欲持续整整一秒钟的循环。如果运行代码，会得到类似<br>这样的结果： </p>
+<blockquote>
+<p>Time elapsed: 1002ms </p>
+</blockquote>
+<p>大家得到的数字可能会稍有不同，这是因为 setTimeout 和 setInterval一样，其计时精度要比我们的期望值差很多（请参阅1.2.2节）。<br>不过，这个数字肯定至少是 1000，因为 setTimeout 回调在 while<br>循环结束运行之前不可能被触发。</p>
+<p>那么，如果 setTimeout 没有使用另一个线程，那它到底在做什么<br>呢？ </p>
+<h4 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h4><p>调用 setTimeout 的时候，会有一个延时事件排入队列。然后<br>setTimeout 调用之后的那行代码运行，接着是再下一行代码，直到<br>再也没有任何代码。这时 JavaScript 虚拟机才会问：“队列里都有谁<br>啊？”</p>
+<p>如果队列中至少有一个事件适合于“触发”（就像 1000 毫秒之前设定<br>好的那个为期 500 毫秒的延时事件），则虚拟机会挑选一个事件，并<br>调用此事件的处理器（譬如传给 setTimeout 的那个函数）。事件处<br>理器返回后，我们又回到队列处。</p>
+<p>输入事件的工作方式完全一样：用户单击一个已附加有单击事件处<br>理器的 DOM（Document Object Model，文档对象模型）元素时，<br>会有一个单击事件排入队列。但是，该单击事件处理器要等到当前<br>所有正在运行的代码均已结束后（可能还要等其他此前已排队的事<br>件也依次结束）才会执行。因此，使用 JavaScript 的那些网页一不<br>小心就会变得毫无反应。</p>
+<p>你可能听过事件循环这个术语，它是用于描述队列工作方式的。所谓<br>事件循环，就像代码从一个循环中不断取出而运行一样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">runYourScript();</span><br><span class="line">while (atLeastOneEventIsQueued) &#123;</span><br><span class="line"> fireNextQueuedEvent();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这隐含着一个意思，即触发的每个事件都会位于堆栈轨迹的底部。</p>
+<p>事件的易调度性是 JavaScript 语言最大的特色之一。像 setTimeout<br>这样的异步函数只是简单地做延迟执行，而不是孵化新的线程。<br>JavaScript 代码永远不会被中断，这是因为代码在运行期间只需要排<br>队事件即可，而这些事件在代码运行结束之前不会被触发。 </p>
+<h3 id="异步函数的类型"><a href="#异步函数的类型" class="headerlink" title="异步函数的类型"></a>异步函数的类型</h3><p>每一种 JavaScript 环境都有自己的异步函数集。有些函数，如<br>setTimeout 和 setInterval，是各种 JavaScript 环境普遍都有的。<br>另一些函数则专属于某些浏览器或某几种服务器端框架。JavaScript<br>环境提供的异步函数通常可以分为两大类：I/O 函数和计时函数。如<br>果想在应用中定义复杂的异步行为，就要使用这两类异步函数作为基<br>本的构造块。 </p>
+<h4 id="异步的I-O函数"><a href="#异步的I-O函数" class="headerlink" title="异步的I/O函数"></a>异步的I/O函数</h4><p>创造 Node.js，并不是为了人们能在服务器上运行 JavaScript，仅仅是<br>因为 Ryan Dahl 想要一个建立在某高级语言之上的事件驱动型服务器<br>框架。JavaScript 碰巧就是适合干这个的语言。为什么？因为 JavaScript<br>语言可以完美地实现非阻塞式 I/O。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var ajaxRequest = new XMLHttpRequest;</span><br><span class="line">ajaxRequest.open(&apos;GET&apos;, url);</span><br><span class="line">ajaxRequest.send(null);</span><br><span class="line">while (ajaxRequest.readyState === XMLHttpRequest.UNSENT) &#123;</span><br><span class="line"> // readyState 在循环返回之前不会有更改。</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>相反，我们需要附加一个事件处理器，随即返回事件队列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var ajaxRequest = new XMLHttpRequest;</span><br><span class="line">ajaxRequest.open(&apos;GET&apos;, url);</span><br><span class="line">ajaxRequest.send(null);</span><br><span class="line">ajaxRequest.onreadystatechange = function() &#123;</span><br><span class="line"> // ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>就是这么回事。不论是在等待用户的按键行为，还是在等待远程服务<br>器的批量数据，所需要做的就是定义一个回调，除非 JavaScript 环境<br>提供的某个同步 I/O 函数已经替我们完成了阻塞。</p>
+<p>在浏览器端，Ajax 方法有一个可设置为 false 的 async 选项（但永<br>远、永远别这么做），这会挂起整个浏览器窗格直到收到应答为止。<br>在 Node.js 中，同步的 API 方法在名称上会有明确的标示，譬如<br>fs.readFileSync。编写短小的脚本时，这些同步方法会很方便。但<br>是，如果所编写的应用需要处理并行的多个请求或多项操作，则应该<br>避免使用它们。可在今天，还有哪个应用不是这样的呢？</p>
+<p>有些 I/O 函数既有同步效应，也有异步效应。举例来说，在现代浏览<br>器中操纵 DOM 对象时，从脚本角度看，更改是即时生效的，但从视<br>效角度看，在返回事件队列之前不会渲染这些 DOM 对象更改。这可<br>以防止 DOM 对象被渲染成不一致的状态。关于这点，可访问<br><a href="http://jsfiddle.net/" target="_blank" rel="noopener">http://jsfiddle.net/</a> TrevorBurnham/SNBYV/，查看一个简单的演示。</p>
+<h5 id="console-log是异步的吗？"><a href="#console-log是异步的吗？" class="headerlink" title="console.log是异步的吗？"></a>console.log是异步的吗？</h5><blockquote>
+<p>WebKit的console.log由于表现出异步行为而让很多开发者惊诧<br>不已。在Chrome或Safari中，以下这段代码会在控制台记录</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;&#125;;</span><br><span class="line">console.log(obj);</span><br><span class="line">obj.foo = &apos;bar&apos;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>怎么会这样？WebKit的console.log并没有立即拍摄对象快照，<br>相反，它只存储了一个指向对象的引用，然后在代码返回事件队<br>列时才去拍摄快照。</p>
+</blockquote>
+<blockquote>
+<p>Node的console.log是另一回事，它是严格同步的，因此同样的<br>代码输出的却为{}。</p>
+</blockquote>
+<p>JavaScript 采用了非阻塞式 I/O，这对新手来说是最大的一个障碍，但<br>这同样也是该语言的核心优势之一。有了非阻塞式 I/O，就能自然而<br>然地写出高效的基于事件的代码。 </p>
+<h4 id="异步的计时函数"><a href="#异步的计时函数" class="headerlink" title="异步的计时函数"></a>异步的计时函数</h4><p>我们已经看到，异步函数非常适合用于 I/O 操作，但有些时候，我们<br>仅仅是因为需要异步而想要异步性。换句话说，我们想让一个函数在<br>将来某个时刻再运行——这样的函数可能是为了作动画或模拟。基于<br>时间的事件涉及两个著名的函数，即 setTimeout 与 setInterval。</p>
+<p>遗憾的是，这两个著名的计时器函数都有自己的一些缺陷。其中有个缺陷是无法弥补的：当同一个 JavaScript<br>进程正运行着代码时，任何 JavaScript 计时函数都无法使其他代码运<br>行起来。但是，即便容忍了这一局限性，setTimeout 及 setInterval<br>的不确定性也会令人犯怵。下面是一个示例。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var fireCount = 0;</span><br><span class="line">var start = new Date;</span><br><span class="line">var timer = setInterval(function() &#123;</span><br><span class="line"> if (new Date-start &gt; 1000) &#123;</span><br><span class="line"> clearInterval(timer);</span><br><span class="line"> console.log(fireCount);</span><br><span class="line"> return;</span><br><span class="line"> &#125;</span><br><span class="line"> fireCount++;</span><br><span class="line">&#125;, 0);</span><br></pre></td></tr></table></figure>
+<p>如果使用 setInterval 调度事件且延迟设定为 0 毫秒，则会尽可能<br>频繁地运行此事件，对吗？那么，在运行于高速英特尔 i7 处理器之<br>上的现代浏览器中，此事件的触发频率到底如何呢？</p>
+<p>大约为 200 次/秒。这是 Chrome、Safari 和 Firefox 等浏览器的平均值。<br>在 Node 环境下，此事件的触发频率大约能达到 1000 次/秒。（若使用<br>setTimeout 来调度事件，重复这些实验也会得到类似的结果。）作<br>为对比，如果将setInterval替换成简单的while循环，则在Chrome<br>中此事件的触发频率将达到 400 万次/秒，而在 Node 中会达到 500 万<br>次/秒！ </p>
+<p>这是怎么回事？最后我们发现，setTimeout 和 setInterval 就是<br>想设计成慢吞吞的！事实上，HTML 规范（这是所有主要浏览器都遵<br>守的规范）推行的延时/时隔的最小值就是 4 毫秒！①</p>
+<p>那么，如果需要更细粒度的计时，该怎么办呢？有些运行时环境提供<br>了备选方案。 </p>
+<ul>
+<li>在 Node 中，process.nextTick 允许将事件调度成尽可能快地触<br>发。对于笔者的系统，process.nextTick 事件的触发频率可以超<br>过 10 万次/秒。</li>
+<li>一些现代浏览器（含 IE9+）带有一个 requestAnimationFrame<br>函数。此函数有两个目标：一方面，它允许以 60+帧/秒的速度运行<br>JavaScript 动画；另一方面，它又避免后台选项卡运行这些动画，<br>从而节约 CPU 周期。在最新版的 Chrome 浏览器中，甚至能实现亚<br>毫秒级的精度。</li>
+</ul>
+<p>尽管这些计时函数是异步 JavaScript 混饭吃的家伙什儿，但永远不要<br>忘记，setTimeout 和 setInterval 就是些不精确的计时工具。在<br>Node中，如果只是想产生一个短时延迟，请使用 process.nextTick。<br>在浏览器端，请尝试使用垫片技术（ shim ） ③ ：在支持<br>requestAnimationFrame 的浏览器中，推荐使用<br>requestAnimationFrame；在不支持 requestAnimationFrame 的<br>浏览器中，则退而使用 setTimeout。</p>
+<p>到这里，关于 JavaScript 基本异步函数的简要概览就结束了。但怎样<br>才能知道一个函数到底何时异步呢？下一节中，我们在亲自编写异步<br>函数的同时再思考这个问题。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/11/20/深入理解javascript事件/" target="_blank" rel="external">https://ryansuen.github.io/2017/11/20/深入理解javascript事件/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&title=《深入理解javascript事件》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&title=《深入理解javascript事件》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解javascript事件》 — Microbot Team&url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/21/JSON/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">JSON</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/11/10/从http-s-request-router理解web/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">从http(s) request router理解web</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&title=《深入理解javascript事件》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&title=《深入理解javascript事件》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解javascript事件》 — Microbot Team&url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2017/11/20/深入理解javascript事件/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW7jMAwF0N7/0jNAVzNo7XySopPF8ypoHEnPBUSa1NdXfP35vv79/PMv+W9/jnM1Qj7L6MLDw8NrLf3qqg59j7ma935VyaO5HA0PDw9vjVcNBvf3VwNDjxetAQ8PD++tvCQVThLlPBGvBio8PDy8T+Plm3g1bFSXjoeHh/cJvGQjvgoDyXITXlJuWKy14OHh4cW8U8XZJz+v9/fw8PDwWl31SVkhT3nzcm15tXh4eHgLvN7ieml3L/nOm2eX/wA8PDy8o7x7WN7iSpLdechJShL//QoPDw9vjZeUaHtHBHol3Wp593JGPDw8vAVe9SW/1+yfPJp5oo+Hh4e3wTvV4M9hOTJpfUVpPR4eHt4hXnWrrabdp2bJkXh4eHjv5fWS46jnNi4ZNzt7eHh4eGNeFZaXX8sTF8NA+Y0BDw8Pb4FXPfyUtMcmy0paX3kAw8PDwzvFSzb0XoF1clzg1MEFPDw8vA1ebym9b6vtsd7seHh4eNu8JGk+lfImSXl+RDVK6PHw8PDWeNX2f1LhSJZYfWRJ4ePyHC4eHh7eAi9Pc6sL7R1ynQcPPDw8vD1eXpbtbdzVwmt1rqinh4eHh3eU19uOq6R5w6zclsPDw8Nb4PUOXc2LC9U7J1Q8PDy8s7zeNt0rNCRtturW/+J+PDw8vGVerzAxub+HLxRE8PDw8BZ4vfJoL1TshZkXDxoPDw/vKK+6ZVcLspPUuRdO8PDw8J7k5Sls9ShA3kibHF/45aHg4eHhLfDya97+zxP0aksMDw8P73ne5FhVtWTQKxwn41wGGzw8PLw1XrUdNU+a73nVCPaiAYaHh4f3Jl61GHFq609GPnCyDA8PD+8R3rx4UT0ukAStY4EBDw8Pb1yMOLtxJyl1EjDw8PDwnudVX/XzMm6elE9GPnDh4eHhpby/W4d9gn2xTl8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

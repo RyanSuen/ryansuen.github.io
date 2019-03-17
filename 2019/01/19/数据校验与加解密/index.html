@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>数据校验与加解密 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="先看看小程序的开放数据校验与解密开放数据校验与解密  公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义 略  openssl的使用mac 本省自带openssl可通过如下命令查看12➜  .ssh openssl versionLibreSSL 2.2.7  命令行cd到公私密钥需要生成的目录 生成公钥： openssl genr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据校验与加解密">
+<meta property="og:url" content="https://ryansuen.github.io/2019/01/19/数据校验与加解密/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="先看看小程序的开放数据校验与解密开放数据校验与解密  公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义 略  openssl的使用mac 本省自带openssl可通过如下命令查看12➜  .ssh openssl versionLibreSSL 2.2.7  命令行cd到公私密钥需要生成的目录 生成公钥： openssl genr">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据校验与加解密">
+<meta name="twitter:description" content="先看看小程序的开放数据校验与解密开放数据校验与解密  公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义 略  openssl的使用mac 本省自带openssl可通过如下命令查看12➜  .ssh openssl versionLibreSSL 2.2.7  命令行cd到公私密钥需要生成的目录 生成公钥： openssl genr">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">数据校验与加解密</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">数据校验与加解密</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-01-19T08:54:58.000Z" itemprop="datePublished" class="page-time">
+  2019-01-19
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#先看看小程序的开放数据校验与解密"><span class="post-toc-number">1.</span> <span class="post-toc-text">先看看小程序的开放数据校验与解密</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义"><span class="post-toc-number">2.</span> <span class="post-toc-text">公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义</span></a></li></ol><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#openssl的使用"><span class="post-toc-number"></span> <span class="post-toc-text">openssl的使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mac-本省自带openssl可通过如下命令查看"><span class="post-toc-number">1.</span> <span class="post-toc-text">mac 本省自带openssl可通过如下命令查看</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#拓展指令"><span class="post-toc-number">2.</span> <span class="post-toc-text">拓展指令</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#node-js公钥，私钥加解密一例"><span class="post-toc-number"></span> <span class="post-toc-text">node.js公钥，私钥加解密一例</span></a>
+        </li></nav>
+    </aside>
+
+
+<article id="post-数据校验与加解密" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">数据校验与加解密</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-01-19 16:54:58" datetime="2019-01-19T08:54:58.000Z" itemprop="datePublished">2019-01-19</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="先看看小程序的开放数据校验与解密"><a href="#先看看小程序的开放数据校验与解密" class="headerlink" title="先看看小程序的开放数据校验与解密"></a>先看看小程序的开放数据校验与解密</h3><p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/signature.html" target="_blank" rel="noopener">开放数据校验与解密</a></p>
+<hr>
+<h3 id="公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义"><a href="#公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义" class="headerlink" title="公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义"></a>公钥，私钥，对称非对称，DES加密算法，AES加密算法，RSA加密算法，Base64加密算法，MD5加密算法等的定义</h3><blockquote>
+<p>略</p>
+</blockquote>
+<h2 id="openssl的使用"><a href="#openssl的使用" class="headerlink" title="openssl的使用"></a>openssl的使用</h2><h3 id="mac-本省自带openssl可通过如下命令查看"><a href="#mac-本省自带openssl可通过如下命令查看" class="headerlink" title="mac 本省自带openssl可通过如下命令查看"></a>mac 本省自带openssl可通过如下命令查看</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  .ssh openssl version</span><br><span class="line">LibreSSL 2.2.7</span><br></pre></td></tr></table></figure>
+<ol>
+<li>命令行cd到公私密钥需要生成的目录</li>
+<li>生成公钥： <code>openssl genrsa -out rsa_private_key.pem 1024</code> </li>
+<li>生成私钥: <code>openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem</code></li>
+</ol>
+<hr>
+<h3 id="拓展指令"><a href="#拓展指令" class="headerlink" title="拓展指令"></a>拓展指令</h3><ol>
+<li><p>使用终端进入到制定目录下</p>
+</li>
+<li><p>运行命令：<code>openssl</code></p>
+</li>
+<li><p>生成一个1024位的私钥：<code>genrsa -out rsa_private_key.pem 1024</code></p>
+</li>
+<li><p>利用私钥生成JAVA支持的PKCS8类型的私钥：<code>pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt -out pkcs8_private_key.pem</code></p>
+</li>
+<li><p>生成JAVA支持的PKCS8二进制类型的私钥：<code>pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform DER -nocrypt -out pkcs8_private_key.der</code>（java端使用的私钥就是这个：pkcs8_private_key.der）</p>
+</li>
+<li><p>生成公钥：<code>rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem</code></p>
+</li>
+<li><p>创建证书请求：<code>req -new -out cert.csr -key rsa_private_key.pem</code>（其间会要求填写国家地区公司信息等，随便填写OR认真填写都不影响证书使用）</p>
+</li>
+<li><p>创建X509的自签署跟证书（iOS支持X509，有效期3650天）：<code>x509 -req -in cert.csr -out rsa_public_key.der -outform der -signkey rsa_private_key.pem -days 3650</code>（iOS端使用的私钥就是这个：rsa_public_key.der）</p>
+</li>
+</ol>
+<p>下面创建iOS端的密钥（p12）</p>
+<ol start="9">
+<li><p><code>x509 -req -days 3650 -in cert.csr -signkey rsa_private_key.pem -out rsacert.crt</code></p>
+</li>
+<li><p><code>pkcs12 -export -out p.p12 -inkey rsa_private_key.pem -in rsacert.crt</code></p>
+</li>
+</ol>
+<hr>
+<h2 id="node-js公钥，私钥加解密一例"><a href="#node-js公钥，私钥加解密一例" class="headerlink" title="node.js公钥，私钥加解密一例"></a>node.js公钥，私钥加解密一例</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">'crypto'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> publicKey = fs.readFileSync(<span class="string">'./pem/rsa_public_key.pem'</span>).toString(<span class="string">'ascii'</span>);</span><br><span class="line"><span class="keyword">const</span> privateKey = fs.readFileSync(<span class="string">'./pem/rsa_private_key.pem'</span>).toString(<span class="string">'ascii'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(publicKey, privateKey);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> data = <span class="string">'hi ryan suen'</span>;</span><br><span class="line"><span class="comment">//const enData = crypto.publicEncrypt(publicKey, new Buffer(data)).toString('base64');</span></span><br><span class="line"><span class="keyword">const</span> enData = crypto.publicEncrypt(publicKey, <span class="keyword">new</span> Buffer(data));</span><br><span class="line"><span class="built_in">console</span>.log( enData );</span><br><span class="line"></span><br><span class="line"><span class="comment">//const deData = crypto.privateDecrypt( privateKey, new Buffer(enData, 'base64') );</span></span><br><span class="line"><span class="keyword">const</span> deData = crypto.privateDecrypt( privateKey, enData );</span><br><span class="line"><span class="built_in">console</span>.log(deData.toString());</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2019/01/19/数据校验与加解密/" target="_blank" rel="external">https://ryansuen.github.io/2019/01/19/数据校验与加解密/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&title=《数据校验与加解密》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&title=《数据校验与加解密》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2019/01/19/数据校验与加解密/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据校验与加解密》 — Microbot Team&url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/02/21/阿里云lNMN环境搭建/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">阿里云lNMN环境搭建</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/12/22/node-js-发现和解决问题/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">node.js 发现和解决问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&title=《数据校验与加解密》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&title=《数据校验与加解密》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2019/01/19/数据校验与加解密/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据校验与加解密》 — Microbot Team&url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2019/01/19/数据校验与加解密/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3aS27kMAwFwNz/0sl2gMD2Iyk6jUF51YB/Ki8k9qO+vuLj++L49+zv3/dnk7uu3nj4wMPDwzs09N+vT46r6+/B+ZX5mPHw8PC2eVczajKJ5zPz/TX34GQMeHh4eJ/JS4rg5ENUC3E8PDy8/4M3vzcplP9sYcDDw8O75eWPnnyC/PnVCONA1oKHh4cX8/JA4XN+r/T38PDw8MZd9aTwPfX8PLwoPBMPDw9vgZdPuHn0MAl2Jy20yyvx8PDwFnj3J/Ll4dS03nvvw0jw8PDwDvHmzftJId4rygtLBR4eHt4abwJLhp63qXqLxGVxj4eHh7fA6/3t75XCyYebxBDHUg08PDy8Q9R8Ks9h95N79QOVt17h4eHhDXhJYToJbfOYuNpOi4IVPDw8vAXevFmVxMSnauBqiY+Hh4d3ljdpVvXC2aQsrgbBlwsbHh4e3jKvx8iHlUcSOeOhpMbDw8Nb4OVT/CRKyO/KP24Bj4eHh3eUN2nt52FEvkUg/0BRYIGHh4e3wMtJeWTQ2+9UDXwLTTI8PDy8NV61mO61zZKPmJTdyVk8PDy8N3l5oDBZPPLyvbeBAA8PD+8dXn5bNCkXt3D1Nig8fBo8PDy8V3g5ePKcajHdXMbw8PDwFnhnm1i9BSaPHqpBMx4eHt4GL9kckDS68kFPNlqVgww8PDy8NV4y6Hm7qzrQvFVW+MeAh4eHt8DLm1j5K6uhQzlWwMPDw3uFN2lN5Z2m3mIzabMd6Lzh4eHh1bpRUZhbfVlvWMni1Gu54eHh4U141dg0meh72w56rbKoAYaHh4e3wJs3wKqLSq/sLl+Jh4eH9wG86iaA3ruqS9FDSo2Hh4f3p7yk5J08rXrlQ9yMh4eHt8brbZyqDi5fEnpbCvDw8PDe4VX/8Pe2Z51t9jcZeHh4eFPeD/PKc6g5jml/AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

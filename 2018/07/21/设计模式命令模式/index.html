@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>设计模式命令模式 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="命令模式比喻定义 某位客人点餐或着打电话定餐后,服务员把他的需求定在订清单上，然后交给后厨，客人不用关心是哪个厨师帮他炒菜。客人可以要求延迟炒菜，或取消订单，只要订单在厨师便不会忘记。点餐人过多，厨师还可以按单餐的顺序炒菜. 记录订餐信息的清单，便是命令模式中的命令对象   命令模式中的指令指的是一个执行某些特定事情的指令  常见应用场景 有时候需求向某些对象发送请求，但是并不知道请求的接收者是谁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式命令模式">
+<meta property="og:url" content="https://ryansuen.github.io/2018/07/21/设计模式命令模式/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="命令模式比喻定义 某位客人点餐或着打电话定餐后,服务员把他的需求定在订清单上，然后交给后厨，客人不用关心是哪个厨师帮他炒菜。客人可以要求延迟炒菜，或取消订单，只要订单在厨师便不会忘记。点餐人过多，厨师还可以按单餐的顺序炒菜. 记录订餐信息的清单，便是命令模式中的命令对象   命令模式中的指令指的是一个执行某些特定事情的指令  常见应用场景 有时候需求向某些对象发送请求，但是并不知道请求的接收者是谁">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式命令模式">
+<meta name="twitter:description" content="命令模式比喻定义 某位客人点餐或着打电话定餐后,服务员把他的需求定在订清单上，然后交给后厨，客人不用关心是哪个厨师帮他炒菜。客人可以要求延迟炒菜，或取消订单，只要订单在厨师便不会忘记。点餐人过多，厨师还可以按单餐的顺序炒菜. 记录订餐信息的清单，便是命令模式中的命令对象   命令模式中的指令指的是一个执行某些特定事情的指令  常见应用场景 有时候需求向某些对象发送请求，但是并不知道请求的接收者是谁">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">设计模式命令模式</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">设计模式命令模式</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-21T00:12:50.000Z" itemprop="datePublished" class="page-time">
+  2018-07-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#命令模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">命令模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#比喻定义"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">比喻定义</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见应用场景"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">常见应用场景</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Javascript中的命令模式"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">Javascript中的命令模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#upgrade"><span class="post-toc-number">1.0.4.</span> <span class="post-toc-text">upgrade</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#撤销命令"><span class="post-toc-number">1.0.5.</span> <span class="post-toc-text">撤销命令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#撤销和重做"><span class="post-toc-number">1.0.6.</span> <span class="post-toc-text">撤销和重做</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#宏命令"><span class="post-toc-number">1.0.7.</span> <span class="post-toc-text">宏命令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#智能命令与傻瓜命令"><span class="post-toc-number">1.0.8.</span> <span class="post-toc-text">智能命令与傻瓜命令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#拓展：对比一下，函数的传参与不传参。"><span class="post-toc-number">1.0.9.</span> <span class="post-toc-text">拓展：对比一下，函数的传参与不传参。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#拓展：什么东西叫纯函数？"><span class="post-toc-number">1.0.10.</span> <span class="post-toc-text">拓展：什么东西叫纯函数？</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-设计模式命令模式" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">设计模式命令模式</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-21 08:12:50" datetime="2018-07-21T00:12:50.000Z" itemprop="datePublished">2018-07-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h1><h3 id="比喻定义"><a href="#比喻定义" class="headerlink" title="比喻定义"></a>比喻定义</h3><blockquote>
+<p>某位客人点餐或着打电话定餐后,服务员把他的需求定在订清单上，然后交给后厨，客人不用关心是哪个厨师帮他炒菜。客人可以要求延迟炒菜，或取消订单，只要订单在厨师便不会忘记。点餐人过多，厨师还可以按单餐的顺序炒菜.</p>
+<p><strong>记录订餐信息的清单，便是命令模式中的命令对象</strong></p>
+</blockquote>
+<blockquote>
+<p>命令模式中的指令指的是一个执行某些特定事情的指令</p>
+</blockquote>
+<h3 id="常见应用场景"><a href="#常见应用场景" class="headerlink" title="常见应用场景"></a>常见应用场景</h3><blockquote>
+<p>有时候需求向某些对象发送请求，但是并不知道请求的接收者是谁，也不知道被请求的操作是什么。希望用一种松耦合的方式来设计 程序 ，使得请求发者和请求接收者能够消除彼此之间的耦合关系。</p>
+</blockquote>
+<h3 id="Javascript中的命令模式"><a href="#Javascript中的命令模式" class="headerlink" title="Javascript中的命令模式"></a>Javascript中的命令模式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bindClick = <span class="function"><span class="keyword">function</span>(<span class="params"> button, func </span>) </span>&#123;</span><br><span class="line">	button.addEventListener(<span class="string">'click'</span>, func, <span class="literal">false</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MenuBar = &#123;</span><br><span class="line">	refresh: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'refresh menu!'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> SubMenu = &#123;</span><br><span class="line">	add: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'add sub menu!'</span>);</span><br><span class="line">	&#125;,</span><br><span class="line">	del: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'del sub menu!'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">bindClick( button1, MenuBar.refresh );</span><br><span class="line">bindClick( button2, SubMenu.add );</span><br><span class="line">bindClick( button3, SubMenu.del );</span><br></pre></td></tr></table></figure>
+<h3 id="upgrade"><a href="#upgrade" class="headerlink" title="upgrade"></a>upgrade</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> setCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> button, func </span>) </span>&#123;</span><br><span class="line">	button.addEventListener(<span class="string">'click'</span>, func, <span class="literal">false</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MenuBar = &#123;</span><br><span class="line">	refresh: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'refresh menu!'</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> RefreshMenuBarCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> receiver </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		receiver.refresh();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> refreshMenuBarCommand = RefreshMenuBarCommnad( MenuBar );</span><br><span class="line">setCommand( button1, refreshMenuBarCommand );</span><br><span class="line"><span class="comment">// upgrade more</span></span><br><span class="line"><span class="keyword">var</span> RefreshMenuBarCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> receiver </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		execute: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			receiver.refresh();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> setCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> button, command </span>) </span>&#123;</span><br><span class="line">	button.addEventListener( <span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		command.execute();</span><br><span class="line">	&#125;, <span class="literal">false</span> );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="撤销命令"><a href="#撤销命令" class="headerlink" title="撤销命令"></a>撤销命令</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ball = <span class="built_in">document</span>.getElementById(<span class="string">'ball'</span>);</span><br><span class="line"><span class="keyword">var</span> pos = <span class="built_in">document</span>.getElementById(<span class="string">'pos'</span>);</span><br><span class="line"><span class="keyword">var</span> moveBtn = <span class="built_in">document</span>.getElementById(<span class="string">'moveBtn'</span>);</span><br><span class="line"><span class="keyword">var</span> cancleBtn = docuemnt.getElementById(<span class="string">'cancleBtn'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MoveCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> receiver, pos </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.reciver = receiver;</span><br><span class="line">	<span class="keyword">this</span>.pos = pos;</span><br><span class="line">	<span class="keyword">this</span>.oldPos = <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MoveCommnad.prototype.execute = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.receiver.start(‘left’, <span class="keyword">this</span>.pos, <span class="number">1000</span>, <span class="string">'strongEaseOut'</span>);</span><br><span class="line">	<span class="keyword">this</span>.oldPos = <span class="keyword">this</span>.receiver.dom.getBoundingClientRect()[<span class="keyword">this</span>.receiver.propertyName];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MoveCommand.prototype.undo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.receiver.start(<span class="string">'left'</span>, <span class="keyword">this</span>.oldPos, <span class="number">1000</span>, <span class="string">'strongEaseOut'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> moveCommand;</span><br><span class="line">moveBtn.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> animae = <span class="keyword">new</span> Animate(<span class="string">'ball'</span>);</span><br><span class="line">	moveCommand = <span class="keyword">new</span> MoveCommand( animate, pos.value);</span><br><span class="line">	moveCommand.execute();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">cancleBtn.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	moveCommand.undo();</span><br><span class="line">&#125;， <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="撤销和重做"><a href="#撤销和重做" class="headerlink" title="撤销和重做"></a>撤销和重做</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ryu = &#123;</span><br><span class="line">	attack: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'攻击'</span>);</span><br><span class="line">	&#125;,</span><br><span class="line">	defense: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'防御'</span>);</span><br><span class="line">	&#125;,</span><br><span class="line">	jump: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'跳跃'</span>);</span><br><span class="line">	&#125;,</span><br><span class="line">	crouch: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'蹲下'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> makeCommand = <span class="function"><span class="keyword">function</span>(<span class="params"> receiver, state </span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		receiver[state]();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> commands = &#123;</span><br><span class="line">	<span class="string">'119'</span>: <span class="string">'jump'</span>,</span><br><span class="line">	<span class="string">'115'</span>: <span class="string">'crouch'</span>,</span><br><span class="line">	<span class="string">'97'</span>: <span class="string">'defense'</span>,</span><br><span class="line">	<span class="string">'100'</span>: <span class="string">'attack'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> commandStack = [];</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'keypress'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> keyCode = ev.keyCode,</span><br><span class="line">		command = makeCommand( Ryu, commands[ keyCode ] );</span><br><span class="line">	<span class="keyword">if</span>(command) &#123;</span><br><span class="line">		command();</span><br><span class="line">		commandStack.push( command );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">document</span>.getElementById(<span class="string">'replay'</span>).addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> command;</span><br><span class="line">		<span class="keyword">while</span>(command = commandStack.shift()) &#123;</span><br><span class="line">			command();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, <span class="literal">false</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="宏命令"><a href="#宏命令" class="headerlink" title="宏命令"></a>宏命令</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> closeDoorCommand = &#123;</span><br><span class="line">	execute: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'colse door!'</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> openPcCommand = &#123;</span><br><span class="line">	execute: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'open pc!'</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> openQQCommand = &#123;</span><br><span class="line">	execute: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'login QQ!'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MacroCommand = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> &#123;</span><br><span class="line">		commandList: [],</span><br><span class="line">		add: <span class="function"><span class="keyword">function</span>(<span class="params">command</span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.commandList.push(command);</span><br><span class="line">		&#125;,</span><br><span class="line">		execute: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.commandList.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">command</span>)</span>&#123;</span><br><span class="line">				command.execute();</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> macroCommand = MacroCommand();</span><br><span class="line">macroCommand.add( colseDoorCommand );</span><br><span class="line">macroCommand.add( openPcCommand );</span><br><span class="line">macroCommand.add( openQqCommand );</span><br><span class="line">macroCommand.execute();</span><br></pre></td></tr></table></figure>
+<h3 id="智能命令与傻瓜命令"><a href="#智能命令与傻瓜命令" class="headerlink" title="智能命令与傻瓜命令"></a>智能命令与傻瓜命令</h3><p><strong><em>closeDoorCommand</em></strong>中没有包含任何recevier，包含recevier的叫傻瓜命令，能更好的解藕；<br>不包含的叫智能命令。</p>
+<h3 id="拓展：对比一下，函数的传参与不传参。"><a href="#拓展：对比一下，函数的传参与不传参。" class="headerlink" title="拓展：对比一下，函数的传参与不传参。"></a>拓展：对比一下，函数的传参与不传参。</h3><h3 id="拓展：什么东西叫纯函数？"><a href="#拓展：什么东西叫纯函数？" class="headerlink" title="拓展：什么东西叫纯函数？"></a>拓展：什么东西叫纯函数？</h3>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/07/21/设计模式命令模式/" target="_blank" rel="external">https://ryansuen.github.io/2018/07/21/设计模式命令模式/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&title=《设计模式命令模式》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&title=《设计模式命令模式》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/07/21/设计模式命令模式/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《设计模式命令模式》 — Microbot Team&url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/28/mongodb设置使用密码才能连接/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">mongodb设置使用密码才能连接</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/17/前端学习nginx之理解nginx配置/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">前端学习nginx之理解nginx配置</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&title=《设计模式命令模式》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&title=《设计模式命令模式》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/07/21/设计模式命令模式/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《设计模式命令模式》 — Microbot Team&url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/07/21/设计模式命令模式/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuElEQVR42u3aQW7jMBAEQP//014gp10k1nbPiI4PpZMQ2BKLAchxDx+P+Hp+Xd/vX/0ledrfV/Ku9i0PPDw8vGO85+WVkL7fv3rC9Sfv+i4eHh7ee3jtZvDqxcnEJU/IJ/Q/Fjw8PLxf5c2Gkj95U9bj4eHhfSZvU0DvUwI8PDy8T+PN4oDrjSH5+/VnkvHclrXg4eHhxbxNA+y37t/U38PDw8Mri9rZ0jyLepNn1uPEw8PDO8Brg9RkBW4X9FkEXGwYeHh4eMd4eV3aLuLtIYPZhL4U4eHh4R3gte38JKKdFejJtOahCR4eHt4J3qzBn4eqmyhhc3ABDw8P7528FpyX1214cR1SRCPHw8PDewsvP1CVJ6WbqdwU9Hh4eHgneJvzS22B27bBNk0vPDw8vNO8vInVNv6TIHj/mdV/Bg8PD6/k5aQiPC3L7nw6kuADDw8P7zSvpeZB6obdBg0RGA8PD+8mXh7X1unFTRM0o9ZpNB4eHt6Ily/K7QKdbB7J8YI2VsbDw8N7D2//Wz4f9PWGsTma8ENJjYeHh3cTbx+/5hHwPsZtjy/g4eHhneDtjwW0xw5m20Yebfxzj4eHh3eAl5en+d6SLNmzTaL9AYCHh4d3jrdp57cHoZLAIg9Eorfj4eHhHeDljfwc1oYUs+MC+RPw8PDwTvNyalLUJgV0W9ZHmTQeHh7eMV775bblPztotZnEH34x4OHh4R3gzRr5m8bYJiwudgE8PDy8W3nP8soDgiQCzsPf4Rvx8PDwDvDaBXd2OKBteuXx8b6phoeHhzfj5QVu0irLC+L9dhJFGHh4eHjHeO1msI8k2o7VsFWGh4eH9wG8PMzNh5JvQskU4OHh4X0O7/RQ2vg42kjw8PDwjvHaRv4mZt0cOMifj4eHh3eON2uAbQ4ZzGLiOobAw8PDu5/3B6jg2k9+K4xpAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

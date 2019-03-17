@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>前端学习nginx之理解nginx配置 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="先看看nginx.conf.default这个文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端学习nginx之理解nginx配置">
+<meta property="og:url" content="https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="先看看nginx.conf.default这个文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端学习nginx之理解nginx配置">
+<meta name="twitter:description" content="先看看nginx.conf.default这个文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">前端学习nginx之理解nginx配置</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">前端学习nginx之理解nginx配置</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-17T07:00:31.000Z" itemprop="datePublished" class="page-time">
+  2018-06-17
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#先看看nginx-conf-default这个文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">先看看nginx.conf.default这个文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#location块配置理解"><span class="post-toc-number">2.</span> <span class="post-toc-text">location块配置理解</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置请求的根目录"><span class="post-toc-number">3.</span> <span class="post-toc-text">配置请求的根目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更改location的uri"><span class="post-toc-number">4.</span> <span class="post-toc-text">更改location的uri</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#设置网站的错误页面"><span class="post-toc-number">5.</span> <span class="post-toc-text">设置网站的错误页面</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于ip的访问权限设置"><span class="post-toc-number">6.</span> <span class="post-toc-text">基于ip的访问权限设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#nginx-gzip"><span class="post-toc-number">7.</span> <span class="post-toc-text">nginx gzip</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rewrite"><span class="post-toc-number">8.</span> <span class="post-toc-text">rewrite</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Rewrite的Flags"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">Rewrite的Flags</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#文件及目录匹配"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">文件及目录匹配</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#正则表达式全部符号解释"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">正则表达式全部符号解释</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#域名跳转"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">域名跳转</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#多域名跳转"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">多域名跳转</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#三级域名跳转"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">三级域名跳转</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代理"><span class="post-toc-number">9.</span> <span class="post-toc-text">代理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#负载均衡"><span class="post-toc-number">10.</span> <span class="post-toc-text">负载均衡</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#默认的规则"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">默认的规则</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#权重策略"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">权重策略</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ip-hash策略"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">ip_hash策略</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-前端学习nginx之理解nginx配置" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">前端学习nginx之理解nginx配置</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-17 15:00:31" datetime="2018-06-17T07:00:31.000Z" itemprop="datePublished">2018-06-17</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="先看看nginx-conf-default这个文件"><a href="#先看看nginx-conf-default这个文件" class="headerlink" title="先看看nginx.conf.default这个文件"></a>先看看nginx.conf.default这个文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">#user  nobody;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       8080;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">             root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&apos;s document root</span><br><span class="line">        # concurs with nginx&apos;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line">    include servers/*;</span><br></pre></td></tr></table></figure>
+<h3 id="location块配置理解"><a href="#location块配置理解" class="headerlink" title="location块配置理解"></a>location块配置理解</h3><p>location 语法结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location [ = | ~ | ~* | ~^ ] uri &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中uri是待匹配的请求字符串，也就是待匹配的请求。可以是不含正则表达的字符串，如/index.html（“标准uri”）。 也可以是正则表达式，如.php$ 匹配以点php结尾的请求。</p>
+<p>中括号的内容可选，当没有中括号的内容。nginx 首先在server的多个location块中搜索是否有标准uri与请求字符串相匹配的，如果有多个可以匹配，就记录匹配度最高的一个，注意这里只是先记录下来。然后服务器再用location中的正则uri与请求字符串匹配，当第一个uri匹配成功，结束搜索，并用这个location块处理请求，如果正则全部匹配失败，则使用刚才那个记录匹配度最的location块处理请求。</p>
+<p>可先参数的含义</p>
+<ul>
+<li>= 表示请求字符串要与uri严格匹配。</li>
+<li>~ 表示uri包含正则表达式，并且区分大小写。（实际验证未区分大小写）</li>
+<li>~* 表示uri包含正则表达式，并且不区分大小写。</li>
+<li>^~ 用于标准uri前，要求nginx找到标识uri和请求字符串匹配度最高的location后，立即使用此location处理请求，而不再使用location中的正则uri和请求字符串匹配。</li>
+</ul>
+<h3 id="配置请求的根目录"><a href="#配置请求的根目录" class="headerlink" title="配置请求的根目录"></a>配置请求的根目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /data/ &#123;</span><br><span class="line">    root path_to_root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="更改location的uri"><a href="#更改location的uri" class="headerlink" title="更改location的uri"></a>更改location的uri</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location ~ ^/data/(.+\.(htm|html))$ &#123;</span><br><span class="line">    alias /locationtest1/other/$1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="设置网站的错误页面"><a href="#设置网站的错误页面" class="headerlink" title="设置网站的错误页面"></a>设置网站的错误页面</h3><p>语法：error_page code [=[response]] uri</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">error_page 404 /404.html;</span><br><span class="line">error_page 403 http://site.com/forbidden.html;</span><br><span class="line">error_page 410 =310 /empty.gif;</span><br><span class="line">location /404.html &#123;</span><br><span class="line">    root /server/errorpage/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="基于ip的访问权限设置"><a href="#基于ip的访问权限设置" class="headerlink" title="基于ip的访问权限设置"></a>基于ip的访问权限设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    deny 192.168.1.1;   #不支持写多个ip，要支持多个重复使用deny</span><br><span class="line">    allow 192.168.1.0/24;</span><br><span class="line">    deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里会参生疑问，我们先禁止了192.168.1.1访问，然后又允许了192.168.1.0/24访问。最后又禁止所有访问。哪到底192.168.1.0/24能不能访问?</p>
+<p>如果遇到匹配的配置，则停止向下搜索。</p>
+<h3 id="nginx-gzip"><a href="#nginx-gzip" class="headerlink" title="nginx gzip"></a>nginx gzip</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip on;</span><br></pre></td></tr></table></figure>
+<p>默认值为off,即不启用gzip;只有gzip为on是gzip相关的指令才有效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip_buffers number size;</span><br></pre></td></tr></table></figure>
+<p>number nginx向系统申请缓存空间的个数</p>
+<p>size 第个缓存空间的大小。</p>
+<p>nginx在对响应输出的数据进行gzip压缩时需要向系统申请number * size 大小的空间用于存储数据。size的值为系统内存页 一页的大小，一般为4k或8k;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip_comp_level level;</span><br></pre></td></tr></table></figure>
+<p>该指令用于设定gzip的压缩程度，压缩程度从底到高分1~9个等级。1压缩程度最低，压缩效率最高。9压缩程度最高，压缩效率最低，最耗时。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gzip_disable regex ...;</span><br><span class="line">gzip_disable MSIE [4-6]\.</span><br></pre></td></tr></table></figure>
+<p>对哪些UA不作gzip处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gzip_min_length length;</span><br><span class="line">gzip_min_length 1024;</span><br></pre></td></tr></table></figure>
+<p>响应超过多少才gzip压缩。如果太小，压缩后可能会变大。建议最小1024，即1kb;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gzip on;</span><br><span class="line">gzip_min_length 1024;</span><br><span class="line">gzip_buffers 4 16k;</span><br><span class="line">gzip_comp_level 2;</span><br><span class="line">gzip_types text/plain application/z-javascript text/css application/xml;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="rewrite"><a href="#rewrite" class="headerlink" title="rewrite"></a>rewrite</h3><h4 id="Rewrite的Flags"><a href="#Rewrite的Flags" class="headerlink" title="Rewrite的Flags"></a>Rewrite的Flags</h4><ul>
+<li>last – 完成重写指令后，搜索相应的URI和位置。相当于Apache里的[L]标记，表示完成rewrite，不再匹配后面的规则。</li>
+<li>break – 中止Rewirte，不在继续匹配。</li>
+<li>redirect – 返回临时重定向的HTTP状态302。</li>
+<li>permanent – 返回永久重定向的HTTP状态301。</li>
+</ul>
+<h4 id="文件及目录匹配"><a href="#文件及目录匹配" class="headerlink" title="文件及目录匹配"></a>文件及目录匹配</h4><ul>
+<li>-f和!-f用来判断是否存在文件</li>
+<li>-d和!-d用来判断是否存在目录</li>
+<li>-e和!-e用来判断是否存在文件或目录</li>
+<li>-x和!-x用来判断文件是否可执行</li>
+</ul>
+<h4 id="正则表达式全部符号解释"><a href="#正则表达式全部符号解释" class="headerlink" title="正则表达式全部符号解释"></a>正则表达式全部符号解释</h4><ul>
+<li>~ 为区分大小写匹配</li>
+<li>~* 为不区分大小写匹配</li>
+<li>!~和!~* 分别为区分大小写不匹配及不区分大小写不匹配</li>
+<li>(pattern) 匹配 pattern 并获取这一匹配。所获取的匹配可以从产生的 Matches 集合得到，在VBScript 中使用 SubMatches 集合，在JScript 中则使用 $0…$9 属性。要匹配圆括号字符，请使用 ‘/(’ 或 ‘/)’。</li>
+<li>^ 匹配输入字符串的开始位置</li>
+<li>$ 匹配输入字符串的结束位置</li>
+</ul>
+<h4 id="域名跳转"><a href="#域名跳转" class="headerlink" title="域名跳转"></a>域名跳转</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#例1</span><br><span class="line">...</span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name jump.myweb.name;</span><br><span class="line">    rewrite ^/ http://www.myweb.info/;    #域名跳转</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="多域名跳转"><a href="#多域名跳转" class="headerlink" title="多域名跳转"></a>多域名跳转</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name jump.myweb.name jump.myweb.info;</span><br><span class="line">    if ($host myweb\.info)    #注意正则表达式中对点号“.”要用“\”进行转义</span><br><span class="line">    &#123;</span><br><span class="line">        rewrite ^(.*) http://jump.myweb.name$1 pe rmanent; #多域名跳转</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="三级域名跳转"><a href="#三级域名跳转" class="headerlink" title="三级域名跳转"></a>三级域名跳转</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name jump1.myweb.name jump2.myweb.name;</span><br><span class="line">    if ($http_ host ~*  ^(.*) \.myweb.name$)</span><br><span class="line">    &#123;</span><br><span class="line">        rewrite (.*) http://jump.myweb.name$1;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    #监听80端口</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">     # individual nginx logs for this web vhost</span><br><span class="line">    access_log /tmp/access.log;</span><br><span class="line">    error_log  /tmp/error.log ;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://www.baidu.com;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><p>负载均衡 建立在现有网络结构之上，它提供了一种廉价有效透明的方法扩展网络设备和服务器的带宽、增加吞吐量、加强网络数据处理能力、提高网络的灵活性和可用性。</p>
+<p>负载均衡，英文名称为Load Balance，其意思就是分摊到多个操作单元上进行执行，例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。</p>
+<p>简单说来就是：将负载进行平衡。人话就是将请求分派给其它服务器以及如何分派。</p>
+<h4 id="默认的规则"><a href="#默认的规则" class="headerlink" title="默认的规则"></a>默认的规则</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。</span><br><span class="line">#要放在http下。 </span><br><span class="line">upstream mt &#123; </span><br><span class="line">    server mt1.com; # 应用服务器1</span><br><span class="line">    server mt2.com; # 应用服务器2</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">#放在server下</span><br><span class="line">location /api &#123;</span><br><span class="line">    proxy_pass http://mt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="权重策略"><a href="#权重策略" class="headerlink" title="权重策略"></a>权重策略</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upstream  mt &#123; </span><br><span class="line">    server 127.0.0.1:8085 weight=1; # 应用服务器1</span><br><span class="line">    server 127.0.0.1:8086 weight=9; # 应用服务器2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /api &#123;</span><br><span class="line">    proxy_pass http://mt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ip-hash策略"><a href="#ip-hash策略" class="headerlink" title="ip_hash策略"></a>ip_hash策略</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#3、IP绑定 ip_hash</span><br><span class="line">#每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，</span><br><span class="line">#可以解决session的问题;在不考虑引入分布式session的情况下，</span><br><span class="line">#原生HttpSession只对当前servlet容器的上下文环境有效</span><br><span class="line">upstream mt &#123; </span><br><span class="line">    ip_hash; </span><br><span class="line">    server mt1.com:8085; # 应用服务器1</span><br><span class="line">    server mt2.com:8086; # 应用服务器2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /api &#123;</span><br><span class="line">    proxy_pass http://mt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/06/17/前端学习nginx之理解nginx配置/" target="_blank" rel="external">https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&title=《前端学习nginx之理解nginx配置》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&title=《前端学习nginx之理解nginx配置》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《前端学习nginx之理解nginx配置》 — Microbot Team&url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/07/21/设计模式命令模式/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">设计模式命令模式</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/26/前端学习nginx二/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">前端学习nginx二</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&title=《前端学习nginx之理解nginx配置》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&title=《前端学习nginx之理解nginx配置》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《前端学习nginx之理解nginx配置》 — Microbot Team&url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/06/17/前端学习nginx之理解nginx配置/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACr0lEQVR42u3awW4CMQwE0P7/T7fXShUw48SUw9sT2gonL0iJa+frK36+fz2P3vx+n8f8Gy15f/nBw8PDO5j682Fa2PNvPR+xXY6HEfDw8PDWeEm4ZOufHRXt1JM54+Hh4X0a7yS9zher/RYeHh7ep/ESRn4MtEk2Hh4e3qfxktDJk5cebh1O12oteHh4eDHvJJ39r88r/T08PDy84676rDU1G7FtoUWzxcPDw1vgnTScHr1p0/HnS5CM9WK58fDw8BZ4+VY+K0ycJOtJmw0PDw/vv3j5RtyWYvNkOm+t1Ww8PDy8Nd55KnyyHLMjJyr14uHh4V3ita39dltvR0mKGkXCjYeHh7fAS9LZZIC25HqrRBstHB4eHt5V3qxU2m7QM3xRaX40Ch4eHt4CLy+/tsXZ9iJCW319HgcPDw/vPbxZ4z+nzpL1k3YdHh4e3jbv/FLUeZKdlIkXzz08PDy8gJdfnMon1Da3kmZbcuEg+t3w8PDwjnknhYA83K1W2SwmHh4e3gZvdskpHz6f3Kzd9WJcPDw8vDVee1EgSaxnyXqSZBc/Ax4eHt5VXtvgnzW0ZiXaC4cNHh4e3gIvSVVnja78W22TbHaZAA8PD+8Wb9aSz5PauwdAe9jg4eHhbfBmRYd2o59N61ZMPDw8vA3eLJFt21d5cTa/yBWNjoeHh7fMS5pSebKblC1mBdkiJh4eHt4arw03K7/eunBQnAV4eHh4V3mzdLZdjraEkSTx0TLh4eHhLfDarTYZIE+ac1Lyub1qgIeHh3fCaw+DvctYJxcF8PDw8N7PSzblZENvFyWJ03a4oj/j4eHhvZ2Xb+In0S6UM/Dw8PA+gNe2tW4dP0nSf+FgwMPDw4t5t5peSSE4L1vkcV4cDHh4eHhXebN/+NvGVd7gPzmE8PDw8JZ5P3K1JwPHHorxAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

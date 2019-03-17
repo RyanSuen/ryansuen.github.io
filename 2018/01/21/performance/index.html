@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>performance | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="performance简介Performance接口可以获取到当前页面与性能相关的信息。这个API为测量网站性能，提供以前没有办法做到的精度。 比如，为了得到脚本运行的准确耗时，需要一个高精度时间戳。传统的做法是使用Date对象的getTime方法。 1234567var start = new Date().getTime();// do something herevar now = new">
+<meta property="og:type" content="article">
+<meta property="og:title" content="performance">
+<meta property="og:url" content="https://ryansuen.github.io/2018/01/21/performance/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="performance简介Performance接口可以获取到当前页面与性能相关的信息。这个API为测量网站性能，提供以前没有办法做到的精度。 比如，为了得到脚本运行的准确耗时，需要一个高精度时间戳。传统的做法是使用Date对象的getTime方法。 1234567var start = new Date().getTime();// do something herevar now = new">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/resource-timing-api.png">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/resource-timing-data.png">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/resource-timing-entry.png">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/stalled-request-series.png">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/indicator-of-high-ttfb.png">
+<meta property="og:image" content="https://ryansuen.github.io/img/performance/indicator-of-large-content.png">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="performance">
+<meta name="twitter:description" content="performance简介Performance接口可以获取到当前页面与性能相关的信息。这个API为测量网站性能，提供以前没有办法做到的精度。 比如，为了得到脚本运行的准确耗时，需要一个高精度时间戳。传统的做法是使用Date对象的getTime方法。 1234567var start = new Date().getTime();// do something herevar now = new">
+<meta name="twitter:image" content="https://ryansuen.github.io/img/performance/resource-timing-api.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">performance</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">performance</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-21T13:24:33.000Z" itemprop="datePublished" class="page-time">
+  2018-01-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#performance"><span class="post-toc-number">1.</span> <span class="post-toc-text">performance</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#performance-timing对象"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">performance.timing对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#performance-now"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">performance.now()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#performance-mark"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">performance.mark()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#performance-getEntries"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">performance.getEntries()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#performance-navigation对象"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">performance.navigation对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#performance-navigation-type"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">performance.navigation.type</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#performance-navigation-redirectCount"><span class="post-toc-number">1.6.2.</span> <span class="post-toc-text">performance.navigation.redirectCount</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算一些性能数据"><span class="post-toc-number">2.</span> <span class="post-toc-text">计算一些性能数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#理解chrome的Resource-Timing"><span class="post-toc-number">3.</span> <span class="post-toc-text">理解chrome的Resource Timing</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#时序图"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">时序图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在-DevTools-中查看"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">在 DevTools 中查看</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Queuing"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">Queuing</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Stalled-Blocking"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">Stalled/Blocking</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Proxy-Negotiation"><span class="post-toc-number">3.2.3.</span> <span class="post-toc-text">Proxy Negotiation</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#DNS-Lookup"><span class="post-toc-number">3.2.4.</span> <span class="post-toc-text">DNS Lookup</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Initial-Connection-Connecting"><span class="post-toc-number">3.2.5.</span> <span class="post-toc-text">Initial Connection / Connecting</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#SSL"><span class="post-toc-number">3.2.6.</span> <span class="post-toc-text">SSL</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Request-Sent-Sending"><span class="post-toc-number">3.2.7.</span> <span class="post-toc-text">Request Sent / Sending</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Waiting-TTFB"><span class="post-toc-number">3.2.8.</span> <span class="post-toc-text">Waiting (TTFB)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Content-Download-Downloading"><span class="post-toc-number">3.2.9.</span> <span class="post-toc-text">Content Download / Downloading</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#诊断网络问题"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">诊断网络问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#已被加入队列或已被停止的系列"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">已被加入队列或已被停止的系列</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#至第一字节的漫长时间"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">至第一字节的漫长时间</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#达到吞吐量能力"><span class="post-toc-number">3.3.3.</span> <span class="post-toc-text">达到吞吐量能力</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-performance" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">performance</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-21 21:24:33" datetime="2018-01-21T13:24:33.000Z" itemprop="datePublished">2018-01-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="performance"><a href="#performance" class="headerlink" title="performance"></a>performance</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Performance接口可以获取到当前页面与性能相关的信息。这个API为测量网站性能，提供以前没有办法做到的精度。</p>
+<p>比如，为了得到脚本运行的准确耗时，需要一个高精度时间戳。传统的做法是使用Date对象的getTime方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var start = new Date().getTime();</span><br><span class="line"></span><br><span class="line">// do something here</span><br><span class="line"></span><br><span class="line">var now = new Date().getTime();</span><br><span class="line">var latency = now - start;</span><br><span class="line">console.log(&quot;任务运行时间：&quot; + latency);</span><br></pre></td></tr></table></figure>
+<p>上面这种做法有两个不足之处。首先，getTime方法（以及Date对象的其他方法）都只能精确到毫秒级别（一秒的千分之一），想要得到更小的时间差别就无能为力了；其次，这种写法只能获取代码运行过程中的时间进度，无法知道一些后台事件的时间进度，比如浏览器用了多少时间从服务器加载网页。</p>
+<p>为了解决这两个不足之处，ECMAScript 5引入“高精度时间戳”这个API，部署在performance对象上。它的精度可以达到1毫秒的千分之一（1秒的百万分之一），这对于衡量的程序的细微差别，提高程序运行速度很有好处，而且还可以获取后台事件的时间进度。</p>
+<p>目前，所有主要浏览器都已经支持performance对象，包括Chrome 20+、Firefox 15+、IE 10+、Opera 15+。</p>
+<h3 id="performance-timing对象"><a href="#performance-timing对象" class="headerlink" title="performance.timing对象"></a>performance.timing对象</h3><p>performance对象的timing属性指向一个对象，它包含了各种与浏览器性能有关的时间数据，提供浏览器处理网页各个阶段的耗时。比如，performance.timing.navigationStart就是浏览器处理当前网页的启动时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Date.now() - performance.timing.navigationStart</span><br><span class="line">// 13260687</span><br></pre></td></tr></table></figure>
+<p>上面代码表示距离浏览器开始处理当前网页，已经过了13260687毫秒。</p>
+<p>下面是另一个例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var t = performance.timing;</span><br><span class="line">var pageloadtime = t.loadEventStart - t.navigationStart;</span><br><span class="line">var dns = t.domainLookupEnd - t.domainLookupStart;</span><br><span class="line">var tcp = t.connectEnd - t.connectStart;</span><br><span class="line">var ttfb = t.responseStart - t.navigationStart;</span><br></pre></td></tr></table></figure>
+<p>上面代码依次得到页面加载的耗时、域名解析的耗时、TCP连接的耗时、读取页面第一个字节之前的耗时。</p>
+<p>performance.timing对象包含以下属性（全部为只读）：</p>
+<ul>
+<li>navigationStart：当前浏览器窗口的前一个网页关闭，发生unload事件时的Unix毫秒时间戳。如果没有前一个网页，则等于fetchStart属性。</li>
+<li>unloadEventStart：如果前一个网页与当前网页属于同一个域名，则返回前一个网页的unload事件发生时的Unix毫秒时间戳。如果没有前一个网页，或者之前的网页跳转不是在同一个域名内，则返回值为0。</li>
+<li>unloadEventEnd：如果前一个网页与当前网页属于同一个域名，则返回前一个网页unload事件的回调函数结束时的Unix毫秒时间戳。如果没有前一个网页，或者之前的网页跳转不是在同一个域名内，则返回值为0。</li>
+<li>redirectStart：返回第一个HTTP跳转开始时的Unix毫秒时间戳。如果没有跳转，或者不是同一个域名内部的跳转，则返回值为0。</li>
+<li>redirectEnd：返回最后一个HTTP跳转结束时（即跳转回应的最后一个字节接受完成时）的Unix毫秒时间戳。如果没有跳转，或者不是同一个域名内部的跳转，则返回值为0。</li>
+<li>fetchStart：返回浏览器准备使用HTTP请求读取文档时的Unix毫秒时间戳。该事件在网页查询本地缓存之前发生。</li>
+<li>domainLookupStart：返回域名查询开始时的Unix毫秒时间戳。如果使用持久连接，或者信息是从本地缓存获取的，则返回值等同于fetchStart属性的值。</li>
+<li>domainLookupEnd：返回域名查询结束时的Unix毫秒时间戳。如果使用持久连接，或者信息是从本地缓存获取的，则返回值等同于fetchStart属性的值。</li>
+<li>connectStart：返回HTTP请求开始向服务器发送时的Unix毫秒时间戳。如果使用持久连接（persistent connection），则返回值等同于fetchStart属性的值。</li>
+<li>connectEnd：返回浏览器与服务器之间的连接建立时的Unix毫秒时间戳。如果建立的是持久连接，则返回值等同于fetchStart属性的值。连接建立指的是所有握手和认证过程全部结束。</li>
+<li>secureConnectionStart：返回浏览器与服务器开始安全链接的握手时的Unix毫秒时间戳。如果当前网页不要求安全连接，则返回0。</li>
+<li>requestStart：返回浏览器向服务器发出HTTP请求时（或开始读取本地缓存时）的Unix毫秒时间戳。</li>
+<li>responseStart：返回浏览器从服务器收到（或从本地缓存读取）第一个字节时的Unix毫秒时间戳。</li>
+<li>responseEnd：返回浏览器从服务器收到（或从本地缓存读取）最后一个字节时（如果在此之前HTTP连接已经关闭，则返回关闭时）的Unix毫秒时间戳。</li>
+<li>domLoading：返回当前网页DOM结构开始解析时（即Document.readyState属性变为“loading”、相应的readystatechange事件触发时）的Unix毫秒时间戳。</li>
+<li>domInteractive：返回当前网页DOM结构结束解析、开始加载内嵌资源时（即Document.readyState属性变为“interactive”、相应的readystatechange事件触发时）的Unix毫秒时间戳。</li>
+<li>domContentLoadedEventStart：返回当前网页DOMContentLoaded事件发生时（即DOM结构解析完毕、所有脚本开始运行时）的Unix毫秒时间戳。</li>
+<li>domContentLoadedEventEnd：返回当前网页所有需要执行的脚本执行完成时的Unix毫秒时间戳。</li>
+<li>domComplete：返回当前网页DOM结构生成时（即Document.readyState属性变为“complete”，以及相应的readystatechange事件发生时）的Unix毫秒时间戳。</li>
+<li>loadEventStart：返回当前网页load事件的回调函数开始时的Unix毫秒时间戳。如果该事件还没有发生，返回0。</li>
+<li>loadEventEnd：返回当前网页load事件的回调函数运行结束时的Unix毫秒时间戳。如果该事件还没有发生，返回0。</li>
+</ul>
+<p>根据上面这些属性，可以计算出网页加载各个阶段的耗时。比如，网页加载整个过程的耗时的计算方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var t = performance.timing; </span><br><span class="line">var pageLoadTime = t.loadEventEnd - t.navigationStart;</span><br></pre></td></tr></table></figure>
+<h3 id="performance-now"><a href="#performance-now" class="headerlink" title="performance.now()"></a>performance.now()</h3><p>performance.now方法返回当前网页自从performance.timing.navigationStart到当前时间之间的微秒数（毫秒的千分之一）。也就是说，它的精度可以达到100万分之一秒。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">performance.now() </span><br><span class="line">// 23493457.476999998</span><br><span class="line"></span><br><span class="line">Date.now() - (performance.timing.navigationStart + performance.now())</span><br><span class="line">// -0.64306640625</span><br></pre></td></tr></table></figure>
+<p>上面代码表示，performance.timing.navigationStart加上performance.now()，近似等于Date.now()，也就是说，Date.now()可以替代performance.now()。但是，前者返回的是毫秒，后者返回的是微秒，所以后者的精度比前者高1000倍。</p>
+<p>通过两次调用performance.now方法，可以得到间隔的准确时间，用来衡量某种操作的耗时。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var start = performance.now();</span><br><span class="line">doTasks();</span><br><span class="line">var end = performance.now();</span><br><span class="line"></span><br><span class="line">console.log(&apos;耗时：&apos; + (end - start) + &apos;微秒。&apos;);</span><br></pre></td></tr></table></figure>
+<h3 id="performance-mark"><a href="#performance-mark" class="headerlink" title="performance.mark()"></a>performance.mark()</h3><p>mark方法用于为相应的视点做标记。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.performance.mark(&apos;mark_fully_loaded&apos;);</span><br></pre></td></tr></table></figure>
+<p>clearMarks方法用于清除标记，如果不加参数，就表示清除所有标记。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">window.peformance.clearMarks(&apos;mark_fully_loaded&apos;);</span><br><span class="line"></span><br><span class="line">window.performance.clearMarks();</span><br></pre></td></tr></table></figure>
+<h3 id="performance-getEntries"><a href="#performance-getEntries" class="headerlink" title="performance.getEntries()"></a>performance.getEntries()</h3><p>浏览器获取网页时，会对网页中每一个对象（脚本文件、样式表、图片文件等等）发出一个HTTP请求。performance.getEntries方法以数组形式，返回这些请求的时间统计信息，有多少个请求，返回数组就会有多少个成员。</p>
+<p>由于该方法与浏览器处理网页的过程相关，所以只能在浏览器中使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">window.performance.getEntries()[0]</span><br><span class="line"></span><br><span class="line">// PerformanceResourceTiming &#123; </span><br><span class="line">//   responseEnd: 4121.6200000017125, </span><br><span class="line">//   responseStart: 4120.0690000005125, </span><br><span class="line">//   requestStart: 3315.355000002455, </span><br><span class="line">//   ...</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码返回第一个HTTP请求（即网页的HTML源码）的时间统计信息。该信息以一个高精度时间戳的对象形式返回，每个属性的单位是微秒（microsecond），即百万分之一秒。</p>
+<h3 id="performance-navigation对象"><a href="#performance-navigation对象" class="headerlink" title="performance.navigation对象"></a>performance.navigation对象</h3><p>除了时间信息，performance还可以提供一些用户行为信息，主要都存放在performance.navigation对象上面。</p>
+<p>它有两个属性：</p>
+<h4 id="performance-navigation-type"><a href="#performance-navigation-type" class="headerlink" title="performance.navigation.type"></a>performance.navigation.type</h4><p>该属性返回一个整数值，表示网页的加载来源，可能有以下4种情况：</p>
+<ul>
+<li>0：网页通过点击链接、地址栏输入、表单提交、脚本操作等方式加载，相当于常数performance.navigation.TYPE_NAVIGATENEXT。</li>
+<li>1：网页通过“重新加载”按钮或者location.reload()方法加载，相当于常数performance.navigation.TYPE_RELOAD。</li>
+<li>2：网页通过“前进”或“后退”按钮加载，相当于常数performance.navigation.TYPE_BACK_FORWARD。</li>
+<li>255：任何其他来源的加载，相当于常数performance.navigation.TYPE_UNDEFINED。</li>
+</ul>
+<h4 id="performance-navigation-redirectCount"><a href="#performance-navigation-redirectCount" class="headerlink" title="performance.navigation.redirectCount"></a>performance.navigation.redirectCount</h4><p>该属性表示当前网页经过了多少次重定向跳转。</p>
+<h2 id="计算一些性能数据"><a href="#计算一些性能数据" class="headerlink" title="计算一些性能数据"></a>计算一些性能数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">//重定向次数：</span><br><span class="line">var redirectCount = navigation &amp;&amp; navigation.redirectCount;</span><br><span class="line"> </span><br><span class="line">//跳转耗时：</span><br><span class="line">var redirect = timing.redirectEnd - timing.redirectStart;</span><br><span class="line"> </span><br><span class="line">//APP CACHE 耗时：</span><br><span class="line">var appcache = Math.max(timing.domainLookupStart - timing.fetchStart, 0);</span><br><span class="line"> </span><br><span class="line">//DNS 解析耗时：</span><br><span class="line">var dns = timing.domainLookupEnd - timing.domainLookupStart;</span><br><span class="line"> </span><br><span class="line">//TCP 链接耗时：</span><br><span class="line">var conn = timing.connectEnd - timing.connectStart;</span><br><span class="line"> </span><br><span class="line">//等待服务器响应耗时（注意是否存在cache）：</span><br><span class="line">var request = timing.responseStart - timing.requestStart;</span><br><span class="line"> </span><br><span class="line">//内容加载耗时（注意是否存在cache）:</span><br><span class="line">var response = timing.responseEnd - timing.responseStart;</span><br><span class="line"> </span><br><span class="line">//总体网络交互耗时，即开始跳转到服务器资源下载完成：</span><br><span class="line">var network = timing.responseEnd - timing.navigationStart;</span><br><span class="line"> </span><br><span class="line">//渲染处理：</span><br><span class="line">var processing = (timing.domComplete || timing.domLoading) - timing.domLoading;</span><br><span class="line"> </span><br><span class="line">//抛出 load 事件：</span><br><span class="line">var load = timing.loadEventEnd - timing.loadEventStart;</span><br><span class="line"> </span><br><span class="line">//总耗时：</span><br><span class="line">var total = (timing.loadEventEnd || timing.loadEventStart || timing.domComplete || timing.domLoading) - timing.navigationStart;</span><br><span class="line"> </span><br><span class="line">//可交互：</span><br><span class="line">var active = timing.domInteractive - timing.navigationStart;</span><br><span class="line"> </span><br><span class="line">//请求响应耗时，即 T0，注意cache：</span><br><span class="line">var t0 = timing.responseStart - timing.navigationStart;</span><br><span class="line"> </span><br><span class="line">//首次出现内容（白屏时间），即 T1：(注意是后端渲染还是由前端渲染)</span><br><span class="line">var t1 = timing.domLoading - timing.navigationStart;</span><br><span class="line"> </span><br><span class="line">//内容加载完毕，即 T3：</span><br><span class="line">var t3 = timing.loadEventEnd - timing.navigationStart;</span><br></pre></td></tr></table></figure>
+<h2 id="理解chrome的Resource-Timing"><a href="#理解chrome的Resource-Timing" class="headerlink" title="理解chrome的Resource Timing"></a>理解chrome的Resource Timing</h2><h3 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h3><p>请注意：当使用具有跨源资源的 Resource Timing API 时，确保所有资源具有 CORS 标头。</p>
+<p>Resource Timing API 提供了与接收各个资源的时间有关的大量详细信息。请求生命周期的主要阶段包括：</p>
+<ul>
+<li>重定向</li>
+<li>立即开始 startTime。</li>
+<li>如果正在发生重定向，redirectStart 也会开始。</li>
+<li>如果重定向在本阶段末发生，将采集 redirectEnd。</li>
+<li>应用缓存</li>
+<li>如果是应用缓存在实现请求，将采集 fetchStart 时间。</li>
+<li>DNS</li>
+<li>domainLookupStart 时间在 DNS 请求开始时采集。</li>
+<li>domainLookupEnd 时间在 DNS 请求结束时采集。</li>
+<li>TCP</li>
+<li>connectStart 在初始连接到服务器时采集。</li>
+<li>如果正在使用 TLS 或 SSL，secureConnectionStart 将在握手（确保连接安全）开始时开始。</li>
+<li>connectEnd 将在到服务器的连接完成时采集。</li>
+<li>请求</li>
+<li>requestStart 会在对某个资源的请求被发送到服务器后立即采集。</li>
+<li>响应</li>
+<li>responseStart 是服务器初始响应请求的时间。</li>
+<li>responseEnd 是请求结束并且数据完成检索的时间。</li>
+</ul>
+<p><img src="/img/performance/resource-timing-api.png" alt="resource-timing-api"></p>
+<h3 id="在-DevTools-中查看"><a href="#在-DevTools-中查看" class="headerlink" title="在 DevTools 中查看"></a>在 DevTools 中查看</h3><p>要查看 Network 面板中给定条目完整的耗时信息，您有三种选择。</p>
+<ol>
+<li>将鼠标悬停到 Timeline 列下的耗时图表上。这将呈现一个显示完整耗时数据的弹出窗口。</li>
+<li>点击任何条目并打开该条目的 Timing 标签。</li>
+<li>使用 Resource Timing API 从 JavaScript 检索原始数据。</li>
+</ol>
+<p><img src="/img/performance/resource-timing-data.png" alt="resource-timing-data"></p>
+<p>此代码可以在 DevTools 的 Console 中运行。 它将使用 Network Timing API 检索所有资源。 然后，它将通过查找是否存在名称中包含“style.css”的条目对条目进行过滤。 如果找到，将返回相应条目。</p>
+<p><img src="/img/performance/resource-timing-entry.png" alt="resource-timing-entry"></p>
+<h4 id="Queuing"><a href="#Queuing" class="headerlink" title="Queuing"></a>Queuing</h4><p>如果某个请求正在排队，则指示：</p>
+<ul>
+<li>请求已被渲染引擎推迟，因为该请求的优先级被视为低于关键资源（例如脚本/样式）的优先级。 图像经常发生这种情况。</li>
+<li>请求已被暂停，以等待将要释放的不可用 TCP 套接字。</li>
+<li>请求已被暂停，因为在 HTTP 1 上，浏览器仅允许每个源拥有六个 TCP 连接。</li>
+<li>生成磁盘缓存条目所用的时间（通常非常迅速）</li>
+</ul>
+<h4 id="Stalled-Blocking"><a href="#Stalled-Blocking" class="headerlink" title="Stalled/Blocking"></a>Stalled/Blocking</h4><p>请求等待发送所用的时间。 可以是等待 Queueing 中介绍的任何一个原因。 此外，此时间包含代理协商所用的任何时间。</p>
+<h4 id="Proxy-Negotiation"><a href="#Proxy-Negotiation" class="headerlink" title="Proxy Negotiation"></a>Proxy Negotiation</h4><p>与代理服务器连接协商所用的时间。</p>
+<h4 id="DNS-Lookup"><a href="#DNS-Lookup" class="headerlink" title="DNS Lookup"></a>DNS Lookup</h4><p>执行 DNS 查询所用的时间。 页面上的每一个新域都需要完整的往返才能执行 DNS 查询。</p>
+<h4 id="Initial-Connection-Connecting"><a href="#Initial-Connection-Connecting" class="headerlink" title="Initial Connection / Connecting"></a>Initial Connection / Connecting</h4><p>建立连接所用的时间，包括 TCP 握手/重试和协商 SSL 的时间。</p>
+<h4 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h4><p>完成 SSL 握手所用的时间。</p>
+<h4 id="Request-Sent-Sending"><a href="#Request-Sent-Sending" class="headerlink" title="Request Sent / Sending"></a>Request Sent / Sending</h4><p>发出网络请求所用的时间。 通常不到一毫秒。</p>
+<h4 id="Waiting-TTFB"><a href="#Waiting-TTFB" class="headerlink" title="Waiting (TTFB)"></a>Waiting (TTFB)</h4><p>等待初始响应所用的时间，也称为至第一字节的时间。 此时间将捕捉到服务器往返的延迟时间，以及等待服务器传送响应所用的时间。</p>
+<h4 id="Content-Download-Downloading"><a href="#Content-Download-Downloading" class="headerlink" title="Content Download / Downloading"></a>Content Download / Downloading</h4><p>接收响应数据所用的时间。</p>
+<h3 id="诊断网络问题"><a href="#诊断网络问题" class="headerlink" title="诊断网络问题"></a>诊断网络问题</h3><p>通过 Network 面板可以发现大量可能的问题。查找这些问题需要很好地了解客户端与服务器如何通信，以及协议施加的限制。</p>
+<h4 id="已被加入队列或已被停止的系列"><a href="#已被加入队列或已被停止的系列" class="headerlink" title="已被加入队列或已被停止的系列"></a>已被加入队列或已被停止的系列</h4><p>最常见问题是一系列已被加入队列或已被停止的条目。这表明正在从单个网域检索太多的资源。在 HTTP 1.0/1.1 连接上，Chrome 会将每个主机强制设置为最多六个 TCP 连接。如果您一次请求十二个条目，前六个将开始，而后六个将被加入队列。最初的一半完成后，队列中的第一个条目将开始其请求流程。</p>
+<p><img src="/img/performance/stalled-request-series.png" alt="stalled-request-series"></p>
+<p>要为传统的 HTTP 1 流量解决此问题，您需要实现域分片。也就是在您的应用上设置多个子域，以便提供资源。然后，在子域之间平均分配正在提供的资源。</p>
+<p>HTTP 1 连接的修复结果不会应用到 HTTP 2 连接上。事实上，前者的结果会影响后者。 如果您部署了 HTTP 2，请不要对您的资源进行域分片，因为它与 HTTP 2 的操作方式相反。在 HTTP 2 中，到服务器的单个 TCP 连接作为多路复用连接。这消除了 HTTP 1 中的六个连接限制，并且可以通过单个连接同时传输多个资源。</p>
+<h4 id="至第一字节的漫长时间"><a href="#至第一字节的漫长时间" class="headerlink" title="至第一字节的漫长时间"></a>至第一字节的漫长时间</h4><p>又称：大片绿色</p>
+<p><img src="/img/performance/indicator-of-high-ttfb.png" alt="indicator-of-high-ttfb"></p>
+<p>等待时间长表示至第一字节的时间 (TTFB) 漫长。建议将此值控制在 200 毫秒以下。长 TTFB 会揭示两个主要问题之一。</p>
+<p>请执行以下任一操作：</p>
+<ol>
+<li>客户端与服务器之间的网络条件较差，或者</li>
+<li>服务器应用的响应慢</li>
+</ol>
+<p>要解决长 TTFB，首先请尽可能缩减网络。理想的情况是将应用托管在本地，然后查看 TTFB 是否仍然很长。如果仍然很长，则需要优化应用的响应速度。可以是优化数据库查询、为特定部分的内容实现缓存，或者修改您的网络服务器配置。很多原因都可能导致后端缓慢。您需要调查您的软件并找出未满足您的性能预算的内容。</p>
+<p>如果本地托管后 TTFB 仍然漫长，那么问题出在您的客户端与服务器之间的网络上。很多事情都可以阻止网络遍历。客户端与服务器之间有许多点，每个点都有其自己的连接限制并可能引发问题。测试时间是否缩短的最简单方法是将您的应用置于其他主机上，并查看 TTFB 是否有所改善。</p>
+<h4 id="达到吞吐量能力"><a href="#达到吞吐量能力" class="headerlink" title="达到吞吐量能力"></a>达到吞吐量能力</h4><p>又称：大片蓝色</p>
+<p><img src="/img/performance/indicator-of-large-content.png" alt="indicator-of-large-content"></p>
+<p>如果您看到 Content Download 阶段花费了大量时间，则提高服务器响应或串联不会有任何帮助。首要的解决办法是减少发送的字节数。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/01/21/performance/" target="_blank" rel="external">https://ryansuen.github.io/2018/01/21/performance/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/01/21/performance/&title=《performance》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/01/21/performance/&title=《performance》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/01/21/performance/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《performance》 — Microbot Team&url=https://ryansuen.github.io/2018/01/21/performance/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/01/21/performance/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/12/node-js-fs/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">node.js fs</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/21/JSON/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JSON</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/01/21/performance/&title=《performance》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/01/21/performance/&title=《performance》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/01/21/performance/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《performance》 — Microbot Team&url=https://ryansuen.github.io/2018/01/21/performance/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/01/21/performance/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS27DMAxF0ex/0+60QBvlPtIOIOp6VCROreMBwd/rha/r1/XuE3L/33vWv7r5kiFDxraMa3mRY60x756yPgM/mwwZMs5hkEOsYx35FQmp6QuSIUOGDM7gaSLHy5AhQ0aNkRauaYopQ4YMGZ0ilpSmvEDlr+zmWlyGDBkbMnjX/ft/PzLfkCFDxlaMK7zSIFgLl/GpZMiQMZrBAxxpmfESl7ya+DwyZMgYzSDrDqThVTsWWTULkkUZMmQMZaQFZC2JrH3CRwgyZMiYyugcmjzyrvL1Q2ooQ4aM0Yw0wJEErhZMa0+RIUPGaQy+HpEWmZ2jB204GTJkDGWk7XjeViOJXW3w8M+3MmTIOIBRW49IW2zpCwrSUxkyZIxm8CZX2gLjjby7ElYZMmRMZTwRcElqmIbmG6pwGTJkbMuoHSstWcmhCQk9UYYMGQcweATrp4+dRlucb8qQIWNzBk/OautftZZcnCbKkCHjAEa6BNZZy+BBvJjbypAh4xhGGgT7RWxKfTvClCFDxlBGJ1kk4ZXXnuT/oEabDBkyRjM6iV0/pBZnlDJkyBjKuMKrM/JMU8ZibitDhoxxjHQ+mLb7edjl9/OkU4YMGZMYfAzZv7+Vw67LYxkyZBzA6CxhdJYz0lTvwwhThgwZMmprECBk1wYPMmTIkNFp8acts3T57IbUUIYMGRsy+Hiy/y0/4iPtNhkyZGzI4KVjZ3jJFyxqowIZMmQMZfwACJbwLoaaZEAAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

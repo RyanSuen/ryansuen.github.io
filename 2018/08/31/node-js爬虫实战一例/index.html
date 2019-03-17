@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>node.js爬虫实战一例 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="爬虫实战一例爬虫需求由来我的目的很单纯，只是想知道这个小测试背后的测试结果数据，看能不能获取到一些有用的信息。                                                                                              page1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js爬虫实战一例">
+<meta property="og:url" content="https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="爬虫实战一例爬虫需求由来我的目的很单纯，只是想知道这个小测试背后的测试结果数据，看能不能获取到一些有用的信息。                                                                                              page1">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://mmc-forecast.oss-cn-shanghai.aliyuncs.com/images/9e613aa33cca65-582x1180.png">
+<meta property="og:image" content="https://mmc-forecast.oss-cn-shanghai.aliyuncs.com/images/b71af920603aa9-576x760.png">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node.js爬虫实战一例">
+<meta name="twitter:description" content="爬虫实战一例爬虫需求由来我的目的很单纯，只是想知道这个小测试背后的测试结果数据，看能不能获取到一些有用的信息。                                                                                              page1">
+<meta name="twitter:image" content="https://mmc-forecast.oss-cn-shanghai.aliyuncs.com/images/9e613aa33cca65-582x1180.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">node.js爬虫实战一例</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">node.js爬虫实战一例</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-30T16:06:10.000Z" itemprop="datePublished" class="page-time">
+  2018-08-31
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#爬虫实战一例"><span class="post-toc-number">1.</span> <span class="post-toc-text">爬虫实战一例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#爬虫需求由来"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">爬虫需求由来</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分析"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">分析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#切入点"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">切入点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#我们先从op开始验证-只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。"><span class="post-toc-number">1.0.4.</span> <span class="post-toc-text">我们先从op开始验证,只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值-op为-1改变name值。"><span class="post-toc-number">1.0.5.</span> <span class="post-toc-text">看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值,op为-1改变name值。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通过代码获取结果数据"><span class="post-toc-number">1.0.6.</span> <span class="post-toc-text">通过代码获取结果数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据结果"><span class="post-toc-number">1.0.7.</span> <span class="post-toc-text">数据结果</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#经过如上的分析，我们可以正式开始为所欲为的爬数据了。"><span class="post-toc-number">1.0.8.</span> <span class="post-toc-text">经过如上的分析，我们可以正式开始为所欲为的爬数据了。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接下来我们开始清洗数据"><span class="post-toc-number">1.0.9.</span> <span class="post-toc-text">接下来我们开始清洗数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#去重"><span class="post-toc-number">1.0.9.1.</span> <span class="post-toc-text">去重</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#数据归档"><span class="post-toc-number">1.0.9.2.</span> <span class="post-toc-text">数据归档</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最后我们可以单纯的用拿到的数据，单纯的做点其他事了。"><span class="post-toc-number">1.0.10.</span> <span class="post-toc-text">最后我们可以单纯的用拿到的数据，单纯的做点其他事了。</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-node-js爬虫实战一例" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">node.js爬虫实战一例</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-31 00:06:10" datetime="2018-08-30T16:06:10.000Z" itemprop="datePublished">2018-08-31</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="爬虫实战一例"><a href="#爬虫实战一例" class="headerlink" title="爬虫实战一例"></a>爬虫实战一例</h1><h3 id="爬虫需求由来"><a href="#爬虫需求由来" class="headerlink" title="爬虫需求由来"></a>爬虫需求由来</h3><p>我的目的很单纯，只是想知道<a href="https://a.haifffffo.top/nameCheck2018/index.html?testId=25&amp;nickname=%E5%AD%99%E6%AF%85&amp;sex=1&amp;province=%E5%B9%BF%E4%B8%9C&amp;city=%E5%B9%BF%E5%B7%9E&amp;country=%E4%B8%AD%E5%9B%BD&amp;headimgurl=http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJQ1BMAQ6Atp26lp75sib0hcJ5vdS7ljkwtW10icfMIeQ5Oh5hqiaP8ic8wYOSskcV7IFulsm7t5ER55A/132&amp;access_token=12_b_5yVyUZB1n2IPcdLbPw09N2SfmZvOOXgEVKKMsH8hnh5Ry7x1NZTXWRd5DfMrDNJerMM2uoBYRsdHgZiemyyTR3camD8-b_lhignKuPZcY&amp;openid=ograBtyH9hjdO3MG-e4YiBiMpSJw&amp;unionid=ooYW_t7bPwAgVa6nT-cOQmk8Hjlo&amp;from=singlemessage&amp;isappinstalled=0" target="_blank" rel="noopener">这个小测试</a>背后的测试结果数据，看能不能获取到一些有用的信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://mmc-forecast.oss-cn-shanghai.aliyuncs.com/images/9e613aa33cca65-582x1180.png" alt="page1" title>
+                </div>
+                <div class="image-caption">page1</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://mmc-forecast.oss-cn-shanghai.aliyuncs.com/images/b71af920603aa9-576x760.png" alt="page2" title>
+                </div>
+                <div class="image-caption">page2</div>
+            </figure>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>通过观察，我们会发现结果页的数据很少，然而就这样简简单单的几个数据就形成了一个完整的结果，还能产生一定的传播效应。接下来开始我们一探究竟。</p>
+<h3 id="切入点"><a href="#切入点" class="headerlink" title="切入点"></a>切入点</h3><p>通过chrome我们很容易发现，这不是一个后端渲染的页面，我们不需要去爬完整的页面，再渲染页面，然后通过造作dom获取数据。<br>我们也能够很容易能够发现他的数据来自于哪一个接口。接口是<code>https://www.goodstudydayup.com:1443/wnl/H5Test/nameresult?tid=25&amp;name=%E6%B5%8B%E8%AF%95&amp;op=0</code>。 </p>
+<p>通过肉眼观察，我们发现这个接口有如下3个参数：</p>
+<ul>
+<li>tid=25</li>
+<li>name=%E6%B5%8B%E8%AF%95</li>
+<li>op=0</li>
+</ul>
+<p>open in new tab,返回的数据如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    code: "200",</span><br><span class="line">    msg: "ok",</span><br><span class="line">    data: &#123;</span><br><span class="line">        title: "赵丽颖",</span><br><span class="line">        placehold: "的命运相似明星是",</span><br><span class="line">        icon: "https://cdn.jptj.goodstudydayup.com/cover/201807/1532503163444.jpeg",</span><br><span class="line">        point: "6",</span><br><span class="line">        desc: "你的命运和赵丽颖相似，喜欢脚踏实地的前进，独一无二的你总有一天能够功成名就，实现自己的梦想。",</span><br><span class="line">        back_small: "https://cdn.jptj.goodstudydayup.com/cover/201807/1532502774491.jpeg"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看到这里心中暗喜了下，才三个参数，那应该很好猜，name我们一看便知道是什么。用户的名字。那tid和op代表什么意思呢？</p>
+<p>tid和op估计是猜不出来，我们不试一试。初高中大学我们都做过实验，知道要去探究某一个输入（参数）对响应（返回值）有什么影响。只要改变这一项输入的值，保证其他输入不变。</p>
+<h3 id="我们先从op开始验证-只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。"><a href="#我们先从op开始验证-只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。" class="headerlink" title="我们先从op开始验证,只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。"></a>我们先从op开始验证,只改变链接上的op值。从链接看op是一个整数，我们用不同的整数验证。</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">op(输入)</th>
+<th style="text-align:center">response(响应)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">title: “赵丽颖”</td>
+</tr>
+<tr>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">title: “吴彦祖”,</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">title: “吴彦祖”,</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">title: “吴彦祖”,</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值-op为-1改变name值。"><a href="#看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值-op为-1改变name值。" class="headerlink" title="看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值,op为-1改变name值。"></a>看到这里大概有点眉目了，我们先不做结论。继续往下验证两种情况。op为0与改变name，op为1改变name值,op为-1改变name值。</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">op(输入)</th>
+<th style="text-align:center">name(输入)</th>
+<th style="text-align:center">response(响应)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">测试</td>
+<td style="text-align:center">title: “赵丽颖”</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">测试1</td>
+<td style="text-align:center">title: “宋慧乔”</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">测试2</td>
+<td style="text-align:center">title: “小S”</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">测试3</td>
+<td style="text-align:center">title: “赵丽颖”</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">op(输入)</th>
+<th style="text-align:center">name(输入)</th>
+<th style="text-align:center">response(响应)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">测试</td>
+<td style="text-align:center">title: “吴彦祖”</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">测试1</td>
+<td style="text-align:center">title: “杨洋”</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">测试2</td>
+<td style="text-align:center">title: “林更新”</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">测试3</td>
+<td style="text-align:center">title: “林更新”</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">op(输入)</th>
+<th style="text-align:center">name(输入)</th>
+<th style="text-align:center">response(响应)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">测试</td>
+<td style="text-align:center">title: “吴彦祖”</td>
+</tr>
+<tr>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">测试1</td>
+<td style="text-align:center">title: “杨洋”</td>
+</tr>
+<tr>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">测试2</td>
+<td style="text-align:center">title: “林更新”</td>
+</tr>
+<tr>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">测试3</td>
+<td style="text-align:center">title: “林更新”</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>看完上面的结果我们基本可以得出结论。op原来代表性别。1是男性，0是女性（他自己定的值，不用去质疑）。其他整数默认为男性。 这里我们可以很自然的想到一个疑问，<strong>为什么性别这个参数它没有命名为sex 或则gender,而是op?</strong> </p>
+</blockquote>
+<p>我们可以猜测下，op（option?）,难道不一定代表性别？<br>先放下这个疑问不管。继续往下探索。</p>
+<p>name,op我们都大概清晰了，接下来就是去研究tid代表什么意思了？老规矩，tid改变，其它值不变。tid初始值等于25,我们取前10条数据的结果看看。</p>
+<h3 id="通过代码获取结果数据"><a href="#通过代码获取结果数据" class="headerlink" title="通过代码获取结果数据"></a>通过代码获取结果数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;    </span><br><span class="line">    <span class="built_in">Array</span>.from(<span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">30</span>),(val,index)=&gt;index).forEach(<span class="keyword">async</span>(v,k) =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> tid = v;</span><br><span class="line">        <span class="keyword">let</span> name = <span class="string">'测试'</span>;</span><br><span class="line">        <span class="keyword">let</span> op = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> reptileUrl = <span class="string">`https://www.goodstudydayup.com:1443/wnl/H5Test/nameresult?tid=<span class="subst">$&#123;tid&#125;</span>&amp;name=<span class="subst">$&#123;name&#125;</span>&amp;op=<span class="subst">$&#123;op&#125;</span>`</span>;</span><br><span class="line">        <span class="keyword">let</span> res = <span class="keyword">await</span> superagent.get(reptileUrl);</span><br><span class="line">        <span class="built_in">console</span>.log(tid, res.text);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h3 id="数据结果"><a href="#数据结果" class="headerlink" title="数据结果"></a>数据结果</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">3 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">2 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">4 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">1 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">7 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">9 '&#123;"code":"200","msg":"ok","data":&#123;"title":"锄头一把","placehold":"的名字价值","icon":"https://cdn.jptj.goodstudydayup.com/cover/201805/1526372362583.jpeg","point":"2,5,8","desc":"虽说低调是美德，但你的名字可能就显得有点不讲究了，对事业的帮助率很低。赶紧想想如何提升自己名字的价值吧！","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">6 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">5 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">10 '&#123;"code":"200","msg":"ok","data":&#123;"title":"德国","placehold":"的最佳旅行地是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201805/1526376399512.jpeg","point":"2,15","desc":"你拥有敢于冒险的勇气，做任何事情都会精细研究，提前做好规划，一步一步完成，所以有计划的旅行更适合你哦！","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">12 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">15 '&#123;"code":"200","msg":"ok","data":&#123;"title":"晴","placehold":"的性格天气是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201805/1526977505571.jpeg","point":"1,2,3","desc":"晴天代表你乐观开朗，内心充满阳光，这样的你，面对工作和生活时，你也能保持不错的精神状态。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">11 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">22 '&#123;"code":"200","msg":"ok","data":&#123;"title":"竞争对手","placehold":"与爱人的前世关系是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201806/1529996973828.jpeg","point":"2","desc":"前世的你们是互相竞争的对手，今世的你们惺惺相惜，彼此的牵绊会很深，感情也会越来越深厚。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201806/1529996467162.jpeg"&#125;&#125;'</span><br><span class="line">14 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">20 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">18 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">17 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">0 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">19 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">16 '&#123;"code":"200","msg":"ok","data":&#123;"title":"1","placehold":"1","icon":"https://cdn.jptj.goodstudydayup.com/cover/201805/1527146243892.jpeg","point":"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16","desc":"11","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">8 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">23 '&#123;"code":"200","msg":"ok","data":&#123;"title":"28岁","placehold":"的暴富年龄段是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201807/1530521690641.jpeg","point":"2","desc":"你自身对于金钱很是敏感，知道自己应该投资什么来快速获取利润，所以赚钱相对容易，而且后面会财源不断。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201807/1530521141284.jpeg"&#125;&#125;'</span><br><span class="line">13 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br><span class="line">24 '&#123;"code":"200","msg":"ok","data":&#123;"title":"宫保鸡丁","placehold":"的个性代表菜是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201807/1531210375761.jpeg","point":"2","desc":"色调鲜艳、香辣味浓，吃起来肉质滑嫩。如你一般，让人满心欢喜，回味悠长。简而言之，你的天生属性就是招人疼。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201807/1531209184727.jpeg"&#125;&#125;'</span><br><span class="line">25 '&#123;"code":"200","msg":"ok","data":&#123;"title":"林志玲","placehold":"的命运相似明星是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201807/1532503163593.jpeg","point":"2","desc":"你的气质宛若林志玲一般充满大家闺秀的气息，而你的命运也似乎和她一样，只要你和她一样有颗坚韧的心，成功指日可待。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201807/1532502774491.jpeg"&#125;&#125;'</span><br><span class="line">26 '&#123;"code":"200","msg":"ok","data":&#123;"title":"雅典娜","placehold":"的守护神是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201808/1533635829116.jpeg","point":"2","desc":"你像智慧女神一样，是最聪明的女神，是智慧和力量的完美结合，你代表着女性的力量，眼神明亮，性格开朗。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201808/1533634370304.jpeg"&#125;&#125;'</span><br><span class="line">29 '&#123;"code":"200","msg":"ok","data":&#123;"title":"锦觅","placehold":"的角色是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201808/1535441155154.jpeg","point":"1,2","desc":"你向来是一个天真烂漫的人，为朋友可以两肋插刀，不管对待生活还是感情都有一腔赤诚，哪怕受伤都在所不惜。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201808/1535440988818.jpeg"&#125;&#125;'</span><br><span class="line">27 '&#123;"code":"200","msg":"ok","data":&#123;"title":"纯妃","placehold":"的角色是","icon":"https://cdn.jptj.goodstudydayup.com/cover/201808/1534230311231.jpeg","point":"2,10","desc":"你在生活中言不由衷，喜欢带着面具的人，对于生活中你所需要的东西，你会竭尽全力的去做并得到它。","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201808/1534227874391.jpeg"&#125;&#125;'</span><br><span class="line">21 '&#123;"code":"200","msg":"ok","data":&#123;"title":"偏财运欠佳","placehold":"的下半年","icon":"https://cdn.jptj.goodstudydayup.com/cover/201806/1528267891823.jpeg","point":"2","desc":"你下半年偏财运也不大好哦，所以还是把精力用在正财上面吧，好好工作，才会有满意的回报！","back_small":"https://cdn.jptj.goodstudydayup.com/cover/201806/1528267523938.jpeg"&#125;&#125;'</span><br><span class="line">28 '&#123;"code":"200","msg":"ok","data":&#123;"icon":"https://cdn.jptj.goodstudydayup.com/cover/","back_small":"https://cdn.jptj.goodstudydayup.com/cover/"&#125;&#125;'</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分析数据,我们很容易发现并不是所有的tid都能获得有效数据。tid为9的结果数据有效。 [有效数据].data.title 会有值。通过代码找到有效的tid.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">    (<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="built_in">Array</span>.from(<span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">1000</span>),(val,index)=&gt;index).forEach(<span class="keyword">async</span>(v,k) =&gt; &#123;</span><br><span class="line">            <span class="keyword">let</span> tid = v;</span><br><span class="line">            <span class="keyword">let</span> name = <span class="string">'测试'</span>;</span><br><span class="line">            <span class="keyword">let</span> op = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">let</span> reptileUrl = <span class="string">`https://www.goodstudydayup.com:1443/wnl/H5Test/nameresult?tid=<span class="subst">$&#123;tid&#125;</span>&amp;name=<span class="subst">$&#123;name&#125;</span>&amp;op=<span class="subst">$&#123;op&#125;</span>`</span>;</span><br><span class="line">            <span class="keyword">let</span> res = <span class="keyword">await</span> superagent.get(reptileUrl);</span><br><span class="line">            res = <span class="built_in">JSON</span>.parse(res.text);</span><br><span class="line">            <span class="keyword">if</span>(res.data.title) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(tid);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>//获取到的有效值如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">16</span><br><span class="line">22</span><br><span class="line">24</span><br><span class="line">10</span><br><span class="line">25</span><br><span class="line">27</span><br><span class="line">9</span><br><span class="line">29</span><br><span class="line">21</span><br><span class="line">23</span><br><span class="line">26</span><br><span class="line">15</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>到此我们三个参数我们全部我们全部明白了。</p>
+</blockquote>
+<ul>
+<li>tid: [9,10, 15, 16,21,22,23,24,25,26,27, 29]</li>
+<li>op: [0,1]</li>
+<li>name: *</li>
+</ul>
+<h3 id="经过如上的分析，我们可以正式开始为所欲为的爬数据了。"><a href="#经过如上的分析，我们可以正式开始为所欲为的爬数据了。" class="headerlink" title="经过如上的分析，我们可以正式开始为所欲为的爬数据了。"></a>经过如上的分析，我们可以正式开始为所欲为的爬数据了。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> name = <span class="string">'子义'</span>;</span><br><span class="line">    <span class="keyword">let</span> tids = [<span class="number">9</span>,<span class="number">10</span>, <span class="number">15</span>, <span class="number">16</span>,<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">27</span>, <span class="number">29</span>];</span><br><span class="line">    tids.forEach(<span class="keyword">async</span> (tid) =&gt; &#123;</span><br><span class="line">        [<span class="number">0</span>,<span class="number">1</span>].forEach(<span class="keyword">async</span> (op) =&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> reptileUrl = <span class="string">`https://www.goodstudydayup.com:1443/wnl/H5Test/nameresult?tid=<span class="subst">$&#123;tid&#125;</span>&amp;name=<span class="subst">$&#123;name&#125;</span>&amp;op=<span class="subst">$&#123;op&#125;</span>`</span>;</span><br><span class="line">                <span class="keyword">let</span> r1 = <span class="keyword">await</span> superagent.get(reptileUrl);</span><br><span class="line">                <span class="keyword">let</span> o1 = <span class="built_in">JSON</span>.parse(r1.text);</span><br><span class="line">                <span class="keyword">if</span> (o1.data.title) &#123;</span><br><span class="line">                    <span class="comment">//let flag = await db.Wnl.find(&#123; 'data.title': o1.data.title &#125;);                    </span></span><br><span class="line">                    <span class="comment">//if ( flag.length === 0 ) &#123;</span></span><br><span class="line">                        o1.data.tid = tid;</span><br><span class="line">                        o1.data.op = op;</span><br><span class="line">                        o1.data.name = name;</span><br><span class="line">                        db.Wnl.create(o1);</span><br><span class="line">                        <span class="keyword">let</span> names = [</span><br><span class="line">                            <span class="string">'梦琪'</span>, <span class="string">'之桃'</span>, <span class="string">'慕青'</span>, <span class="string">'尔岚'</span>, <span class="string">'初夏'</span>, <span class="string">'沛菡'</span>, <span class="string">'傲珊'</span>, <span class="string">'曼文'</span>, <span class="string">'乐菱'</span>, <span class="string">'惜文'</span>, <span class="string">'香寒'</span>, <span class="string">'新柔'</span>, <span class="string">'语蓉'</span>, <span class="string">'海安'</span>, <span class="string">'夜蓉'</span>, <span class="string">'涵柏'</span>, <span class="string">'水桃'</span>, <span class="string">'醉蓝'</span>, <span class="string">'语琴'</span>, <span class="string">'从彤'</span>, <span class="string">'傲晴'</span>, <span class="string">'语兰'</span>, <span class="string">'又菱'</span>, <span class="string">'碧彤'</span>, <span class="string">'元霜'</span>, <span class="string">'怜梦'</span>, <span class="string">'紫寒'</span>, <span class="string">'妙彤'</span>, <span class="string">'曼易'</span>, <span class="string">'南莲'</span>, <span class="string">'紫翠'</span>, <span class="string">'雨寒'</span>, <span class="string">'易烟'</span>, <span class="string">'如萱'</span>, <span class="string">'若南'</span>, <span class="string">'寻真'</span>, <span class="string">'晓亦'</span>, <span class="string">'向珊'</span>, <span class="string">'慕灵'</span>, <span class="string">'以蕊'</span>, <span class="string">'映易'</span>, <span class="string">'雪柳'</span>, <span class="string">'海云'</span>, <span class="string">'凝天'</span>, <span class="string">'沛珊'</span>, <span class="string">'寒云'</span>, <span class="string">'冰旋'</span>, <span class="string">'宛儿'</span>, <span class="string">'绿真'</span>, <span class="string">'晓霜'</span>, <span class="string">'碧凡'</span>, <span class="string">'夏菡'</span>, <span class="string">'曼香'</span>, <span class="string">'若烟'</span>, <span class="string">'半梦'</span>, <span class="string">'雅绿'</span>, <span class="string">'冰蓝'</span>, <span class="string">'灵槐'</span>, <span class="string">'平安'</span>, <span class="string">'书翠'</span>, <span class="string">'翠风'</span>, <span class="string">'代云'</span>, <span class="string">'梦曼'</span>, <span class="string">'幼翠'</span>, <span class="string">'听寒'</span>, <span class="string">'梦柏'</span>, <span class="string">'醉易'</span>, <span class="string">'访旋'</span>, <span class="string">'亦玉'</span>, <span class="string">'凌萱'</span>, <span class="string">'访卉'</span>, <span class="string">'怀亦'</span>, <span class="string">'笑蓝'</span>, <span class="string">'靖柏'</span>, <span class="string">'夜蕾'</span>, <span class="string">'冰夏'</span>, <span class="string">'梦松'</span>, <span class="string">'书雪'</span>, <span class="string">'乐枫'</span>, <span class="string">'念薇'</span>, <span class="string">'靖雁'</span>, <span class="string">'从寒'</span>, <span class="string">'觅波'</span>, <span class="string">'静曼'</span>, <span class="string">'凡旋'</span>, <span class="string">'以亦'</span>, <span class="string">'念露'</span>, <span class="string">'芷蕾'</span>, <span class="string">'千兰'</span>, <span class="string">'新波'</span>, <span class="string">'代真'</span>, <span class="string">'新蕾'</span>, <span class="string">'雁玉'</span>, <span class="string">'冷卉'</span>, <span class="string">'紫山'</span>, <span class="string">'千琴'</span>, <span class="string">'傲芙'</span>, <span class="string">'盼山'</span>, <span class="string">'怀蝶'</span>, <span class="string">'冰兰'</span>, <span class="string">'山柏'</span>, <span class="string">'翠萱'</span>, <span class="string">'问旋'</span>, <span class="string">'白易'</span>, <span class="string">'问筠'</span>, <span class="string">'如霜'</span>, <span class="string">'半芹'</span>, <span class="string">'丹珍'</span>, <span class="string">'冰彤'</span>, <span class="string">'亦寒'</span>, <span class="string">'之瑶'</span>, <span class="string">'冰露'</span>, <span class="string">'尔珍'</span>, <span class="string">'谷雪'</span>, <span class="string">'乐萱'</span>, <span class="string">'涵菡'</span>, <span class="string">'海莲'</span>, <span class="string">'傲蕾'</span>, <span class="string">'青槐'</span>, <span class="string">'易梦'</span>, <span class="string">'惜雪'</span>, <span class="string">'宛海'</span>, <span class="string">'之柔'</span>, <span class="string">'夏青'</span>, <span class="string">'亦瑶'</span>, <span class="string">'妙菡'</span>, <span class="string">'紫蓝'</span>, <span class="string">'幻柏'</span>, <span class="string">'元风'</span>, <span class="string">'冰枫'</span>, <span class="string">'访蕊'</span>, <span class="string">'芷蕊'</span>, <span class="string">'凡蕾'</span>, <span class="string">'凡柔'</span>, <span class="string">'安蕾'</span>, <span class="string">'天荷'</span>, <span class="string">'含玉'</span>, <span class="string">'书兰'</span>, <span class="string">'雅琴'</span>, <span class="string">'书瑶'</span>, <span class="string">'从安'</span>, <span class="string">'夏槐'</span>, <span class="string">'念芹'</span>, <span class="string">'代曼'</span>, <span class="string">'幻珊'</span>, <span class="string">'谷丝'</span>, <span class="string">'秋翠'</span>, <span class="string">'白晴'</span>, <span class="string">'海露'</span>, <span class="string">'代荷'</span>, <span class="string">'含玉'</span>, <span class="string">'书蕾'</span>, <span class="string">'听白'</span>, <span class="string">'灵雁'</span>, <span class="string">'雪青'</span>, <span class="string">'乐瑶'</span>, <span class="string">'含烟'</span>, <span class="string">'涵双'</span>, <span class="string">'平蝶'</span>, <span class="string">'雅蕊'</span>, <span class="string">'傲之'</span>, <span class="string">'灵薇'</span>, <span class="string">'含蕾'</span>, <span class="string">'从梦'</span>, <span class="string">'从蓉'</span>, <span class="string">'初丹。听兰'</span>, <span class="string">'听蓉'</span>, <span class="string">'语芙'</span>, <span class="string">'夏彤'</span>, <span class="string">'凌瑶'</span>, <span class="string">'忆翠'</span>, <span class="string">'幻灵'</span>, <span class="string">'怜菡'</span>, <span class="string">'紫南'</span>, <span class="string">'依珊'</span>, <span class="string">'妙竹'</span>, <span class="string">'访烟'</span>, <span class="string">'怜蕾'</span>, <span class="string">'映寒'</span>, <span class="string">'友绿'</span>, <span class="string">'冰萍'</span>, <span class="string">'惜霜'</span>, <span class="string">'凌香'</span>, <span class="string">'芷蕾'</span>, <span class="string">'雁卉'</span>, <span class="string">'迎梦'</span>, <span class="string">'元柏'</span>, <span class="string">'代萱'</span>, <span class="string">'紫真'</span>, <span class="string">'千青'</span>, <span class="string">'凌寒'</span>, <span class="string">'紫安'</span>, <span class="string">'寒安'</span>, <span class="string">'怀蕊'</span>, <span class="string">'秋荷'</span>, <span class="string">'涵雁'</span>, <span class="string">'以山'</span>, <span class="string">'凡梅'</span>, <span class="string">'盼曼'</span>, <span class="string">'翠彤'</span>, <span class="string">'谷冬'</span>, <span class="string">'冷安'</span>, <span class="string">'千萍'</span>, <span class="string">'冰烟'</span>, <span class="string">'雅阳'</span>, <span class="string">'友绿'</span>, <span class="string">'南松'</span>, <span class="string">'诗云'</span>, <span class="string">'飞风'</span>, <span class="string">'寄灵'</span>, <span class="string">'书芹'</span>, <span class="string">'幼蓉'</span>, <span class="string">'以蓝'</span>, <span class="string">'笑寒'</span>, <span class="string">'忆寒'</span>, <span class="string">'秋烟'</span>, <span class="string">'芷巧'</span>, <span class="string">'水香'</span>, <span class="string">'映之'</span>, <span class="string">'醉波'</span>, <span class="string">'幻莲'</span>, <span class="string">'夜山'</span>, <span class="string">'芷卉'</span>, <span class="string">'向彤'</span>, <span class="string">'小玉'</span>, <span class="string">'幼南'</span>, <span class="string">'凡梦'</span>, <span class="string">'尔曼'</span>, <span class="string">'念波'</span>, <span class="string">'迎松'</span>, <span class="string">'青寒'</span>, <span class="string">'笑天'</span>, <span class="string">'涵蕾'</span>, <span class="string">'碧菡'</span>, <span class="string">'映秋'</span>, <span class="string">'盼烟'</span>, <span class="string">'忆山'</span>, <span class="string">'以寒'</span>, <span class="string">'寒香'</span>, <span class="string">'小凡'</span>, <span class="string">'代亦'</span>, <span class="string">'梦露'</span>, <span class="string">'映波'</span>, <span class="string">'友蕊'</span>, <span class="string">'寄凡'</span>, <span class="string">'怜蕾'</span>, <span class="string">'雁枫'</span>, <span class="string">'水绿'</span>, <span class="string">'曼荷'</span>, <span class="string">'笑珊'</span>, <span class="string">'寒珊'</span>, <span class="string">'谷南'</span>, <span class="string">'慕儿'</span>, <span class="string">'夏岚'</span>, <span class="string">'友儿'</span>, <span class="string">'小萱'</span>, <span class="string">'紫青'</span>, <span class="string">'妙菱'</span>, <span class="string">'冬寒'</span>, <span class="string">'曼柔'</span>, <span class="string">'语蝶'</span>, <span class="string">'青筠'</span>, <span class="string">'夜安'</span>, <span class="string">'觅海'</span>, <span class="string">'问安'</span>, <span class="string">'晓槐'</span>, <span class="string">'雅山'</span>, <span class="string">'访云'</span>, <span class="string">'翠容'</span>, <span class="string">'寒凡'</span>, <span class="string">'晓绿'</span>, <span class="string">'以菱'</span>, <span class="string">'冬云'</span>, <span class="string">'含玉'</span>, <span class="string">'访枫'</span>, <span class="string">'含卉'</span>, <span class="string">'夜白'</span>, <span class="string">'冷安'</span>, <span class="string">'灵竹'</span>, <span class="string">'醉薇'</span>, <span class="string">'元珊'</span>, <span class="string">'幻波'</span>, <span class="string">'盼夏'</span>, <span class="string">'元瑶'</span>, <span class="string">'迎曼'</span>, <span class="string">'水云'</span>, <span class="string">'访琴'</span>, <span class="string">'谷波'</span>, <span class="string">'笑白'</span>, <span class="string">'妙海'</span>, <span class="string">'紫霜'</span>, <span class="string">'凌旋'</span>, <span class="string">'孤丝'</span>, <span class="string">'怜寒'</span>, <span class="string">'凡松'</span>, <span class="string">'青丝'</span>, <span class="string">'翠安'</span>, <span class="string">'如天'</span>, <span class="string">'凌雪'</span>, <span class="string">'绮菱'</span>, <span class="string">'代云'</span>, <span class="string">'香薇'</span>, <span class="string">'冬灵'</span>, <span class="string">'凌珍'</span>, <span class="string">'沛文'</span>, <span class="string">'紫槐'</span>, <span class="string">'幻柏'</span>, <span class="string">'采文'</span>, <span class="string">'雪旋'</span>, <span class="string">'盼海'</span>, <span class="string">'映梦'</span>, <span class="string">'安雁'</span>, <span class="string">'映容'</span>, <span class="string">'凝阳'</span>, <span class="string">'访风'</span>, <span class="string">'天亦'</span>, <span class="string">'觅风'</span>, <span class="string">'小霜'</span>, <span class="string">'雪萍'</span>, <span class="string">'半雪'</span>, <span class="string">'山柳'</span>, <span class="string">'谷雪'</span>, <span class="string">'靖易'</span>, <span class="string">'白薇'</span>, <span class="string">'梦菡'</span>, <span class="string">'飞绿'</span>, <span class="string">'如波'</span>, <span class="string">'又晴'</span>, <span class="string">'友易'</span>, <span class="string">'香菱'</span>, <span class="string">'冬亦'</span>, <span class="string">'问雁'</span>, <span class="string">'海冬'</span>, <span class="string">'秋灵'</span>, <span class="string">'凝芙'</span>, <span class="string">'念烟'</span>, <span class="string">'白山'</span>, <span class="string">'从灵'</span>, <span class="string">'尔芙'</span>, <span class="string">'迎蓉'</span>, <span class="string">'念寒'</span>, <span class="string">'翠绿'</span>, <span class="string">'翠芙'</span>, <span class="string">'靖儿'</span>, <span class="string">'妙柏'</span>, <span class="string">'千凝'</span>, <span class="string">'小珍'</span>, <span class="string">'妙旋'</span>, <span class="string">'雪枫'</span>, <span class="string">'夏菡'</span>, <span class="string">'绮琴'</span>, <span class="string">'雨双'</span>, <span class="string">'听枫'</span>, <span class="string">'觅荷'</span>, <span class="string">'凡之'</span>, <span class="string">'晓凡'</span>, <span class="string">'雅彤'</span>, <span class="string">'孤风'</span>, <span class="string">'从安'</span>, <span class="string">'绮彤'</span>, <span class="string">'之玉'</span>, <span class="string">'雨珍'</span>, <span class="string">'幻丝'</span>, <span class="string">'代梅'</span>, <span class="string">'青亦'</span>, <span class="string">'元菱'</span>, <span class="string">'海瑶'</span>, <span class="string">'飞槐'</span>, <span class="string">'听露'</span>, <span class="string">'梦岚'</span>, <span class="string">'幻竹'</span>, <span class="string">'谷云'</span>, <span class="string">'忆霜'</span>, <span class="string">'水瑶'</span>, <span class="string">'慕晴'</span>, <span class="string">'秋双'</span>, <span class="string">'雨真'</span>, <span class="string">'觅珍'</span>, <span class="string">'丹雪'</span>, <span class="string">'元枫'</span>, <span class="string">'思天'</span>, <span class="string">'如松'</span>, <span class="string">'妙晴'</span>, <span class="string">'谷秋'</span>, <span class="string">'妙松'</span>, <span class="string">'晓夏'</span>, <span class="string">'宛筠'</span>, <span class="string">'碧琴'</span>, <span class="string">'盼兰'</span>, <span class="string">'小夏'</span>, <span class="string">'安容'</span>, <span class="string">'青曼'</span>, <span class="string">'千儿'</span>, <span class="string">'寻双'</span>, <span class="string">'涵瑶'</span>, <span class="string">'冷梅'</span>, <span class="string">'秋柔'</span>, <span class="string">'思菱'</span>, <span class="string">'醉波'</span>, <span class="string">'醉柳'</span>, <span class="string">'以寒'</span>, <span class="string">'迎夏'</span>, <span class="string">'向雪'</span>, <span class="string">'以丹'</span>, <span class="string">'依凝'</span>, <span class="string">'如柏'</span>, <span class="string">'雁菱'</span>, <span class="string">'凝竹'</span>, <span class="string">'宛白'</span>, <span class="string">'初柔'</span>, <span class="string">'南蕾'</span>, <span class="string">'书萱'</span>, <span class="string">'梦槐'</span>, <span class="string">'南琴'</span>, <span class="string">'绿海'</span>, <span class="string">'沛儿'</span>, <span class="string">'晓瑶'</span>, <span class="string">'凝蝶'</span>, <span class="string">'紫雪'</span>, <span class="string">'念双'</span>, <span class="string">'念真'</span>, <span class="string">'曼寒'</span>, <span class="string">'凡霜'</span>, <span class="string">'飞雪'</span>, <span class="string">'雪兰'</span>, <span class="string">'雅霜'</span>, <span class="string">'从蓉'</span>, <span class="string">'冷雪'</span>, <span class="string">'靖巧'</span>, <span class="string">'翠丝'</span>, <span class="string">'觅翠'</span>, <span class="string">'凡白'</span>, <span class="string">'乐蓉'</span>, <span class="string">'迎波'</span>, <span class="string">'丹烟'</span>, <span class="string">'梦旋'</span>, <span class="string">'书双'</span>, <span class="string">'念桃'</span>, <span class="string">'夜天'</span>, <span class="string">'安筠'</span>, <span class="string">'觅柔'</span>, <span class="string">'初南'</span>, <span class="string">'秋蝶'</span>, <span class="string">'千易'</span>, <span class="string">'安露'</span>, <span class="string">'诗蕊'</span>, <span class="string">'山雁'</span>, <span class="string">'友菱'</span>, <span class="string">'香露'</span>, <span class="string">'晓兰'</span>, <span class="string">'白卉'</span>, <span class="string">'语山'</span>, <span class="string">'冷珍'</span>, <span class="string">'秋翠'</span>, <span class="string">'夏柳'</span>, <span class="string">'如之'</span>, <span class="string">'忆南'</span>, <span class="string">'书易'</span>, <span class="string">'翠桃'</span>, <span class="string">'寄瑶'</span>, <span class="string">'如曼'</span>, <span class="string">'问柳'</span>, <span class="string">'幻桃'</span>, <span class="string">'又菡'</span>, <span class="string">'醉蝶'</span>, <span class="string">'亦绿'</span>, <span class="string">'诗珊'</span>, <span class="string">'听芹'</span>, <span class="string">'新之'</span>, <span class="string">'易巧'</span>, <span class="string">'念云'</span>, <span class="string">'晓灵'</span>, <span class="string">'静枫'</span>, <span class="string">'夏蓉'</span>, <span class="string">'如南'</span>, <span class="string">'幼丝'</span>, <span class="string">'秋白'</span>, <span class="string">'冰安'</span>, <span class="string">'秋白'</span>, <span class="string">'南风'</span>, <span class="string">'醉山'</span>, <span class="string">'初彤'</span>, <span class="string">'凝海'</span>, <span class="string">'紫文'</span>, <span class="string">'凌晴'</span>, <span class="string">'雅琴'</span>, <span class="string">'傲安'</span>, <span class="string">'傲之'</span>, <span class="string">'初蝶'</span>, <span class="string">'代芹'</span>, <span class="string">'诗霜'</span>, <span class="string">'碧灵'</span>, <span class="string">'诗柳'</span>, <span class="string">'夏柳'</span>, <span class="string">'采白'</span>, <span class="string">'慕梅'</span>, <span class="string">'乐安'</span>, <span class="string">'冬菱'</span>, <span class="string">'紫安'</span>, <span class="string">'宛凝'</span>, <span class="string">'雨雪'</span>, <span class="string">'易真'</span>, <span class="string">'安荷'</span>, <span class="string">'静竹'</span>, <span class="string">'代柔'</span>, <span class="string">'丹秋'</span>, <span class="string">'绮梅'</span>, <span class="string">'依白'</span>, <span class="string">'凝荷'</span>, <span class="string">'幼珊'</span>, <span class="string">'忆彤'</span>, <span class="string">'凌青'</span>, <span class="string">'之桃'</span>, <span class="string">'芷荷'</span>, <span class="string">'听荷'</span>, <span class="string">'代玉'</span>, <span class="string">'念珍'</span>, <span class="string">'梦菲'</span>, <span class="string">'夜春'</span>, <span class="string">'千秋'</span>, <span class="string">'白秋'</span>, <span class="string">'谷菱'</span>, <span class="string">'飞松'</span>, <span class="string">'初瑶'</span>, <span class="string">'惜灵'</span>, <span class="string">'梦易'</span>, <span class="string">'新瑶'</span>, <span class="string">'曼梅'</span>, <span class="string">'碧曼'</span>, <span class="string">'友瑶'</span>, <span class="string">'雨兰'</span>, <span class="string">'夜柳'</span>, <span class="string">'芷珍'</span>, <span class="string">'含芙'</span>, <span class="string">'夜云'</span>, <span class="string">'依萱'</span>, <span class="string">'凝雁'</span>, <span class="string">'以莲'</span>, <span class="string">'安南'</span>, <span class="string">'幼晴'</span>, <span class="string">'尔琴'</span>, <span class="string">'飞阳'</span>, <span class="string">'白凡'</span>, <span class="string">'沛萍'</span>, <span class="string">'雪瑶'</span>, <span class="string">'向卉'</span>, <span class="string">'采文'</span>, <span class="string">'乐珍'</span>, <span class="string">'寒荷'</span>, <span class="string">'觅双'</span>, <span class="string">'白桃'</span>, <span class="string">'安卉'</span>, <span class="string">'迎曼'</span>, <span class="string">'盼雁'</span>, <span class="string">'乐松'</span>, <span class="string">'涵山'</span>, <span class="string">'问枫'</span>, <span class="string">'以柳'</span>, <span class="string">'含海'</span>, <span class="string">'翠曼'</span>, <span class="string">'忆梅'</span>, <span class="string">'涵柳'</span>, <span class="string">'海蓝'</span>, <span class="string">'晓曼'</span>, <span class="string">'代珊'</span>, <span class="string">'忆丹'</span>, <span class="string">'静芙'</span>, <span class="string">'绮兰'</span>, <span class="string">'梦安'</span>, <span class="string">'紫丝'</span>, <span class="string">'千雁'</span>, <span class="string">'凝珍'</span>, <span class="string">'香萱'</span>, <span class="string">'梦容'</span>, <span class="string">'冷雁'</span>, <span class="string">'飞柏'</span>, <span class="string">'天真'</span>, <span class="string">'翠琴'</span>, <span class="string">'寄真'</span>, <span class="string">'秋荷'</span>, <span class="string">'代珊'</span>, <span class="string">'初雪'</span>, <span class="string">'雅柏'</span>, <span class="string">'怜容'</span>, <span class="string">'如风'</span>, <span class="string">'南露'</span>, <span class="string">'紫易'</span>, <span class="string">'冰凡'</span>, <span class="string">'海雪'</span>, <span class="string">'语蓉'</span>, <span class="string">'碧玉'</span>, <span class="string">'语风'</span>, <span class="string">'凝梦'</span>, <span class="string">'从雪'</span>, <span class="string">'白枫'</span>, <span class="string">'傲云'</span>, <span class="string">'白梅'</span>, <span class="string">'念露'</span>, <span class="string">'慕凝'</span>, <span class="string">'雅柔'</span>, <span class="string">'盼柳'</span>, <span class="string">'半青'</span>, <span class="string">'从霜'</span>, <span class="string">'怀柔'</span>, <span class="string">'怜晴'</span>, <span class="string">'夜蓉'</span>, <span class="string">'代双'</span>, <span class="string">'以南'</span>, <span class="string">'若菱'</span>, <span class="string">'芷文'</span>, <span class="string">'南晴'</span>, <span class="string">'梦寒'</span>, <span class="string">'初翠'</span>, <span class="string">'灵波'</span>, <span class="string">'问夏'</span>, <span class="string">'惜海'</span>, <span class="string">'亦旋'</span>, <span class="string">'沛芹'</span>, <span class="string">'幼萱'</span>, <span class="string">'白凝'</span>, <span class="string">'初露'</span>, <span class="string">'迎海'</span>, <span class="string">'绮玉'</span>, <span class="string">'凌香'</span>, <span class="string">'寻芹'</span>, <span class="string">'秋柳'</span>, <span class="string">'尔白'</span>, <span class="string">'映真'</span>, <span class="string">'含雁'</span>, <span class="string">'寒松'</span>, <span class="string">'寻雪'</span>, <span class="string">'青烟'</span>, <span class="string">'问蕊'</span>, <span class="string">'灵阳'</span>, <span class="string">'雪巧'</span>, <span class="string">'丹萱'</span>, <span class="string">'凡双'</span>, <span class="string">'孤萍'</span>, <span class="string">'紫菱'</span>, <span class="string">'寻凝'</span>, <span class="string">'傲柏'</span>, <span class="string">'傲儿'</span>, <span class="string">'友容'</span>, <span class="string">'灵枫'</span>, <span class="string">'尔丝'</span>, <span class="string">'曼凝'</span>, <span class="string">'若蕊'</span>, <span class="string">'问丝'</span>, <span class="string">'思枫'</span>, <span class="string">'水卉'</span>, <span class="string">'问梅'</span>, <span class="string">'念寒'</span>, <span class="string">'诗双'</span>, <span class="string">'翠霜'</span>, <span class="string">'夜香'</span>, <span class="string">'寒蕾'</span>, <span class="string">'凡阳'</span>, <span class="string">'冷玉'</span>, <span class="string">'平彤'</span>, <span class="string">'语薇'</span>, <span class="string">'幻珊'</span>, <span class="string">'紫夏'</span>, <span class="string">'凌波'</span>, <span class="string">'芷蝶'</span>, <span class="string">'丹南'</span>, <span class="string">'之双'</span>, <span class="string">'凡波'</span>, <span class="string">'思雁'</span>, <span class="string">'白莲'</span>, <span class="string">'从菡'</span>, <span class="string">'如容'</span>, <span class="string">'采柳'</span>, <span class="string">'沛岚'</span>, <span class="string">'惜儿'</span>, <span class="string">'夜玉'</span>, <span class="string">'水儿'</span>, <span class="string">'半凡'</span>, <span class="string">'语海'</span>, <span class="string">'听莲'</span>, <span class="string">'幻枫'</span>, <span class="string">'念柏'</span>, <span class="string">'冰珍'</span>, <span class="string">'思山'</span>, <span class="string">'凝蕊'</span>, <span class="string">'天玉'</span>, <span class="string">'思萱'</span>, <span class="string">'向梦'</span>, <span class="string">'笑南'</span>, <span class="string">'夏旋'</span>, <span class="string">'之槐'</span>, <span class="string">'元灵'</span>, <span class="string">'以彤'</span>, <span class="string">'采萱'</span>, <span class="string">'巧曼'</span>, <span class="string">'绿兰'</span>, <span class="string">'平蓝'</span>, <span class="string">'问萍'</span>, <span class="string">'绿蓉'</span>, <span class="string">'靖柏。迎蕾'</span>, <span class="string">'碧曼'</span>, <span class="string">'思卉'</span>, <span class="string">'白柏'</span>, <span class="string">'妙菡'</span>, <span class="string">'怜阳'</span>, <span class="string">'雨柏'</span>, <span class="string">'雁菡'</span>, <span class="string">'梦之'</span>, <span class="string">'又莲'</span>, <span class="string">'乐荷'</span>, <span class="string">'寒天'</span>, <span class="string">'凝琴'</span>, <span class="string">'书南'</span>, <span class="string">'映天'</span>, <span class="string">'白梦'</span>, <span class="string">'初瑶'</span>, <span class="string">'平露'</span>, <span class="string">'含巧'</span>, <span class="string">'慕蕊'</span>, <span class="string">'半莲'</span>, <span class="string">'醉卉'</span>, <span class="string">'天菱'</span>, <span class="string">'青雪'</span>, <span class="string">'雅旋'</span>, <span class="string">'巧荷'</span>, <span class="string">'飞丹'</span>, <span class="string">'若灵'</span>, <span class="string">'尔云'</span>, <span class="string">'幻天'</span>, <span class="string">'诗兰'</span>, <span class="string">'青梦'</span>, <span class="string">'海菡'</span>, <span class="string">'灵槐'</span>, <span class="string">'忆秋'</span>, <span class="string">'寒凝'</span>, <span class="string">'凝芙'</span>, <span class="string">'绮山'</span>, <span class="string">'静白'</span>, <span class="string">'尔蓉'</span>, <span class="string">'尔冬'</span>, <span class="string">'映萱'</span>, <span class="string">'白筠'</span>, <span class="string">'冰双'</span>, <span class="string">'访彤'</span>, <span class="string">'绿柏'</span>, <span class="string">'夏云'</span>, <span class="string">'笑翠'</span>, <span class="string">'晓灵'</span>, <span class="string">'含双'</span>, <span class="string">'盼波'</span>, <span class="string">'以云'</span>, <span class="string">'怜翠'</span>, <span class="string">'雁风'</span>, <span class="string">'之卉'</span>, <span class="string">'平松'</span>, <span class="string">'问儿'</span>, <span class="string">'绿柳'</span>, <span class="string">'如蓉'</span>, <span class="string">'曼容'</span>, <span class="string">'天晴'</span>, <span class="string">'丹琴'</span>, <span class="string">'惜天'</span>, <span class="string">'寻琴'</span>, <span class="string">'依瑶'</span>, <span class="string">'涵易'</span>, <span class="string">'忆灵'</span>, <span class="string">'从波'</span>, <span class="string">'依柔'</span>, <span class="string">'问兰'</span>, <span class="string">'山晴'</span>, <span class="string">'怜珊'</span>, <span class="string">'之云'</span>, <span class="string">'飞双'</span>, <span class="string">'傲白'</span>, <span class="string">'沛春'</span>, <span class="string">'雨南'</span>, <span class="string">'梦之'</span>, <span class="string">'笑阳'</span>, <span class="string">'代容'</span>, <span class="string">'友琴'</span>, <span class="string">'雁梅'</span>, <span class="string">'友桃'</span>, <span class="string">'从露'</span>, <span class="string">'语柔'</span>, <span class="string">'傲玉'</span>, <span class="string">'觅夏'</span>, <span class="string">'晓蓝'</span>, <span class="string">'新晴'</span>, <span class="string">'雨莲'</span>, <span class="string">'凝旋'</span>, <span class="string">'绿旋'</span>, <span class="string">'幻香'</span>, <span class="string">'觅双'</span>, <span class="string">'冷亦'</span>, <span class="string">'忆雪'</span>, <span class="string">'友卉'</span>, <span class="string">'幻翠'</span>, <span class="string">'靖柔'</span>, <span class="string">'寻菱'</span>, <span class="string">'丹翠'</span>, <span class="string">'安阳'</span>, <span class="string">'雅寒'</span>, <span class="string">'惜筠'</span>, <span class="string">'尔安'</span>, <span class="string">'雁易'</span>, <span class="string">'飞瑶'</span>, <span class="string">'夏兰'</span>, <span class="string">'沛蓝'</span>, <span class="string">'静丹'</span>, <span class="string">'山芙'</span>, <span class="string">'笑晴'</span>, <span class="string">'新烟'</span>, <span class="string">'笑旋'</span>, <span class="string">'雁兰'</span>, <span class="string">'凌翠'</span>, <span class="string">'秋莲'</span>, <span class="string">'书桃'</span>, <span class="string">'傲松'</span>, <span class="string">'语儿'</span>, <span class="string">'映菡'</span>, <span class="string">'初曼'</span>, <span class="string">'听云'</span>, <span class="string">'初夏'</span>, <span class="string">'雅香'</span>, <span class="string">'语雪'</span>, <span class="string">'初珍'</span>, <span class="string">'白安'</span>, <span class="string">'冰薇'</span>, <span class="string">'诗槐'</span>, <span class="string">'冷玉'</span>, <span class="string">'冰巧'</span>, <span class="string">'之槐'</span>, <span class="string">'夏寒'</span>, <span class="string">'诗筠'</span>, <span class="string">'新梅'</span>, <span class="string">'白曼'</span>, <span class="string">'安波'</span>, <span class="string">'从阳'</span>, <span class="string">'含桃'</span>, <span class="string">'曼卉'</span>, <span class="string">'笑萍'</span>, <span class="string">'晓露'</span>, <span class="string">'寻菡'</span>, <span class="string">'沛白'</span>, <span class="string">'平灵'</span>, <span class="string">'水彤'</span>, <span class="string">'安彤'</span>, <span class="string">'涵易'</span>, <span class="string">'乐巧'</span>, <span class="string">'依风'</span>, <span class="string">'紫南'</span>, <span class="string">'亦丝'</span>, <span class="string">'易蓉'</span>, <span class="string">'紫萍'</span>, <span class="string">'惜萱'</span>, <span class="string">'诗蕾'</span>, <span class="string">'寻绿'</span>, <span class="string">'诗双'</span>, <span class="string">'寻云'</span>, <span class="string">'孤丹'</span>, <span class="string">'谷蓝'</span>, <span class="string">'山灵'</span>, <span class="string">'幻丝'</span>, <span class="string">'友梅'</span>, <span class="string">'从云'</span>, <span class="string">'雁丝'</span>, <span class="string">'盼旋'</span>, <span class="string">'幼旋'</span>, <span class="string">'尔蓝'</span>, <span class="string">'沛山'</span>, <span class="string">'代丝'</span>, <span class="string">'觅松'</span>, <span class="string">'冰香'</span>, <span class="string">'依玉'</span>, <span class="string">'冰之'</span>, <span class="string">'妙梦'</span>, <span class="string">'以冬'</span>, <span class="string">'曼青'</span>, <span class="string">'冷菱'</span>, <span class="string">'雪曼'</span>, <span class="string">'安白'</span>, <span class="string">'千亦'</span>, <span class="string">'凌蝶'</span>, <span class="string">'又夏'</span>, <span class="string">'南烟。靖易'</span>, <span class="string">'沛凝'</span>, <span class="string">'翠梅'</span>, <span class="string">'书文'</span>, <span class="string">'雪卉'</span>, <span class="string">'乐儿'</span>, <span class="string">'傲丝'</span>, <span class="string">'安青'</span>, <span class="string">'初蝶'</span>, <span class="string">'寄灵'</span>, <span class="string">'惜寒'</span>, <span class="string">'雨竹'</span>, <span class="string">'冬莲'</span>, <span class="string">'绮南'</span>, <span class="string">'翠柏'</span>, <span class="string">'平凡'</span>, <span class="string">'亦玉'</span>, <span class="string">'孤兰'</span>, <span class="string">'秋珊'</span>, <span class="string">'新筠'</span>, <span class="string">'半芹'</span>, <span class="string">'夏瑶'</span>, <span class="string">'念文'</span>, <span class="string">'晓丝'</span>, <span class="string">'涵蕾'</span>, <span class="string">'雁凡'</span>, <span class="string">'谷兰'</span>, <span class="string">'灵凡'</span>, <span class="string">'凝云'</span>, <span class="string">'曼云'</span>, <span class="string">'丹彤'</span>, <span class="string">'南霜'</span>, <span class="string">'夜梦'</span>, <span class="string">'从筠'</span>, <span class="string">'雁芙'</span>, <span class="string">'语蝶'</span>, <span class="string">'依波'</span>, <span class="string">'晓旋'</span>, <span class="string">'念之'</span>, <span class="string">'盼芙'</span>, <span class="string">'曼安'</span>, <span class="string">'采珊'</span>, <span class="string">'初柳'</span>, <span class="string">'迎天'</span>, <span class="string">'曼安'</span>, <span class="string">'南珍'</span>, <span class="string">'妙芙'</span>, <span class="string">'语柳'</span>, <span class="string">'含莲'</span>, <span class="string">'晓筠'</span>, <span class="string">'夏山'</span>, <span class="string">'尔容'</span>, <span class="string">'念梦'</span>, <span class="string">'傲南'</span>, <span class="string">'问薇'</span>, <span class="string">'雨灵'</span>, <span class="string">'凝安'</span>, <span class="string">'冰海'</span>, <span class="string">'初珍'</span>, <span class="string">'宛菡'</span>, <span class="string">'冬卉'</span>, <span class="string">'盼晴'</span>, <span class="string">'冷荷'</span>, <span class="string">'寄翠'</span>, <span class="string">'幻梅'</span>, <span class="string">'如凡'</span>, <span class="string">'语梦'</span>, <span class="string">'易梦'</span>, <span class="string">'千柔'</span>, <span class="string">'向露'</span>, <span class="string">'梦玉'</span>, <span class="string">'傲霜'</span>, <span class="string">'依霜'</span>, <span class="string">'灵松'</span>, <span class="string">'诗桃'</span>, <span class="string">'书蝶'</span>, <span class="string">'冰蝶'</span>, <span class="string">'山槐'</span>, <span class="string">'以晴'</span>, <span class="string">'友易'</span>, <span class="string">'梦桃'</span>, <span class="string">'香菱'</span>, <span class="string">'孤云'</span>, <span class="string">'水蓉'</span>, <span class="string">'雅容'</span>, <span class="string">'飞烟'</span>, <span class="string">'雁荷'</span>, <span class="string">'代芙'</span>, <span class="string">'醉易'</span>, <span class="string">'夏烟'</span>, <span class="string">'依秋'</span>, <span class="string">'依波'</span>, <span class="string">'紫萱'</span>, <span class="string">'涵易'</span>, <span class="string">'忆之'</span>, <span class="string">'幻巧'</span>, <span class="string">'水风'</span>, <span class="string">'安寒'</span>, <span class="string">'白亦'</span>, <span class="string">'怜雪'</span>, <span class="string">'听南'</span>, <span class="string">'念蕾'</span>, <span class="string">'梦竹'</span>, <span class="string">'千凡'</span>, <span class="string">'寄琴'</span>, <span class="string">'采波'</span>, <span class="string">'元冬'</span>, <span class="string">'思菱'</span>, <span class="string">'平卉'</span>, <span class="string">'笑柳'</span>, <span class="string">'雪卉'</span>, <span class="string">'谷梦'</span>, <span class="string">'绿蝶'</span>, <span class="string">'飞荷'</span>, <span class="string">'平安'</span>, <span class="string">'孤晴'</span>, <span class="string">'芷荷'</span>, <span class="string">'曼冬'</span>, <span class="string">'尔槐'</span>, <span class="string">'以旋'</span>, <span class="string">'绿蕊'</span>, <span class="string">'初夏'</span>, <span class="string">'依丝'</span>, <span class="string">'怜南'</span>, <span class="string">'千山'</span>, <span class="string">'雨安'</span>, <span class="string">'水风'</span>, <span class="string">'寄柔'</span>, <span class="string">'幼枫'</span>, <span class="string">'凡桃'</span>, <span class="string">'新儿'</span>, <span class="string">'夏波'</span>, <span class="string">'雨琴'</span>, <span class="string">'静槐'</span>, <span class="string">'元槐'</span>, <span class="string">'映阳'</span>, <span class="string">'飞薇'</span>, <span class="string">'小凝'</span>, <span class="string">'映寒'</span>, <span class="string">'傲菡'</span>, <span class="string">'谷蕊'</span>, <span class="string">'笑槐'</span>, <span class="string">'飞兰'</span>, <span class="string">'笑卉'</span>, <span class="string">'迎荷'</span>, <span class="string">'元冬'</span>, <span class="string">'书竹'</span>, <span class="string">'半烟'</span>, <span class="string">'绮波'</span>, <span class="string">'小之'</span>, <span class="string">'觅露'</span>, <span class="string">'夜雪'</span>, <span class="string">'寒梦'</span>, <span class="string">'尔风'</span>, <span class="string">'白梅'</span>, <span class="string">'雨旋'</span>, <span class="string">'芷珊'</span>, <span class="string">'山彤'</span>, <span class="string">'尔柳'</span>, <span class="string">'沛柔'</span>, <span class="string">'灵萱'</span>, <span class="string">'沛凝'</span>, <span class="string">'白容'</span>, <span class="string">'乐蓉'</span>, <span class="string">'映安'</span>, <span class="string">'依云'</span>, <span class="string">'映冬'</span>, <span class="string">'凡雁'</span>, <span class="string">'梦秋'</span>, <span class="string">'醉柳'</span>, <span class="string">'梦凡'</span>, <span class="string">'若云'</span>, <span class="string">'元容'</span>, <span class="string">'怀蕾'</span>, <span class="string">'灵寒'</span>, <span class="string">'天薇'</span>, <span class="string">'白风'</span>, <span class="string">'访波'</span>, <span class="string">'亦凝'</span>, <span class="string">'易绿'</span>, <span class="string">'夜南'</span>, <span class="string">'曼凡'</span>, <span class="string">'亦巧'</span>, <span class="string">'青易。冰真'</span>, <span class="string">'白萱'</span>, <span class="string">'友安'</span>, <span class="string">'诗翠'</span>, <span class="string">'雪珍'</span>, <span class="string">'海之'</span>, <span class="string">'小蕊'</span>, <span class="string">'又琴'</span>, <span class="string">'香彤'</span>, <span class="string">'语梦'</span>, <span class="string">'惜蕊'</span>, <span class="string">'迎彤'</span>, <span class="string">'沛白'</span>, <span class="string">'雁山'</span>, <span class="string">'易蓉'</span>, <span class="string">'雪晴'</span>, <span class="string">'诗珊'</span>, <span class="string">'冰绿'</span>, <span class="string">'半梅'</span>, <span class="string">'笑容'</span>, <span class="string">'沛凝'</span>, <span class="string">'念瑶'</span>, <span class="string">'如冬'</span>, <span class="string">'向真'</span>, <span class="string">'从蓉'</span>, <span class="string">'亦云'</span>, <span class="string">'向雁'</span>, <span class="string">'尔蝶'</span>, <span class="string">'冬易'</span>, <span class="string">'丹亦'</span>, <span class="string">'夏山'</span>, <span class="string">'醉香'</span>, <span class="string">'盼夏'</span>, <span class="string">'孤菱'</span>, <span class="string">'安莲'</span>, <span class="string">'问凝'</span>, <span class="string">'冬萱'</span>, <span class="string">'晓山'</span>, <span class="string">'雁蓉'</span>, <span class="string">'梦蕊'</span>, <span class="string">'山菡'</span>, <span class="string">'南莲'</span>, <span class="string">'飞双'</span>, <span class="string">'凝丝'</span>, <span class="string">'思萱'</span>, <span class="string">'怀梦'</span>, <span class="string">'雨梅'</span>, <span class="string">'冷霜'</span>, <span class="string">'向松'</span>, <span class="string">'迎丝'</span>, <span class="string">'迎梅'</span>, <span class="string">'听双'</span>, <span class="string">'山蝶'</span>, <span class="string">'夜梅'</span>, <span class="string">'醉冬'</span>, <span class="string">'雨筠'</span>, <span class="string">'平文'</span>, <span class="string">'青文'</span>, <span class="string">'半蕾'</span>, <span class="string">'幼菱'</span>, <span class="string">'寻梅'</span>, <span class="string">'含之'</span>, <span class="string">'香之'</span>, <span class="string">'含蕊'</span>, <span class="string">'亦玉'</span>, <span class="string">'靖荷'</span>, <span class="string">'碧萱'</span>, <span class="string">'寒云'</span>, <span class="string">'向南'</span>, <span class="string">'书雁'</span>, <span class="string">'怀薇'</span>, <span class="string">'思菱'</span>, <span class="string">'忆文'</span>, <span class="string">'若山'</span>, <span class="string">'向秋'</span>, <span class="string">'凡白'</span>, <span class="string">'绮烟'</span>, <span class="string">'从蕾'</span>, <span class="string">'天曼'</span>, <span class="string">'又亦'</span>, <span class="string">'依琴'</span>, <span class="string">'曼彤'</span>, <span class="string">'沛槐'</span>, <span class="string">'又槐'</span>, <span class="string">'元绿'</span>, <span class="string">'安珊'</span>, <span class="string">'夏之'</span>, <span class="string">'易槐'</span>, <span class="string">'宛亦'</span>, <span class="string">'白翠'</span>, <span class="string">'丹云'</span>, <span class="string">'问寒'</span>, <span class="string">'易文'</span>, <span class="string">'傲易'</span>, <span class="string">'青旋'</span>, <span class="string">'思真'</span>, <span class="string">'妙之'</span>, <span class="string">'半双'</span>, <span class="string">'若翠'</span>, <span class="string">'初兰'</span>, <span class="string">'怀曼'</span>, <span class="string">'惜萍'</span>, <span class="string">'初之'</span>, <span class="string">'宛丝'</span>, <span class="string">'幻儿'</span>, <span class="string">'千风'</span>, <span class="string">'天蓉'</span>, <span class="string">'雅青'</span>, <span class="string">'寄文'</span>, <span class="string">'代天'</span>, <span class="string">'惜珊'</span>, <span class="string">'向薇'</span>, <span class="string">'冬灵'</span>, <span class="string">'惜芹'</span>, <span class="string">'凌青'</span>, <span class="string">'谷芹'</span>, <span class="string">'雁桃'</span>, <span class="string">'映雁'</span>, <span class="string">'书兰'</span>, <span class="string">'寄风'</span>, <span class="string">'访烟'</span>, <span class="string">'绮晴'</span>, <span class="string">'傲柔'</span>, <span class="string">'寄容'</span>, <span class="string">'以珊'</span>, <span class="string">'紫雪'</span>, <span class="string">'芷容'</span>, <span class="string">'书琴'</span>, <span class="string">'寻桃'</span>, <span class="string">'涵阳'</span>, <span class="string">'怀寒'</span>, <span class="string">'易云'</span>, <span class="string">'采蓝'</span>, <span class="string">'代秋'</span>, <span class="string">'惜梦'</span>, <span class="string">'尔烟'</span>, <span class="string">'谷槐'</span>, <span class="string">'怀莲'</span>, <span class="string">'涵菱'</span>, <span class="string">'水蓝'</span>, <span class="string">'访冬'</span>, <span class="string">'半兰'</span>, <span class="string">'又柔'</span>, <span class="string">'冬卉'</span>, <span class="string">'安双'</span>, <span class="string">'冰岚'</span>, <span class="string">'香薇'</span>, <span class="string">'语芹'</span>, <span class="string">'静珊'</span>, <span class="string">'幻露'</span>, <span class="string">'访天'</span>, <span class="string">'静柏'</span>, <span class="string">'凌丝'</span>, <span class="string">'小翠'</span>, <span class="string">'雁卉'</span>, <span class="string">'访文'</span>, <span class="string">'凌文'</span>, <span class="string">'芷云'</span>, <span class="string">'思柔'</span>, <span class="string">'巧凡'</span>, <span class="string">'慕山'</span>, <span class="string">'依云'</span>, <span class="string">'千柳'</span>, <span class="string">'从凝'</span>, <span class="string">'安梦'</span>, <span class="string">'香旋'</span>, <span class="string">'映天'</span>, <span class="string">'安柏'</span>, <span class="string">'平萱'</span>, <span class="string">'以筠'</span>, <span class="string">'忆曼'</span>, <span class="string">'新竹'</span>, <span class="string">'绮露'</span>, <span class="string">'觅儿'</span>, <span class="string">'碧蓉'</span>, <span class="string">'白竹'</span>, <span class="string">'飞兰'</span>, <span class="string">'曼雁'</span>, <span class="string">'雁露'</span>, <span class="string">'凝冬'</span>, <span class="string">'含灵'</span>, <span class="string">'初阳'</span>, <span class="string">'海秋'</span>, <span class="string">'冰双'</span>, <span class="string">'绿兰'</span>, <span class="string">'盼易'</span>, <span class="string">'思松'</span>, <span class="string">'梦山'</span>, <span class="string">'友灵'</span>, <span class="string">'绿竹'</span>, <span class="string">'灵安'</span>, <span class="string">'凌柏'</span>, <span class="string">'秋柔'</span>, <span class="string">'又蓝'</span>, <span class="string">'尔竹'</span>, <span class="string">'天蓝'</span>, <span class="string">'青枫'</span>, <span class="string">'问芙'</span>, <span class="string">'语海'</span>, <span class="string">'灵珊'</span>, <span class="string">'凝丹'</span>, <span class="string">'小蕾'</span>, <span class="string">'迎夏'</span>, <span class="string">'水之'</span>, <span class="string">'飞珍'</span>, <span class="string">'冰夏'</span>, <span class="string">'亦竹'</span>, <span class="string">'飞莲'</span>, <span class="string">'海白'</span>, <span class="string">'元蝶'</span>, <span class="string">'芷天'</span>, <span class="string">'怀绿'</span>, <span class="string">'尔容'</span>, <span class="string">'元芹'</span>, <span class="string">'若云'</span>, <span class="string">'寒烟'</span>, <span class="string">'听筠'</span>, <span class="string">'采梦'</span>, <span class="string">'凝莲'</span>, <span class="string">'元彤'</span>, <span class="string">'觅山'</span>, <span class="string">'代桃'</span>, <span class="string">'冷之'</span>, <span class="string">'盼秋'</span>, <span class="string">'秋寒'</span>, <span class="string">'慕蕊'</span>, <span class="string">'海亦'</span>, <span class="string">'初晴'</span>, <span class="string">'巧蕊'</span>, <span class="string">'听安'</span>, <span class="string">'芷雪'</span>, <span class="string">'以松'</span>, <span class="string">'梦槐'</span>, <span class="string">'寒梅'</span>, <span class="string">'香岚'</span>, <span class="string">'寄柔'</span>, <span class="string">'映冬'</span>, <span class="string">'孤容'</span>, <span class="string">'晓蕾'</span>, <span class="string">'安萱'</span>, <span class="string">'听枫'</span>, <span class="string">'夜绿'</span>, <span class="string">'雪莲'</span>, <span class="string">'从丹'</span>, <span class="string">'碧蓉'</span>, <span class="string">'绮琴'</span>, <span class="string">'雨文'</span>, <span class="string">'幼荷'</span>, <span class="string">'青柏'</span>, <span class="string">'初蓝'</span>, <span class="string">'忆安'</span>, <span class="string">'盼晴'</span>, <span class="string">'寻冬'</span>, <span class="string">'雪珊'</span>, <span class="string">'梦寒'</span>, <span class="string">'迎南'</span>, <span class="string">'如彤'</span>, <span class="string">'采枫'</span>, <span class="string">'若雁'</span>, <span class="string">'翠阳'</span>, <span class="string">'沛容'</span>, <span class="string">'幻翠'</span>, <span class="string">'山兰'</span>, <span class="string">'芷波'</span>, <span class="string">'雪瑶'</span>, <span class="string">'寄云'</span>, <span class="string">'慕卉'</span>, <span class="string">'冷松'</span>, <span class="string">'涵梅'</span>, <span class="string">'书白'</span>, <span class="string">'乐天'</span>, <span class="string">'雁卉'</span>, <span class="string">'宛秋'</span>, <span class="string">'傲旋'</span>, <span class="string">'新之'</span>, <span class="string">'凡儿'</span>, <span class="string">'夏真'</span>, <span class="string">'静枫'</span>, <span class="string">'乐双'</span>, <span class="string">'白玉'</span>, <span class="string">'问玉'</span>, <span class="string">'寄松'</span>, <span class="string">'丹蝶'</span>, <span class="string">'元瑶'</span>, <span class="string">'冰蝶'</span>, <span class="string">'访曼'</span>, <span class="string">'代灵'</span>, <span class="string">'芷烟'</span>, <span class="string">'白易'</span>, <span class="string">'尔阳'</span>, <span class="string">'怜烟'</span>, <span class="string">'平卉'</span>, <span class="string">'丹寒'</span>, <span class="string">'访梦'</span>, <span class="string">'绿凝'</span>, <span class="string">'冰菱'</span>, <span class="string">'语蕊'</span>, <span class="string">'思烟'</span>, <span class="string">'忆枫'</span>, <span class="string">'映菱'</span>, <span class="string">'凌兰'</span>, <span class="string">'曼岚'</span>, <span class="string">'若枫'</span>, <span class="string">'傲薇'</span>, <span class="string">'凡灵'</span>, <span class="string">'乐蕊'</span>, <span class="string">'秋灵'</span>, <span class="string">'谷槐'</span>, <span class="string">'觅云'</span>,</span><br><span class="line">                            <span class="string">'振海'</span>, <span class="string">'振国'</span>, <span class="string">'正德'</span>, <span class="string">'正浩'</span>, <span class="string">'伟博'</span>, <span class="string">'伟毅'</span>, <span class="string">'伟才'</span>, <span class="string">'伟诚'</span>, <span class="string">'伟茂'</span>, <span class="string">'伟懋'</span>, <span class="string">'伟祺'</span>, <span class="string">'伟彦'</span>, <span class="string">'伟晔'</span>, <span class="string">'荣轩'</span>, <span class="string">'锐泽'</span>, <span class="string">'锐真'</span>, <span class="string">'锐志'</span>, <span class="string">'锐智'</span>, <span class="string">'睿博'</span>, <span class="string">'睿才'</span>, <span class="string">'睿诚'</span>, <span class="string">'睿慈'</span>, <span class="string">'锐达'</span>, <span class="string">'锐锋'</span>, <span class="string">'锐翰'</span>, <span class="string">'锐进'</span>, <span class="string">'锐精'</span>, <span class="string">'锐立'</span>, <span class="string">'锐利'</span>, <span class="string">'锐思'</span>, <span class="string">'锐逸'</span>, <span class="string">'锐意'</span>, <span class="string">'齐骐'</span>, <span class="string">'齐骥'</span>, <span class="string">'天骐'</span>, <span class="string">'天骥'</span>, <span class="string">'乐山'</span>, <span class="string">'乐水'</span>, <span class="string">'立家'</span>, <span class="string">'立业'</span>, <span class="string">'保国'</span>, <span class="string">'卫国'</span>, <span class="string">'建功'</span>, <span class="string">'建业'</span>, <span class="string">'安道'</span>, <span class="string">'乐道'</span>, <span class="string">'卓群'</span>, <span class="string">'超群'</span>, <span class="string">'俊雄'</span>, <span class="string">'俊雅'</span>, <span class="string">'俊彦'</span>, <span class="string">'俊逸'</span>, <span class="string">'成仁'</span>, <span class="string">'成双'</span>, <span class="string">'成天'</span>, <span class="string">'成文'</span>, <span class="string">'成业'</span>, <span class="string">'成益'</span>, <span class="string">'嘉澍'</span>, <span class="string">'嘉熙'</span>, <span class="string">'嘉禧'</span>, <span class="string">'嘉祥'</span>, <span class="string">'嘉歆'</span>, <span class="string">'嘉许'</span>, <span class="string">'俊悟'</span>, <span class="string">'俊晤'</span>, <span class="string">'俊侠'</span>, <span class="string">'俊贤'</span>, <span class="string">'嘉年'</span>, <span class="string">'嘉平'</span>, <span class="string">'嘉庆'</span>, <span class="string">'嘉荣'</span>, <span class="string">'嘉容'</span>, <span class="string">'嘉瑞'</span>, <span class="string">'承福'</span>, <span class="string">'承基'</span>, <span class="string">'承教'</span>, <span class="string">'承平'</span>, <span class="string">'成化'</span>, <span class="string">'成济'</span>, <span class="string">'成礼'</span>, <span class="string">'成龙'</span>,</span><br><span class="line">                            <span class="string">'知国'</span>, <span class="string">'君宇'</span>, <span class="string">'泽城'</span>, <span class="string">'温谨'</span>, <span class="string">'风宇'</span>, <span class="string">'君冠'</span>, <span class="string">'文德'</span>, <span class="string">'棋苑'</span>, <span class="string">'轩峻'</span>, <span class="string">'知彰'</span>, <span class="string">'泽韶'</span>, <span class="string">'尚兴'</span>, <span class="string">'远辰 辉轩'</span>, <span class="string">'荣茂'</span>, <span class="string">'圣瀚'</span>, <span class="string">'世翰'</span>, <span class="string">'彬逸'</span>, <span class="string">'鸿颜'</span>, <span class="string">'泽雷'</span>, <span class="string">'宇哲'</span>, <span class="string">'展信'</span>, <span class="string">'晋茂'</span>, <span class="string">'远熙'</span>, <span class="string">'弘瑞'</span>, <span class="string">'弘霖 圣江'</span>, <span class="string">'棋泽'</span>, <span class="string">'弘德'</span>, <span class="string">'轩诚'</span>, <span class="string">'博羽'</span>, <span class="string">'晋刚'</span>, <span class="string">'晋城'</span>, <span class="string">'杰邦'</span>, <span class="string">'启明'</span>, <span class="string">'博恒'</span>, <span class="string">'泽胜'</span>, <span class="string">'昌裕'</span>, <span class="string">'杰玮 德鸿'</span>, <span class="string">'智旭'</span>, <span class="string">'哲城'</span>, <span class="string">'博浩'</span>, <span class="string">'依平'</span>, <span class="string">'泽拓'</span>, <span class="string">'泰耀'</span>, <span class="string">'德桦'</span>, <span class="string">'鸿灿'</span>, <span class="string">'伟耀'</span>, <span class="string">'浩善'</span>, <span class="string">'伯灿'</span>, <span class="string">'月硕 卓耀'</span>, <span class="string">'秀方'</span>, <span class="string">'鸿祺'</span>, <span class="string">'尚林'</span>, <span class="string">'建琛'</span>, <span class="string">'锐翔'</span>, <span class="string">'远志'</span>, <span class="string">'彬琪'</span>, <span class="string">'靖元'</span>, <span class="string">'森晖'</span>, <span class="string">'景宸'</span>, <span class="string">'朋宸'</span>, <span class="string">'淇方 峻浩'</span>, <span class="string">'祉鑫'</span>, <span class="string">'超耿'</span>, <span class="string">'灿轩'</span>, <span class="string">'柯昊'</span>, <span class="string">'志天'</span>, <span class="string">'文崇'</span>, <span class="string">'瑾方'</span>, <span class="string">'楠睿'</span>, <span class="string">'琪硕'</span></span><br><span class="line">                        ];</span><br><span class="line">                        names.forEach(<span class="keyword">async</span> (name) =&gt; &#123;</span><br><span class="line">                                <span class="keyword">try</span> &#123;</span><br><span class="line">                                    <span class="keyword">let</span> reptileUrl = <span class="string">`https://www.goodstudydayup.com:1443/wnl/H5Test/nameresult?tid=<span class="subst">$&#123;tid&#125;</span>&amp;name=<span class="subst">$&#123;name&#125;</span>&amp;op=<span class="subst">$&#123;op&#125;</span>`</span>;</span><br><span class="line">                                    <span class="keyword">let</span> r1 = <span class="keyword">await</span> superagent.get(reptileUrl);</span><br><span class="line">                                    <span class="keyword">let</span> o1 = <span class="built_in">JSON</span>.parse(r1.text);</span><br><span class="line">                                    <span class="keyword">if</span> (o1.data.title) &#123;                                        </span><br><span class="line">                                        <span class="comment">//let flag = await db.Wnl.find(&#123; 'data.title': o1.data.title &#125;);</span></span><br><span class="line">                                        <span class="comment">//if ( flag.length === 0 ) &#123;</span></span><br><span class="line">                                            o1.data.tid = tid;</span><br><span class="line">                                            o1.data.op = op;</span><br><span class="line">                                            o1.data.name = name;    <span class="built_in">console</span>.log(o1);</span><br><span class="line">                                            db.Wnl.create(o1);</span><br><span class="line">                                        <span class="comment">//&#125;</span></span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125; <span class="keyword">catch</span> (e) &#123; &#125;</span><br><span class="line">                        &#125;);                        </span><br><span class="line">                <span class="comment">//    &#125;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运行完上面的代码，经过我的测试总计会拿到大概一万条左右的数据。<br>然而这里面却又很多重复的数据。重复的数据会对我们分析来说没有价值。这里就要考虑如何清洗我们的数据。 所以这里先要对数据做持久化处理。 不然我们怎么清洗数据呢？ 持久化数据我们一般会选择写文件或存数据库。 这里根据我们的数据结构(json数据)我们选择MongoDB数据库。</p>
+</blockquote>
+<h3 id="接下来我们开始清洗数据"><a href="#接下来我们开始清洗数据" class="headerlink" title="接下来我们开始清洗数据"></a>接下来我们开始清洗数据</h3><h4 id="去重"><a href="#去重" class="headerlink" title="去重"></a>去重</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">if(false) &#123;    console.log(&apos;数据去重&apos;);</span><br><span class="line">    (async () =&gt; &#123;</span><br><span class="line">        let data = await db.Wnl.aggregate([</span><br><span class="line">            &#123;</span><br><span class="line">                $group: &#123;</span><br><span class="line">                    _id: &apos;$data.title&apos;,</span><br><span class="line">                    count: &#123;</span><br><span class="line">                        $sum: 1</span><br><span class="line">                    &#125;,</span><br><span class="line">                    dups: &#123; $addToSet: &apos;$_id&apos; &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                $match: &#123; count: &#123; $gt: 1 &#125; &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]);</span><br><span class="line">    </span><br><span class="line">        data.forEach((it) =&gt; &#123;</span><br><span class="line">            it.dups.shift();</span><br><span class="line">            db.Wnl.remove(&#123; _id: &#123; $in: it.dups &#125; &#125;);</span><br><span class="line">            db.Wnl.deleteMany(&#123;</span><br><span class="line">                _id: &#123; $in: it.dups &#125;</span><br><span class="line">            &#125;, (err, res) =&gt; &#123;</span><br><span class="line">    </span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>去玩重结果只剩下几十条数据</p>
+</blockquote>
+<h4 id="数据归档"><a href="#数据归档" class="headerlink" title="数据归档"></a>数据归档</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">if(true) &#123;</span><br><span class="line">    let tids = [9,10, 15, 16,21,22,23,24,25,26,27, 29];</span><br><span class="line">    tids.forEach(async (tid) =&gt; &#123;</span><br><span class="line">        </span><br><span class="line">        let data = await db.Wnl.find(&#123;</span><br><span class="line">            &apos;data.tid&apos;: tid</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        util.writeData(data[0].data.tid, data);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>最终成功归档</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tid10.json tid16.json tid22.json tid24.json tid26.json tid29.json</span><br><span class="line">tid15.json tid21.json tid23.json tid25.json tid27.json tid9.json</span><br></pre></td></tr></table></figure>
+<h3 id="最后我们可以单纯的用拿到的数据，单纯的做点其他事了。"><a href="#最后我们可以单纯的用拿到的数据，单纯的做点其他事了。" class="headerlink" title="最后我们可以单纯的用拿到的数据，单纯的做点其他事了。"></a>最后我们可以单纯的用拿到的数据，单纯的做点其他事了。</h3><blockquote>
+<p>未完待续…</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/08/31/node-js爬虫实战一例/" target="_blank" rel="external">https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&title=《node.js爬虫实战一例》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&title=《node.js爬虫实战一例》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《node.js爬虫实战一例》 — Microbot Team&url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/10/21/github之webhook自动部署/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">github之webhook自动部署</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/30/mongodb-query要点/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">mongodb query要点</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&title=《node.js爬虫实战一例》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&title=《node.js爬虫实战一例》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《node.js爬虫实战一例》 — Microbot Team&url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/08/31/node-js爬虫实战一例/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsklEQVR42u3aQXLCMAwFUO5/6XZbBgJfUhTozMuqU4Lt54VlJN1u8fPz53n8z+Nz9M7jmEezHI1223jw8PDwBktPhq6SknE2NhcPDw9vm3c0aHIov150TsoDSbJmPDw8vO/h5Zfd15fm3sbh4eHh/S9efqDPF50EGDw8PLzP8iYphnk2NUn+ruda8PDw8GJevrjv+XulvoeHh4d30mH9+uDupVnzEfJg8GRkPDw8vAXepHWgl/atXpTzdPBhSgIPDw9vgZccxMn0SVIgDzNJOEkCDB4eHt65vN7XJg1VVWS+ZaftCh4eHl6Q/6ymIc5qJugVt0aXaTw8PLwxLzmse02oSUiopnrLoQUPDw9vgVdNs1YbC3qNp9XNejMmHh4e3gIvnzIPElVYNbHbTEng4eHhjXmTA73XGpUHm16LwN37eHh4eGu83sTzklghavWSFHh4eHiX8Ko/8vMwUP20WgB7sk48PDy8NV6UBi0WwHqbkhTJCu/j4eHhXc6rJiOqDVjVpZdDFx4eHt4lvF7jVF7+T747Kby9yVLj4eHhjXm98n/1qt0rnlWv4Icj4OHh4S3z8gl67VnVJO8kVODh4eFt8/KjNgH0yv/V5AgeHh7eZ3nNn/oDQK8Bqxxa8PDw8JZ5vTJYFZk3K/QKYHh4eHhX8nqHb1IMy5sJklaDwqbj4eHhrfGqi86vxZNCV2+D8PDw8K7hTY7yajGsfLi3thUPDw9vg9e7zubtUL32gkmC+O5TPDw8vAVe9cCdbEReTuulgEdBBQ8PD6/I66VNk3JUNQXca1/Aw8PD+xSvl4pN3p+0HTTzK3h4eHhfxuslJnJqtVT2ZlPw8PDwvoC33S6QJB1GPWV4eHh4J/HyY31yRc4LZnlIiDoj8PDw8E7lVX/wV6/Lk/cvqvLh4eHhpbP8AuQ4g9CdqW6DAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

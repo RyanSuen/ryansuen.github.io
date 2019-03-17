@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>简单的apm性能收集方案 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="原理本文通过浏览器提供的performance接口获取页面性能数据。performace相关的了解请查看performance。 整体技术方案                                                                                             apm              浏览器上报sdk添加性能收集部分。12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的apm性能收集方案">
+<meta property="og:url" content="https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="原理本文通过浏览器提供的performance接口获取页面性能数据。performace相关的了解请查看performance。 整体技术方案                                                                                             apm              浏览器上报sdk添加性能收集部分。12">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img-fe.ggwan.com/images/6c39c015da7fa0-1478x1082.png">
+<meta property="og:image" content="https://img-fe.ggwan.com/images/3fd0572bd5a996-2400x1262.png">
+<meta property="og:image" content="https://img-fe.ggwan.com/images/957f5ef5acc5f7-2834x1396.png">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单的apm性能收集方案">
+<meta name="twitter:description" content="原理本文通过浏览器提供的performance接口获取页面性能数据。performace相关的了解请查看performance。 整体技术方案                                                                                             apm              浏览器上报sdk添加性能收集部分。12">
+<meta name="twitter:image" content="https://img-fe.ggwan.com/images/6c39c015da7fa0-1478x1082.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">简单的apm性能收集方案</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">简单的apm性能收集方案</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-12-04T02:21:42.000Z" itemprop="datePublished" class="page-time">
+  2018-12-04
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#原理"><span class="post-toc-number">1.</span> <span class="post-toc-text">原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#整体技术方案"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">整体技术方案</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#浏览器上报sdk添加性能收集部分。"><span class="post-toc-number">2.</span> <span class="post-toc-text">浏览器上报sdk添加性能收集部分。</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#如上代码我们注意如几个点："><span class="post-toc-number">2.1.</span> <span class="post-toc-text">如上代码我们注意如几个点：</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#服务器接性能数据"><span class="post-toc-number">3.</span> <span class="post-toc-text">服务器接性能数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#定时任务获取redis中的数据并入库"><span class="post-toc-number">4.</span> <span class="post-toc-text">定时任务获取redis中的数据并入库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取性能数据"><span class="post-toc-number">5.</span> <span class="post-toc-text">获取性能数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#后台界面展示"><span class="post-toc-number">6.</span> <span class="post-toc-text">后台界面展示</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-简单的apm性能收集方案" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">简单的apm性能收集方案</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-12-04 10:21:42" datetime="2018-12-04T02:21:42.000Z" itemprop="datePublished">2018-12-04</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>本文通过浏览器提供的performance接口获取页面性能数据。performace相关的了解请查看<a href="https://ryansuen.top/2018/01/21/performance/" target="_blank" rel="noopener">performance</a>。</p>
+<h4 id="整体技术方案"><a href="#整体技术方案" class="headerlink" title="整体技术方案"></a>整体技术方案</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-fe.ggwan.com/images/6c39c015da7fa0-1478x1082.png" alt="apm" title>
+                </div>
+                <div class="image-caption">apm</div>
+            </figure>
+<h3 id="浏览器上报sdk添加性能收集部分。"><a href="#浏览器上报sdk添加性能收集部分。" class="headerlink" title="浏览器上报sdk添加性能收集部分。"></a>浏览器上报sdk添加性能收集部分。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">_performance: <span class="function"><span class="keyword">function</span> (<span class="params">config</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> performance = <span class="built_in">window</span>.performance;</span><br><span class="line">            <span class="keyword">if</span> (!!performance) &#123;</span><br><span class="line">                <span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">                data.origin_pathname = location.origin + location.pathname;</span><br><span class="line">                <span class="keyword">if</span> (performance.memory) &#123;</span><br><span class="line">                    data.jsHeapSizeLimit = performance.memory.jsHeapSizeLimit;</span><br><span class="line">                    data.totalJSHeapSize = performance.memory.totalJSHeapSize;</span><br><span class="line">                    data.usedJSHeapSize = performance.memory.usedJSHeapSize;</span><br><span class="line">                    <span class="keyword">if</span> (</span><br><span class="line">                        data.jsHeapSizeLimit === <span class="number">0</span> ||</span><br><span class="line">                        data.totalJSHeapSize === <span class="number">0</span> ||</span><br><span class="line">                        data.usedJSHeapSize === <span class="number">0</span></span><br><span class="line">                    ) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (performance.navigation) &#123;</span><br><span class="line">                    data.redirectCount = performance.navigation.redirectCount;</span><br><span class="line">                    data.type = performance.navigation.type;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// if(performance.timeOrigin) &#123;</span></span><br><span class="line">                <span class="comment">//     data.timeOrigin = performance.timeOrigin;</span></span><br><span class="line">                <span class="comment">// &#125;</span></span><br><span class="line">                <span class="keyword">if</span> (!!performance.timing) &#123;</span><br><span class="line">                    <span class="keyword">var</span> navigationStart = performance.timing.navigationStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> redirectStart = performance.timing.redirectStart; </span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> redirectEnd = performance.timing.redirectEnd;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> fetchStart = performance.timing.fetchStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domainLookupStart = performance.timing.domainLookupStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domainLookupEnd = performance.timing.domainLookupEnd;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> connectStart = performance.timing.connectStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> secureConnectionStart = performance.timing.secureConnectionStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> connectEnd = performance.timing.connectEnd;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> requestStart = performance.timing.requestStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> responseStart = performance.timing.responseStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> responseEnd = performance.timing.responseEnd;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domLoading = performance.timing.domLoading;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domInteractive = performance.timing.domInteractive;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domContentLoadedEventStart = performance.timing.domContentLoadedEventStart;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domContentLoadedEventEnd = performance.timing.domContentLoadedEventEnd;  </span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> domComplete = performance.timing.domComplete;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> loadEventStart = performance.timing.loadEventStart;  </span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> loadEventEnd = performance.timing.loadEventEnd;</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> unloadEventStart = performance.timing.unloadEventStart; </span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">var</span> unloadEventEnd = performance.timing.unloadEventEnd; </span><br><span class="line">                    </span><br><span class="line">                    data.appCache = <span class="built_in">Math</span>.max(domainLookupStart - fetchStart, <span class="number">0</span>);</span><br><span class="line">                    data.dns = domainLookupEnd - domainLookupStart;</span><br><span class="line">                    data.connection = connectEnd - connectStart;</span><br><span class="line">                    data.request = responseStart - requestStart;</span><br><span class="line">                    data.response = responseEnd - responseStart;</span><br><span class="line">                    data.loading = responseEnd - requestStart;</span><br><span class="line">                    data.rendering = domComplete - domLoading;</span><br><span class="line">                    data.blankScreen = domContentLoadedEventEnd - navigationStart;</span><br><span class="line">                    data.domComplete = domComplete - navigationStart;</span><br><span class="line">                    data.loaded = loadEventEnd - navigationStart;</span><br><span class="line">                    data.loadEvent = loadEventEnd - loadEventStart;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (</span><br><span class="line">                        data.appCache &lt; <span class="number">0</span> || data.appCache &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.dns &lt; <span class="number">0</span> || data.dns &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.connection &lt; <span class="number">0</span> || data.connection &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.request &lt; <span class="number">0</span> || data.request &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.loading &lt; <span class="number">0</span> || data.loading &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.rendering &lt; <span class="number">0</span> || data.rendering &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.blankScreen &lt; <span class="number">0</span> || data.blankScreen &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.domComplete &lt; <span class="number">0</span> || data.domComplete &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.loaded &lt; <span class="number">0</span> || data.loaded &gt; <span class="number">120000</span> || </span><br><span class="line">                        data.loadEvent &lt; <span class="number">0</span> || data.loadEvent &gt; <span class="number">120000</span></span><br><span class="line">                    ) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">var</span> origin = config.url.split(<span class="string">'/api'</span>);</span><br><span class="line">                    <span class="keyword">var</span> url = origin[<span class="number">0</span>] + <span class="string">'/api/apm/performance'</span>;</span><br><span class="line">                    <span class="keyword">this</span>.request.ajax(&#123;</span><br><span class="line">                        url: url || <span class="string">'https://xxx.xxx.com/api/apm/performance'</span>,</span><br><span class="line">                        type: <span class="string">'post'</span>,</span><br><span class="line">                        data: data,</span><br><span class="line">                        success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">                            <span class="comment">//do nothing</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                    <span class="built_in">console</span> &amp;&amp; <span class="built_in">console</span>.error(<span class="built_in">JSON</span>.stringify(e));</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="如上代码我们注意如几个点："><a href="#如上代码我们注意如几个点：" class="headerlink" title="如上代码我们注意如几个点："></a>如上代码我们注意如几个点：</h4><ol>
+<li>performance有兼容性问题存在，所以要先判断浏览器是否已支持。</li>
+<li>内存数据可能回有异常，如jsHeapSizeLimit=0。存在异常数据可过滤掉本条数据。</li>
+<li>性能数据每一条都可能有异常值，导致计算出来的差值可能小于零，也可能很大。这里做了一个正常值判断。0&lt;=正常数据&lt;=120,000ms。</li>
+</ol>
+<h3 id="服务器接性能数据"><a href="#服务器接性能数据" class="headerlink" title="服务器接性能数据"></a>服务器接性能数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">post: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> reqQuery = ctx.request.body;</span><br><span class="line">            <span class="keyword">let</span> queryData = &#123;</span><br><span class="line">                origin_pathname: reqQuery[<span class="string">'origin_pathname'</span>],</span><br><span class="line"></span><br><span class="line">                jsHeapSizeLimit: reqQuery[<span class="string">'jsHeapSizeLimit'</span>],</span><br><span class="line">                totalJSHeapSize: reqQuery[<span class="string">'totalJSHeapSize'</span>],</span><br><span class="line">                usedJSHeapSize: reqQuery[<span class="string">'usedJSHeapSize'</span>],</span><br><span class="line"></span><br><span class="line">                redirectCount: reqQuery[<span class="string">'redirectCount'</span>],</span><br><span class="line">                type: reqQuery[<span class="string">'type'</span>],</span><br><span class="line"></span><br><span class="line">                redirect: reqQuery[<span class="string">'redirect'</span>],</span><br><span class="line">                appCache: reqQuery[<span class="string">'appCache'</span>],</span><br><span class="line">                dns: reqQuery[<span class="string">'dns'</span>],</span><br><span class="line">                connection: reqQuery[<span class="string">'connection'</span>],</span><br><span class="line">                request: reqQuery[<span class="string">'request'</span>],</span><br><span class="line">                response: reqQuery[<span class="string">'response'</span>],</span><br><span class="line"></span><br><span class="line">                loading: reqQuery[<span class="string">'loading'</span>],</span><br><span class="line">                rendering: reqQuery[<span class="string">'rendering'</span>],</span><br><span class="line">                blankScreen: reqQuery[<span class="string">'blankScreen'</span>],</span><br><span class="line">                domComplete: reqQuery[<span class="string">'domComplete'</span>],</span><br><span class="line">                loaded: reqQuery[<span class="string">'loaded'</span>],</span><br><span class="line">                loadEvent: reqQuery[<span class="string">'loadEvent'</span>],</span><br><span class="line">                create_time: moment().unix(),</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (</span><br><span class="line">                queryData.appCache &lt; <span class="number">0</span> || queryData.appCache &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.dns &lt; <span class="number">0</span> || queryData.dns &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.connection &lt; <span class="number">0</span> || queryData.connection &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.request &lt; <span class="number">0</span> || queryData.request &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.response &lt; <span class="number">0</span> || queryData.response &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.loading &lt; <span class="number">0</span> || queryData.loading &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.rendering &lt; <span class="number">0</span> || queryData.rendering &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.blankScreen &lt; <span class="number">0</span> || queryData.blankScreen &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.domComplete &lt; <span class="number">0</span> || queryData.domComplete &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.loaded &lt; <span class="number">0</span> || queryData.domComplete &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.loadEvent &lt; <span class="number">0</span> || queryData.loadEvent &gt; <span class="number">120000</span> ||</span><br><span class="line">                queryData.jsHeapSizeLimit == <span class="number">0</span> || <span class="built_in">isNaN</span>(queryData.jsHeapSizeLimit) ||</span><br><span class="line">                queryData.totalJSHeapSize == <span class="number">0</span> || <span class="built_in">isNaN</span>(queryData.totalJSHeapSize) ||</span><br><span class="line">                queryData.usedJSHeapSize == <span class="number">0</span> || <span class="built_in">isNaN</span>(queryData.usedJSHeapSize)</span><br><span class="line">            ) &#123;</span><br><span class="line">                ctx.response.body = repWrapper(&#123;</span><br><span class="line">                    status: <span class="string">"OK"</span>,</span><br><span class="line">                    info: <span class="string">'不合理数据,暂不做统计'</span></span><br><span class="line">                &#125;)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> status = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="comment">// rdsCli.keys('performance:*', function (err, keys) &#123;</span></span><br><span class="line">                <span class="comment">//     let len = keys.length;</span></span><br><span class="line">                <span class="comment">//     if (len &lt; 10416) &#123;    //日300w pv 平均每5分钟的pv数</span></span><br><span class="line">                rdsCli.set(<span class="string">`performance:<span class="subst">$&#123;utils.guid()&#125;</span>`</span>, <span class="built_in">JSON</span>.stringify(queryData), <span class="string">'EX'</span>, (<span class="number">70</span>), <span class="function"><span class="keyword">function</span> (<span class="params">err, status</span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">                        reject(err);</span><br><span class="line">                        <span class="keyword">throw</span> err;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        resolve(&#123;</span><br><span class="line">                            status</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                <span class="comment">//     &#125; else &#123;</span></span><br><span class="line">                <span class="comment">//         resolve(&#123;</span></span><br><span class="line">                <span class="comment">//             status: "OK",</span></span><br><span class="line">                <span class="comment">//             info: '达到设定的redis缓存上线，不做redis缓存处理'</span></span><br><span class="line">                <span class="comment">//         &#125;);</span></span><br><span class="line">                <span class="comment">//     &#125;</span></span><br><span class="line">                <span class="comment">// &#125;);</span></span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            ctx.response.body = repWrapper(status)</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            ctx.response.body = repWrapper(e.toString(), errMapping[<span class="string">'ERR_DATABASE_REQ'</span>][<span class="string">'code'</span>]);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>此部分将数据缓存到redis70s。同理这里也做了一些数据校验，过滤掉无用的数据。</p>
+<h3 id="定时任务获取redis中的数据并入库"><a href="#定时任务获取redis中的数据并入库" class="headerlink" title="定时任务获取redis中的数据并入库"></a>定时任务获取redis中的数据并入库</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> data = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        rdsCli.keys(<span class="string">'performance:*'</span>, <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params">err, keys</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">let</span> data = <span class="keyword">await</span> bluebird.map(keys, <span class="keyword">async</span> (v, k) =&gt; &#123;</span><br><span class="line">                <span class="keyword">let</span> value = <span class="keyword">await</span> getAsync(v);</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(</span><br><span class="line">                    value</span><br><span class="line">                );</span><br><span class="line">            &#125;);</span><br><span class="line">            _.map(keys, (key) =&gt; &#123;</span><br><span class="line">                rdsCli.set(key, <span class="string">''</span>, <span class="string">'EX'</span>, <span class="number">1</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">            resolve(data);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算</span></span><br><span class="line">    <span class="keyword">let</span> archive = _.groupBy(data, <span class="string">'origin_pathname'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> archiveData = <span class="built_in">Object</span>.keys(archive).map(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> archive[v].reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> temp = &#123;&#125;;</span><br><span class="line">            _.keys(a).forEach(<span class="function">(<span class="params">sv</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">'origin_pathname'</span> === sv) &#123;</span><br><span class="line">                    temp[sv] = a[sv];</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span>( <span class="string">'create_time'</span> === sv ) &#123;</span><br><span class="line">                    temp[sv] = <span class="built_in">Math</span>.round( ( <span class="built_in">parseFloat</span>(a[sv]) + <span class="built_in">parseFloat</span>(b[sv]) ) / <span class="number">2</span>)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    temp[sv] = ( ( <span class="built_in">parseFloat</span>(a[sv]) + <span class="built_in">parseFloat</span>(b[sv]) ) / <span class="number">2</span>).toFixed(<span class="number">2</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">return</span> temp;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    archiveData = archiveData.filter(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> v.jsHeapSizeLimit != <span class="string">'NaN'</span> &amp;&amp; </span><br><span class="line">        v.totalJSHeapSize != <span class="string">'NaN'</span> &amp;&amp; </span><br><span class="line">        v.usedJSHeapSize != <span class="string">'NaN'</span> &amp;&amp;</span><br><span class="line">        v.domComplete != <span class="string">'NaN'</span> &amp;&amp; </span><br><span class="line">        v.loadEvent != <span class="string">'NaN'</span>;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//批量插入数据库</span></span><br><span class="line">    <span class="keyword">let</span> queryRst = <span class="keyword">await</span> db.elPerformance.bulkCreate(archiveData);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>几个需要注意的点</p>
+<ol>
+<li>从redis拿数据是30秒一次。而redis的缓存是70秒，所以拿到redis数据后，需要将已经拿到的数据删除，以防出现重复数据。</li>
+<li>这里做的不好的点从redis拿出的数据校验不够完善，需优化。</li>
+</ol>
+<h3 id="获取性能数据"><a href="#获取性能数据" class="headerlink" title="获取性能数据"></a>获取性能数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span>: async (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 取参</span></span><br><span class="line">            <span class="keyword">let</span> &#123;</span><br><span class="line">                origin_pathname,</span><br><span class="line">                start_time,</span><br><span class="line">                end_time</span><br><span class="line">            &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 查询</span></span><br><span class="line">            <span class="keyword">let</span> whereQuery = &#123;&#125;;</span><br><span class="line">            <span class="keyword">const</span> Op = db.sequelize.Op;</span><br><span class="line">            <span class="keyword">if</span> (origin_pathname) &#123;</span><br><span class="line">                </span><br><span class="line">                whereQuery[<span class="string">'origin_pathname'</span>] = &#123;</span><br><span class="line">                    [Op.like]: <span class="string">`%<span class="subst">$&#123;origin_pathname&#125;</span>%`</span></span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (start_time &amp;&amp; end_time) &#123;</span><br><span class="line">                whereQuery[<span class="string">'create_time'</span>] = &#123;</span><br><span class="line">                    $gt: start_time,</span><br><span class="line">                    $lt: end_time</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> queryRst = <span class="keyword">await</span> db.elPerformance.findAndCountAll(&#123;</span><br><span class="line">                attributes: [</span><br><span class="line">                    db.sequelize.fn(<span class="string">'DISTINCT'</span>, db.sequelize.col(<span class="string">'origin_pathname'</span>)),</span><br><span class="line">                ],</span><br><span class="line">                where: whereQuery,</span><br><span class="line">                raw: <span class="literal">true</span></span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 返回</span></span><br><span class="line">            ctx.response.body = repWrapper(&#123;</span><br><span class="line">                list: queryRst.rows,</span><br><span class="line">                page: &#123;</span><br><span class="line">                    current: <span class="number">1</span> || current,</span><br><span class="line">                    per_page: <span class="number">15</span> || per_page,</span><br><span class="line">                    total_page: <span class="number">15</span> || <span class="built_in">Math</span>.ceil(queryRst.count.length / per_page)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            ctx.response.body = repWrapper(e.toString(), errMapping[<span class="string">'ERR_DATABASE_REQ'</span>][<span class="string">'code'</span>]);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    one: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> origin_pathname = <span class="built_in">decodeURIComponent</span>(ctx.params.id);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 取参</span></span><br><span class="line">            <span class="keyword">let</span> &#123;</span><br><span class="line">                start_time,</span><br><span class="line">                end_time,</span><br><span class="line">            &#125; = ctx.query;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 查询</span></span><br><span class="line">            <span class="keyword">let</span> whereQuery = &#123;&#125;;</span><br><span class="line">            whereQuery[<span class="string">'origin_pathname'</span>] = origin_pathname;</span><br><span class="line">            <span class="keyword">if</span> (start_time &amp;&amp; end_time) &#123;</span><br><span class="line">                whereQuery[<span class="string">'create_time'</span>] = &#123;</span><br><span class="line">                    $gt: start_time,</span><br><span class="line">                    $lt: end_time</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> queryDetail = <span class="keyword">await</span> db.elPerformance.findAndCountAll(&#123;</span><br><span class="line">                attributes: [</span><br><span class="line">                    <span class="string">'connection'</span>,</span><br><span class="line">                    <span class="string">'request'</span>,</span><br><span class="line">                    <span class="string">'response'</span>,</span><br><span class="line">                    <span class="string">'loading'</span>,</span><br><span class="line">                    <span class="string">'rendering'</span>,</span><br><span class="line">                    <span class="string">'blankScreen'</span>,</span><br><span class="line">                    <span class="string">'domComplete'</span>,</span><br><span class="line">                    <span class="string">'loaded'</span>,</span><br><span class="line">                    <span class="string">'loadEvent'</span>,</span><br><span class="line">                    <span class="string">'create_time'</span></span><br><span class="line">                ],</span><br><span class="line">                where: whereQuery</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">let</span> qdf = &#123;</span><br><span class="line">                <span class="string">'connection'</span>: [],</span><br><span class="line">                <span class="string">'request'</span>: [],</span><br><span class="line">                <span class="string">'response'</span>: [],</span><br><span class="line">                <span class="string">'loading'</span>: [],</span><br><span class="line">                <span class="string">'rendering'</span>: [],</span><br><span class="line">                <span class="string">'blankScreen'</span>: [],</span><br><span class="line">                <span class="string">'domComplete'</span>: [],</span><br><span class="line">                <span class="string">'loaded'</span>: [],</span><br><span class="line">                <span class="string">'loadEvent'</span>: [],</span><br><span class="line">                <span class="string">'create_time'</span>: []</span><br><span class="line">            &#125;;</span><br><span class="line">            queryDetail.rows.forEach(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> data = v.dataValues;</span><br><span class="line">                <span class="built_in">Object</span>.keys(data).forEach( <span class="function"><span class="params">sv</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>( <span class="string">'create_time'</span>=== sv ) &#123;</span><br><span class="line">                        qdf[sv].push( moment.unix(v[sv]).format(<span class="string">"YYYY-MM-DD hh:MM:SS"</span>) );</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        qdf[sv].push(v[sv]);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">            <span class="comment">// 返回</span></span><br><span class="line">            ctx.response.body = repWrapper(&#123;</span><br><span class="line">                origin_pathname,</span><br><span class="line">                queryDetail: qdf,</span><br><span class="line">                count: queryDetail.count,</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            ctx.response.body = repWrapper(e.toString(), errMapping[<span class="string">'ERR_DATABASE_REQ'</span>][<span class="string">'code'</span>]);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+<p>这一步就很简单了，先获取列表的数据，再获取具体某一条链接的性能数据。这里也有几个注意点</p>
+<ol>
+<li>默认设置的查询时间比较短（一天）</li>
+<li>没有一次性计算完所有页面的数据，计算量太大，假设每条连接每天有8000条数据，500条链接总共就会有4000万条数据，数据砍半也有2000万条数据。很好性能。所以改成了如上的查询方式。</li>
+<li>对某些数据字段添加了索引（<code>id, origin_path, create_at</code>），加速查询。</li>
+</ol>
+<h3 id="后台界面展示"><a href="#后台界面展示" class="headerlink" title="后台界面展示"></a>后台界面展示</h3><ol>
+<li>列表页<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-fe.ggwan.com/images/3fd0572bd5a996-2400x1262.png" alt="list" title>
+                </div>
+                <div class="image-caption">list</div>
+            </figure></li>
+<li>具体性能页面<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://img-fe.ggwan.com/images/957f5ef5acc5f7-2834x1396.png" alt="detail" title>
+                </div>
+                <div class="image-caption">detail</div>
+            </figure>
+</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/12/04/简单的apm性能收集方案/" target="_blank" rel="external">https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&title=《简单的apm性能收集方案》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&title=《简单的apm性能收集方案》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简单的apm性能收集方案》 — Microbot Team&url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/12/22/node-js-发现和解决问题/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">node.js 发现和解决问题</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/10/21/github之webhook自动部署/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">github之webhook自动部署</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&title=《简单的apm性能收集方案》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&title=《简单的apm性能收集方案》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《简单的apm性能收集方案》 — Microbot Team&url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/12/04/简单的apm性能收集方案/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsklEQVR42u3aQY7bMAwF0Nz/0u22QGv7kxQ9KfCyCsYemU8Li/nS5xN/fl18/rz69/f7q1ej3T/3s/HBw8PDO1T6VSlXjKs7r+7Jp+a+nocpwMPDw1vj5UUkr+zqC/1+KpN6Lv+Oh4eH9wW8vLXtLQ8JGA8PD+9/5CX46rIxiTzw8PDw3uflQ1eT0rw177Xdx7IWPDw8vJhXbY6/4fvK/h4eHh7eeFc9CWp7kW4PU64WDw8Pb4GXv3BzwP3fk6iiFwpfjomHh4d3lFfddppvTeXxQTU4/sdVPDw8vFd41RdxtaBquDDZDMPDw8Pb5lW3pnov7mTM5GDBfc14eHh4e7zeUlEttBf+9qoa5Rl4eHh4AS95WPXxp2C9cS5jXDw8PLyjvPwHf15KtSGuTlCUPODh4eEt8PISe1NQDYJ77X70iwEPDw/vEC8PF6ptbjJxvUWlMIl4eHh4y7x5ZNBroyf3PywheHh4eGu8vIVNGEmIUL2z2bLj4eHhvchLyu1Ft80QthdY4OHh4S3zeq1zvq2VT1/+bn8YEw8PD2+N19v6mvSu1QNVzTAXDw8Pb4GXb4PlvDzYPXvs4LJ+PDw8vKO8ecs7P7xVndbC1OPh4eEt8OY7R5NjB73jXzkYDw8P76d41WMBk0nJg+NeaIKHh4d3ipcHrDmvWlwe/pbDCzw8PLxlXt685g+r3tmbAjw8PLz3effNcfXHf/VwQC8ybubKeHh4eIdg1a2pfISzS1Gh6cfDw8Nb4J09EDCJM5KJ6LXseHh4eBu8PHKdNNnVODif0CjGxcPDw1vgTV7KSZCRb2v1+uHyZTw8PLwXeXlZ1QWjFys//BceHh7eF/Cq7XJ1tDzGPXAyAg8PD2/A6x0trR4UyJeE/JDBAxIPDw9vgTf5wT+PevOyzkYYeHh4eC3eb2MdNcqb553BAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

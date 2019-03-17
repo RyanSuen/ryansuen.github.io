@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>在Mac上使用ssh-key免密码登录服务器 | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="通常来说，我们使用 ssh user@host -p port，再输入密码，才能 ssh 到服务器进行管理。人类与动物的区别在于人会使用工具。所以我们要利用一些工具来简化我们的操作。 好在 Unix 系的操作系统提供了各种 ssh 支持。我们得以实现偷懒的目的。 先假设我们有一台服务器，主机名 testhost，ip 为 8.8.8.8，账号为 foo，密码为 bar，ssh 端口为 2222。一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Mac上使用ssh-key免密码登录服务器">
+<meta property="og:url" content="https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="通常来说，我们使用 ssh user@host -p port，再输入密码，才能 ssh 到服务器进行管理。人类与动物的区别在于人会使用工具。所以我们要利用一些工具来简化我们的操作。 好在 Unix 系的操作系统提供了各种 ssh 支持。我们得以实现偷懒的目的。 先假设我们有一台服务器，主机名 testhost，ip 为 8.8.8.8，账号为 foo，密码为 bar，ssh 端口为 2222。一">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Mac上使用ssh-key免密码登录服务器">
+<meta name="twitter:description" content="通常来说，我们使用 ssh user@host -p port，再输入密码，才能 ssh 到服务器进行管理。人类与动物的区别在于人会使用工具。所以我们要利用一些工具来简化我们的操作。 好在 Unix 系的操作系统提供了各种 ssh 支持。我们得以实现偷懒的目的。 先假设我们有一台服务器，主机名 testhost，ip 为 8.8.8.8，账号为 foo，密码为 bar，ssh 端口为 2222。一">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">在Mac上使用ssh-key免密码登录服务器</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">在Mac上使用ssh-key免密码登录服务器</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-20T14:26:57.000Z" itemprop="datePublished" class="page-time">
+  2018-04-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一、普通方式：-bash-profile"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、普通方式：~/.bash_profile</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二、初级偷懒方式：-ssh-config"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、初级偷懒方式：~/.ssh/config</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三、高级偷懒方式：SSH-Key"><span class="post-toc-number">3.</span> <span class="post-toc-text">三、高级偷懒方式：SSH Key</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#当有多Mac-设备-要登录同一台服务器时的解决方案："><span class="post-toc-number">4.</span> <span class="post-toc-text">当有多Mac(设备)要登录同一台服务器时的解决方案：</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-在Mac上使用ssh-key免密码登录服务器" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">在Mac上使用ssh-key免密码登录服务器</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-20 22:26:57" datetime="2018-04-20T14:26:57.000Z" itemprop="datePublished">2018-04-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>通常来说，我们使用 ssh user@host -p port，再输入密码，才能 ssh 到服务器进行管理。人类与动物的区别在于人会使用工具。所以我们要利用一些工具来简化我们的操作。</p>
+<p>好在 Unix 系的操作系统提供了各种 ssh 支持。我们得以实现偷懒的目的。</p>
+<p>先假设我们有一台服务器，主机名 testhost，ip 为 8.8.8.8，账号为 foo，密码为 bar，ssh 端口为 2222。一般的连接方式是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh foo@8.8.8.8 -p 2222</span><br><span class="line">password: bar</span><br></pre></td></tr></table></figure>
+<p>不仅很麻烦，还要记忆 IP 和端口，当我们有很多台服务器的时候，一定会疯掉！现在，我们来简化操作。</p>
+<h3 id="一、普通方式：-bash-profile"><a href="#一、普通方式：-bash-profile" class="headerlink" title="一、普通方式：~/.bash_profile"></a>一、普通方式：~/.bash_profile</h3><p>Alias 相当于一种快捷方式或别名，让我们能把一长串命令简化成一个简短的命令。比如 Mac OSX 下没有直接的 ‘ll’ 命令，可以用 ‘ls -alF’ 实现 ‘ll’ 命令的效果。Alias 可以在主目录的 .bash_profile 文件中配置，此文件为隐藏文件，需要 ‘ls -alF’ 才能看到，如果 ‘ls -alF’ 还是看不到，可以自行创建此文件。在这个文件中，我们添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias testhost=&apos;ssh foo@8.8.8.8 -p 2222&apos;</span><br></pre></td></tr></table></figure>
+<p>保存后，就可以像这样登录服务器了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ testhost</span><br><span class="line">password: bar</span><br></pre></td></tr></table></figure>
+<h3 id="二、初级偷懒方式：-ssh-config"><a href="#二、初级偷懒方式：-ssh-config" class="headerlink" title="二、初级偷懒方式：~/.ssh/config"></a>二、初级偷懒方式：~/.ssh/config</h3><p>在第一种方式中，实际我们没有利用到 ssh 的功能，只是利用了 bash 来简化，不太优雅。ssh 的问题应该由 ssh 来解决。所以，我们有了第二种方式。</p>
+<p>ssh 有自己的配置文件，位置在 ~/.ssh/config 中，可以使用以下命令来编辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi ~/.ssh/config</span><br></pre></td></tr></table></figure>
+<p>ssh 配置文件可以将服务器地址，端口，用户配置成一个别名。我们的范例服务器可配置为为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host testhost</span><br><span class="line">  HostName 8.8.8.8</span><br><span class="line">  Port 2222</span><br><span class="line">  User foo</span><br></pre></td></tr></table></figure>
+<p>保存后，可以使用以下方式登录服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh testhost</span><br><span class="line">password: bar</span><br></pre></td></tr></table></figure>
+<h3 id="三、高级偷懒方式：SSH-Key"><a href="#三、高级偷懒方式：SSH-Key" class="headerlink" title="三、高级偷懒方式：SSH Key"></a>三、高级偷懒方式：SSH Key</h3><p>在上面的两种方式中，我们都需要手工输入密码。能减掉这个步骤吗？当然可以！ssh 除了密码登录，还有更简单且更安全的登录方式，那就是 ssh key 登录。</p>
+<p>先生成公钥和私钥，在 Mac OSX 终端（或 iTerm 2 等）中进入 ~/.ssh 目录，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+<p>会询问一些问题，直接全部回车，即可在 ~/.ssh 目录中生成 id_rsa（私钥） 和 id_rsa.pub（公钥）文件。我们需要将公钥上传到 testhost 服务器的 ~/.ssh 目录下面，因为第二种方式中我们已经配置了 testhost 服务器，scp 也能识别这个服务器，所以，可以使用如下命令将文件传输到 testhost 服务器中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp ~/.ssh/id_rsa.pub testhost:~/.ssh/</span><br></pre></td></tr></table></figure>
+<p>接下来，用第二种方式登录到 testhost 服务器中，在 ~/.ssh 目录中使用以下命令将 id_rsa.pub 更名为 authorized_keys：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo@testhost: $ mv id_rsa.pub authorized_keys</span><br></pre></td></tr></table></figure>
+<p>最后确保下文件权限正常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foo@testhost: $ chmod 700 ~/.ssh/</span><br><span class="line">foo@testhost: $ chmod 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>现在，我们可以在 Mac OSX 的终端中使用 ssh testhost 登录到 testhost 服务器了，无需输入密码，更无需记忆服务器参数。</p>
+<p>如果无法连接，请在服务器的 /etc/ssh/sshd_config 文件中查看 PubkeyAuthentication 的值是否为 yes，如果不是，请修改为 yes ，并使用以下命令重启 ssh 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foo@testhost: $ /etc/init.d/ssh restart</span><br><span class="line"></span><br><span class="line">//or </span><br><span class="line"></span><br><span class="line">sudo service sshd restart   可以用这个   ssh服务是用yum来安装的  都可以统一用service命令来控制</span><br></pre></td></tr></table></figure>
+<p>如果需要禁止密码登录，同样可以编辑 /etc/ssh/sshd_config 文件中 PasswordAuthentication 的值为 no 并重启 ssh 服务。</p>
+<h3 id="当有多Mac-设备-要登录同一台服务器时的解决方案："><a href="#当有多Mac-设备-要登录同一台服务器时的解决方案：" class="headerlink" title="当有多Mac(设备)要登录同一台服务器时的解决方案："></a>当有多Mac(设备)要登录同一台服务器时的解决方案：</h3><ol>
+<li>先把新mac(设备)的id__rsa.pub都scp到目标服务器上，文件名后面统一加一个后缀, 如：id_rsa.pub.host1</li>
+<li>再执行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_rsa.pub.hostX &gt;&gt; .ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>每个文件执行一回,hostX要改成相应的文件名后缀。 将新的key 追加到authorized_keys当中。<br>再把生成的authorized_keys给各主机SCP过去，就完事了。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" target="_blank" rel="external">https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&title=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&title=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/05/26/前端学习nginx一/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">前端学习nginx一</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/12/node-js-fs/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">node.js fs</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&title=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&title=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《在Mac上使用ssh-key免密码登录服务器》 — Microbot Team&url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADJ0lEQVR42u3ay27jMAwF0Pz/T3eAbou494rKwFaPV0b8kI68YEjq9YqPr+/j+ur1Pe/uvD7/eby7+vrEgY2Njf0Q9tflcc2+Hji/+vOe66euF/Hago2NjX0qux0gCWzXd+ZhKVm+3IKNjY39l9nJ1WTS+bNrb8DGxsbGzjFtYSgJZm2YxMbGxsbOi0ptkSgPe3lik7xzcy0NGxsb+/bstiR05/MP9rexsbGxb8n+Ko9JKGrL/fm4tQIbGxv7IHabEqxNqG3uri1iUvwqchpsbGzsh7DbYJA3X9vNOmsN47b8hI2NjX0qe28tatcGnfzDtE1fbGxs7FPZn2ju5qGrDXttkoONjY39l9lrU5ksxFqykX8kbGxs7JPYk1esFY/WUpG2qVDMHBsbG/vh7PaBJCFZS2PaEtLoO2NjY2MfxJ6U4CflpLXGQL59JxkLGxsb+wx2nnIkBaa1JKENY8mIv1zFxsbGPo6db8GZhJ82OH3wHBsbG/s4dgvLU5F8e808yUmaxNjY2NjnsXPMZCpJZX4tqWjbGK/2G2JjY2M/hL23GLQWDueNijqAYWNjYx/E3ktdC1r5dsyW/XZW2NjY2Mex84F3lX5afDvDKIBhY2NjH8Ruw9iu8JP8kgTI/1ROwsbGxr4Zuy3rT+7Jl3JXM+PtwmFjY2MfxF5LM9r2wFrYW1v0IohiY2NjH8TOX92WctoUog17821A2NjY2Oex14LQ3oRkMuLiU9jY2NiPZecDtNNNFnFtgdoNOlE5CRsbG/vh7PZP/GSDZp6KtKX/IgRiY2NjH8Se/8VPtkjmgac9JmkVNjY29hnstc0ubQKTt13bdCgfFxsbG/tsdluI3xuKJqMvhltsbGzs49iTv/5t8WhvS7htHoy+DDY2NvYt2ZNp5ey1BvCkJbztk2BjY2M/hD1JFdqGQV5ymgewqNGLjY2NfRA7D05rZfoWmZDaotIoJmNjY2Mfwc7L922JZ1IAShrVowCGjY2NfRy7LeLPG71rIfCXsIeNjY19HDvfiNlukdk16aRolW/fxMbGxj6JvavRmzcP8retFZ62beLBxsbGvjv7H1BZJjnfhnaMAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

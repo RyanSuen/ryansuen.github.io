@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>node.js fs | Microbot Team | MT-ryansuen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="fs api(阮老师的api文档)fs是filesystem的缩写，该模块提供本地文件的读写能力，基本上是POSIX文件操作命令的简单包装。但是，这个模块几乎对所有操作提供异步和同步两种操作方式，供开发者选择。  fs模块是唯一一个同时提供同步和异步API的模块。  readFile()，readFileSync()readFile方法用于异步读取数据。 1234fs.readFile(&amp;apos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js fs">
+<meta property="og:url" content="https://ryansuen.github.io/2018/03/12/node-js-fs/index.html">
+<meta property="og:site_name" content="Microbot Team">
+<meta property="og:description" content="fs api(阮老师的api文档)fs是filesystem的缩写，该模块提供本地文件的读写能力，基本上是POSIX文件操作命令的简单包装。但是，这个模块几乎对所有操作提供异步和同步两种操作方式，供开发者选择。  fs模块是唯一一个同时提供同步和异步API的模块。  readFile()，readFileSync()readFile方法用于异步读取数据。 1234fs.readFile(&amp;apos">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-05T14:45:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node.js fs">
+<meta name="twitter:description" content="fs api(阮老师的api文档)fs是filesystem的缩写，该模块提供本地文件的读写能力，基本上是POSIX文件操作命令的简单包装。但是，这个模块几乎对所有操作提供异步和同步两种操作方式，供开发者选择。  fs模块是唯一一个同时提供同步和异步API的模块。  readFile()，readFileSync()readFile方法用于异步读取数据。 1234fs.readFile(&amp;apos">
+    
+        <link rel="alternate" type="application/atom+xml" title="Microbot Team" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Ryan Suen</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank">
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom">
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">node.js fs</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">node.js fs</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-12T13:52:47.000Z" itemprop="datePublished" class="page-time">
+  2018-03-12
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#fs-api-阮老师的api文档"><span class="post-toc-number">1.</span> <span class="post-toc-text">fs api(阮老师的api文档)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#readFile-，readFileSync"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">readFile()，readFileSync()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#writeFile-，writeFileSync"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">writeFile()，writeFileSync()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#exists-path-callback"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">exists(path, callback)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mkdir-，writeFile-，readFile"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">mkdir()，writeFile()，readFile()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#mkdirSync-，writeFileSync-，readFileSync"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">mkdirSync()，writeFileSync()，readFileSync()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#readdir-，readdirSync"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">readdir()，readdirSync()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#stat"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">stat()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#watchfile-，unwatchfile"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">watchfile()，unwatchfile()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#createReadStream"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">createReadStream()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#createWriteStream"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">createWriteStream()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#同步还是异步"><span class="post-toc-number">2.</span> <span class="post-toc-text">同步还是异步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#理解Stream"><span class="post-toc-number">3.</span> <span class="post-toc-text">理解Stream</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#process-全局对象中包含了三个流对象。"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">process 全局对象中包含了三个流对象。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#需求场景描述"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">需求场景描述</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Stream"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Stream</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#应用场景"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">应用场景</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Stream-继承自EventEmitter"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">Stream 继承自EventEmitter</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo"><span class="post-toc-number">4.</span> <span class="post-toc-text">demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#fs初版demo"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">fs初版demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#初级需求"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">初级需求</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#code"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">code</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#fs升级demo"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">fs升级demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#升级需求"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">升级需求</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#code-1"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">code</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-node-js-fs" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">node.js fs</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-12 21:52:47" datetime="2018-03-12T13:52:47.000Z" itemprop="datePublished">2018-03-12</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="fs-api-阮老师的api文档"><a href="#fs-api-阮老师的api文档" class="headerlink" title="fs api(阮老师的api文档)"></a>fs api(阮老师的api文档)</h2><p>fs是filesystem的缩写，该模块提供本地文件的读写能力，基本上是POSIX文件操作命令的简单包装。但是，这个模块几乎对所有操作提供异步和同步两种操作方式，供开发者选择。</p>
+<blockquote>
+<p>fs模块是唯一一个同时提供同步和异步API的模块。</p>
+</blockquote>
+<h3 id="readFile-，readFileSync"><a href="#readFile-，readFileSync" class="headerlink" title="readFile()，readFileSync()"></a>readFile()，readFileSync()</h3><p>readFile方法用于异步读取数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(&apos;./image.png&apos;, function (err, buffer) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">  process(buffer);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>readFile方法的第一个参数是文件的路径，可以是绝对路径，也可以是相对路径。注意，如果是相对路径，是相对于当前进程所在的路径（process.cwd()），而不是相对于当前脚本所在的路径。</p>
+<p>readFile方法的第二个参数是读取完成后的回调函数。该函数的第一个参数是发生错误时的错误对象，第二个参数是代表文件内容的Buffer实例。</p>
+<p>readFileSync方法用于同步读取文件，返回一个字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var text = fs.readFileSync(fileName, &apos;utf8&apos;);</span><br><span class="line"></span><br><span class="line">// 将文件按行拆成数组</span><br><span class="line">text.split(/\r?\n/).forEach(function (line) &#123;</span><br><span class="line">  // ...</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>readFileSync方法的第一个参数是文件路径，第二个参数可以是一个表示配置的对象，也可以是一个表示文本文件编码的字符串。默认的配置对象是{ encoding: null, flag: ‘r’ }，即文件编码默认为null，读取模式默认为r（只读）。如果第二个参数不指定编码（encoding），readFileSync方法返回一个Buffer实例，否则返回的是一个字符串。</p>
+<p>不同系统的行结尾字符不同，可以用下面的方法判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 方法一，查询现有的行结尾字符</span><br><span class="line">var EOL =</span><br><span class="line">  fileContents.indexOf(&apos;\r\n&apos;) &gt;= 0 ? &apos;\r\n&apos; : &apos;\n&apos;;</span><br><span class="line"></span><br><span class="line">// 方法二，根据当前系统处理</span><br><span class="line">var EOL =</span><br><span class="line">  (process.platform === &apos;win32&apos; ? &apos;\r\n&apos; : &apos;\n&apos;);</span><br></pre></td></tr></table></figure>
+<h3 id="writeFile-，writeFileSync"><a href="#writeFile-，writeFileSync" class="headerlink" title="writeFile()，writeFileSync()"></a>writeFile()，writeFileSync()</h3><p>writeFile方法用于异步写入文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fs.writeFile(&apos;message.txt&apos;, &apos;Hello Node.js&apos;, (err) =&gt; &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">  console.log(&apos;It\&apos;s saved!&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码中，writeFile方法的第一个参数是写入的文件名，第二个参数是写入的字符串，第三个参数是回调函数。</p>
+<p>回调函数前面，还可以再加一个参数，表示写入字符串的编码（默认是utf8）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.writeFile(&apos;message.txt&apos;, &apos;Hello Node.js&apos;, &apos;utf8&apos;, callback);</span><br></pre></td></tr></table></figure>
+<p>writeFileSync方法用于同步写入文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.writeFileSync(fileName, str, &apos;utf8&apos;);</span><br></pre></td></tr></table></figure>
+<p>它的第一个参数是文件路径，第二个参数是写入文件的字符串，第三个参数是文件编码，默认为utf8。</p>
+<h3 id="exists-path-callback"><a href="#exists-path-callback" class="headerlink" title="exists(path, callback)"></a>exists(path, callback)</h3><p>exists方法用来判断给定路径是否存在，然后不管结果如何，都会调用回调函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fs.exists(&apos;/path/to/file&apos;, function (exists) &#123;</span><br><span class="line">  util.debug(exists ? &quot;it&apos;s there&quot; : &quot;no file!&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码表明，回调函数的参数是一个表示文件是否存在的布尔值。</p>
+<p>需要注意的是，不要在open方法之前调用exists方法，open方法本身就能检查文件是否存在。</p>
+<p>下面的例子是如果给定目录存在，就删除它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (fs.existsSync(outputFolder)) &#123;</span><br><span class="line">  console.log(&apos;Removing &apos; + outputFolder);</span><br><span class="line">  fs.rmdirSync(outputFolder);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="mkdir-，writeFile-，readFile"><a href="#mkdir-，writeFile-，readFile" class="headerlink" title="mkdir()，writeFile()，readFile()"></a>mkdir()，writeFile()，readFile()</h3><p>mkdir方法用于新建目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">fs.mkdir(&apos;./helloDir&apos;,0777, function (err) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>mkdir接受三个参数，第一个是目录名，第二个是权限值，第三个是回调函数。</p>
+<p>writeFile方法用于写入文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">fs.writeFile(&apos;./helloDir/message.txt&apos;, &apos;Hello Node&apos;, function (err) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">  console.log(&apos;文件写入成功&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>readFile方法用于读取文件内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">fs.readFile(&apos;./helloDir/message.txt&apos;,&apos;UTF-8&apos; ,function (err, data) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">  console.log(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码使用readFile方法读取文件。readFile方法的第一个参数是文件名，第二个参数是文件编码，第三个参数是回调函数。可用的文件编码包括“ascii”、“utf8”和“base64”。如果没有指定文件编码，返回的是原始的缓存二进制数据，这时需要调用buffer对象的toString方法，将其转为字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line">fs.readFile(&apos;example_log.txt&apos;, function (err, logData) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line">  var text = logData.toString();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>readFile方法是异步操作，所以必须小心，不要同时发起多个readFile请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for(var i = 1; i &lt;= 1000; i++) &#123;</span><br><span class="line">  fs.readFile(&apos;./&apos;+i+&apos;.txt&apos;, function() &#123;</span><br><span class="line">     // do something with the file</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码会同时发起1000个readFile异步请求，很快就会耗尽系统资源。</p>
+<h3 id="mkdirSync-，writeFileSync-，readFileSync"><a href="#mkdirSync-，writeFileSync-，readFileSync" class="headerlink" title="mkdirSync()，writeFileSync()，readFileSync()"></a>mkdirSync()，writeFileSync()，readFileSync()</h3><p>这三个方法是建立目录、写入文件、读取文件的同步版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fs.mkdirSync(&apos;./helloDirSync&apos;,0777);</span><br><span class="line">fs.writeFileSync(&apos;./helloDirSync/message.txt&apos;, &apos;Hello Node&apos;);</span><br><span class="line">var data = fs.readFileSync(&apos;./helloDirSync/message.txt&apos;,&apos;UTF-8&apos;);</span><br><span class="line">console.log(&apos;file created with contents:&apos;);</span><br><span class="line">console.log(data);</span><br></pre></td></tr></table></figure>
+<p>对于流量较大的服务器，最好还是采用异步操作，因为同步操作时，只有前一个操作结束，才会开始后一个操作，如果某个操作特别耗时（常常发生在读写数据时），会导致整个程序停顿。</p>
+<h3 id="readdir-，readdirSync"><a href="#readdir-，readdirSync" class="headerlink" title="readdir()，readdirSync()"></a>readdir()，readdirSync()</h3><p>readdir方法用于读取目录，返回一个所包含的文件和子目录的数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fs.readdir(process.cwd(), function (err, files) &#123;</span><br><span class="line">  if (err) &#123;</span><br><span class="line">    console.log(err);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  var count = files.length;</span><br><span class="line">  var results = &#123;&#125;;</span><br><span class="line">  files.forEach(function (filename) &#123;</span><br><span class="line">    fs.readFile(filename, function (data) &#123;</span><br><span class="line">      results[filename] = data;</span><br><span class="line">      count--;</span><br><span class="line">      if (count &lt;= 0) &#123;</span><br><span class="line">        // 对所有文件进行处理</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>readdirSync方法是readdir方法的同步版本。下面是同步列出目录内容的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var files = fs.readdirSync(dir);</span><br><span class="line">files.forEach(function (filename) &#123;</span><br><span class="line">  var fullname = path.join(dir,filename);</span><br><span class="line">  var stats = fs.statSync(fullname);</span><br><span class="line">  if (stats.isDirectory()) filename += &apos;/&apos;;</span><br><span class="line">  process.stdout.write(filename + &apos;\t&apos; +</span><br><span class="line">    stats.size + &apos;\t&apos; +</span><br><span class="line">    stats.mtime + &apos;\n&apos;</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="stat"><a href="#stat" class="headerlink" title="stat()"></a>stat()</h3><p>stat方法的参数是一个文件或目录，它产生一个对象，该对象包含了该文件或目录的具体信息。我们往往通过该方法，判断正在处理的到底是一个文件，还是一个目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">fs.readdir(&apos;/etc/&apos;, function (err, files) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line"></span><br><span class="line">  files.forEach( function (file) &#123;</span><br><span class="line">    fs.stat(&apos;/etc/&apos; + file, function (err, stats) &#123;</span><br><span class="line">      if (err) throw err;</span><br><span class="line"></span><br><span class="line">      if (stats.isFile()) &#123;</span><br><span class="line">        console.log(&quot;%s is file&quot;, file);</span><br><span class="line">      &#125;</span><br><span class="line">      else if (stats.isDirectory ()) &#123;</span><br><span class="line">      console.log(&quot;%s is a directory&quot;, file);</span><br><span class="line">      &#125;</span><br><span class="line">    console.log(&apos;stats:  %s&apos;,JSON.stringify(stats));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="watchfile-，unwatchfile"><a href="#watchfile-，unwatchfile" class="headerlink" title="watchfile()，unwatchfile()"></a>watchfile()，unwatchfile()</h3><p>watchfile方法监听一个文件，如果该文件发生变化，就会自动触发回调函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">fs.watchFile(&apos;./testFile.txt&apos;, function (curr, prev) &#123;</span><br><span class="line">  console.log(&apos;the current mtime is: &apos; + curr.mtime);</span><br><span class="line">  console.log(&apos;the previous mtime was: &apos; + prev.mtime);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">fs.writeFile(&apos;./testFile.txt&apos;, &quot;changed&quot;, function (err) &#123;</span><br><span class="line">  if (err) throw err;</span><br><span class="line"></span><br><span class="line">  console.log(&quot;file write complete&quot;);   </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>unwatchfile方法用于解除对文件的监听。</p>
+<h3 id="createReadStream"><a href="#createReadStream" class="headerlink" title="createReadStream()"></a>createReadStream()</h3><p>createReadStream方法往往用于打开大型的文本文件，创建一个读取操作的数据流。所谓大型文本文件，指的是文本文件的体积很大，读取操作的缓存装不下，只能分成几次发送，每次发送会触发一个data事件，发送结束会触发end事件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line"></span><br><span class="line">function readLines(input, func) &#123;</span><br><span class="line">  var remaining = &apos;&apos;;</span><br><span class="line"></span><br><span class="line">  input.on(&apos;data&apos;, function(data) &#123;</span><br><span class="line">    remaining += data;</span><br><span class="line">    var index = remaining.indexOf(&apos;\n&apos;);</span><br><span class="line">    var last  = 0;</span><br><span class="line">    while (index &gt; -1) &#123;</span><br><span class="line">      var line = remaining.substring(last, index);</span><br><span class="line">      last = index + 1;</span><br><span class="line">      func(line);</span><br><span class="line">      index = remaining.indexOf(&apos;\n&apos;, last);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    remaining = remaining.substring(last);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  input.on(&apos;end&apos;, function() &#123;</span><br><span class="line">    if (remaining.length &gt; 0) &#123;</span><br><span class="line">      func(remaining);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function func(data) &#123;</span><br><span class="line">  console.log(&apos;Line: &apos; + data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var input = fs.createReadStream(&apos;lines.txt&apos;);</span><br><span class="line">readLines(input, func);</span><br></pre></td></tr></table></figure>
+<h3 id="createWriteStream"><a href="#createWriteStream" class="headerlink" title="createWriteStream()"></a>createWriteStream()</h3><p>createWriteStream方法创建一个写入数据流对象，该对象的write方法用于写入数据，end方法用于结束写入操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var out = fs.createWriteStream(fileName, &#123;</span><br><span class="line">  encoding: &apos;utf8&apos;</span><br><span class="line">&#125;);</span><br><span class="line">out.write(str);</span><br><span class="line">out.end();</span><br><span class="line">createWriteStream方法和createReadStream方法配合，可以实现拷贝大型文件。</span><br><span class="line"></span><br><span class="line">function fileCopy(filename1, filename2, done) &#123;</span><br><span class="line">  var input = fs.createReadStream(filename1);</span><br><span class="line">  var output = fs.createWriteStream(filename2);</span><br><span class="line"></span><br><span class="line">  input.on(&apos;data&apos;, function(d) &#123; output.write(d); &#125;);</span><br><span class="line">  input.on(&apos;error&apos;, function(err) &#123; throw err; &#125;);</span><br><span class="line">  input.on(&apos;end&apos;, function() &#123;</span><br><span class="line">    output.end();</span><br><span class="line">    if (done) done();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="同步还是异步"><a href="#同步还是异步" class="headerlink" title="同步还是异步"></a>同步还是异步</h2><blockquote>
+<p>要在单线种中创建能够处理高并发的高效程序，采用异步，事件驱动的程序是不错的选择。</p>
+</blockquote>
+<h2 id="理解Stream"><a href="#理解Stream" class="headerlink" title="理解Stream"></a>理解Stream</h2><p>node.js console 会输出内容到控制台。事实上，console.log内部做了如下处理：<br>在指定的字符串后面加上\n（换行）字符，并将其写入stdout流中。</p>
+<h3 id="process-全局对象中包含了三个流对象。"><a href="#process-全局对象中包含了三个流对象。" class="headerlink" title="process 全局对象中包含了三个流对象。"></a>process 全局对象中包含了三个流对象。</h3><ul>
+<li>stdin  标准输入</li>
+<li>stdout 标准输出</li>
+<li>stderror 标准错误</li>
+</ul>
+<h3 id="需求场景描述"><a href="#需求场景描述" class="headerlink" title="需求场景描述"></a>需求场景描述</h3><p>fs模块允许我们通过Stream API来对数据进行读写操作。与readFile 及 writeFile方法不同，它对内存的分配不是一次完成的。</p>
+<p>有一个大文件，文件内容由上百万行逗号分割文本组成。要完整的读取该文件进行解析。意味着要一次性分配很大的内存。更好的方式应该是一次只读取一块内容，以行尾结束符（“\n”）来切分，然后再逐块进行解析。</p>
+<p>Node Stream 就是对上述解决方案的完美实现。</p>
+<h3 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h3><p>fs.createREadStream方法允许为一个文件创建一个可读的Stream对象。方便理解，举例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(&apos;xxx.txt&apos;, function(err, contents) &#123;</span><br><span class="line">    //处理整个文件</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面的例子，回调函数必须要等到整个文件读取完毕，载入到RAM，且可用的情况下才会触发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var stream = fs.createReadStream(&apos;xxx.txt&apos;);</span><br><span class="line"></span><br><span class="line">stream.on(&apos;data&apos;, function(chunk) &#123;</span><br><span class="line">    //处理文件的部分内容</span><br><span class="line">&#125;)；</span><br><span class="line"></span><br><span class="line">stream.on(&apos;end&apos;, function() &#123;</span><br><span class="line">    //文件读取完毕。</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>大文件上传</li>
+<li>日志记录（操作系统的打开，关闭文件较低效）</li>
+</ul>
+<h3 id="Stream-继承自EventEmitter"><a href="#Stream-继承自EventEmitter" class="headerlink" title="Stream 继承自EventEmitter"></a>Stream 继承自EventEmitter</h3><h2 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h2><h3 id="fs初版demo"><a href="#fs初版demo" class="headerlink" title="fs初版demo"></a>fs初版demo</h3><h4 id="初级需求"><a href="#初级需求" class="headerlink" title="初级需求"></a>初级需求</h4><ol>
+<li>程序在命令行运行。通过终端提供交互给用户输入，输出。</li>
+<li>程序启动后，需要显示当前目录下的文件列表。</li>
+<li>选择某个文件时，程序需要显示该文件的内容。</li>
+<li>选择一个目录时，程序需要显示该目录下的信息。</li>
+<li>运行结束后退出程序。</li>
+</ol>
+<h4 id="code"><a href="#code" class="headerlink" title="code"></a>code</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;),</span><br><span class="line">    colors = require(&apos;colors&apos;),</span><br><span class="line">    stdin = process.stdin,</span><br><span class="line">    stdout = process.stdout,</span><br><span class="line">    path = require(&apos;path&apos;),</span><br><span class="line">    stats = [],</span><br><span class="line">    files = fs.readdirSync(process.cwd());</span><br><span class="line"></span><br><span class="line">function file(i) &#123;</span><br><span class="line">    var filename = files[i];</span><br><span class="line">    fs.stat(</span><br><span class="line">        path.resolve(__dirname, filename),</span><br><span class="line">        function (err, stat) &#123;</span><br><span class="line">            stats[i] = stat;</span><br><span class="line">            if (stat.isDirectory()) &#123;</span><br><span class="line">                console.log(`    $&#123;i&#125;    $&#123;filename&#125;/`.blue);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                console.log(`    $&#123;i&#125;    $&#123;filename&#125;`.green);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if (++i == files.length) &#123;</span><br><span class="line">                read();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                file(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function read() &#123;</span><br><span class="line">    console.log(``);</span><br><span class="line">    stdout.write(`    Enter your choice: `.yellow);</span><br><span class="line">    stdin.resume();</span><br><span class="line">    stdin.setEncoding(&apos;utf8&apos;);</span><br><span class="line">    stdin.on(&apos;data&apos;, option);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function option(data) &#123;</span><br><span class="line">    var filename = files[Number(data)];</span><br><span class="line">    if (!filename) &#123;</span><br><span class="line">        stdout.write(`    Enter your choice: `.red);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdin.pause();</span><br><span class="line">        if (stats[Number(data)].isDirectory()) &#123;</span><br><span class="line">            fs.readdir(</span><br><span class="line">                path.resolve(__dirname, filename),</span><br><span class="line">                function(err, files) &#123;</span><br><span class="line">                    console.log(&apos;&apos;);</span><br><span class="line">                    console.log(`($&#123;files.length&#125; files)`);</span><br><span class="line">                    files.forEach(function(file) &#123;</span><br><span class="line">                        console.log(`    -  $&#123;file&#125;`);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            );</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            fs.readFile(</span><br><span class="line">                path.resolve(__dirname, filename),</span><br><span class="line">                &apos;utf8&apos;,</span><br><span class="line">                function (err, data) &#123;</span><br><span class="line">                    console.log(&apos;&apos;);</span><br><span class="line">                    console.log(data.cyan);</span><br><span class="line">                &#125;</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">file(0);</span><br></pre></td></tr></table></figure>
+<p>### </p>
+<h3 id="fs升级demo"><a href="#fs升级demo" class="headerlink" title="fs升级demo"></a>fs升级demo</h3><h4 id="升级需求"><a href="#升级需求" class="headerlink" title="升级需求"></a>升级需求</h4><ol>
+<li>程序在命令行运行。通过终端提供交互给用户输入，输出。</li>
+<li>程序启动后，需要显示当前目录下的文件列表。</li>
+<li>选择某个文件时，程序需要显示该文件的内容。</li>
+<li>选择一个目录时，程序需要显示该目录下的文件列表，且能一直递归下去</li>
+<li>运行结束后退出程序。</li>
+</ol>
+<h4 id="code-1"><a href="#code-1" class="headerlink" title="code"></a>code</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">var fs = require(&apos;fs&apos;),</span><br><span class="line">    colors = require(&apos;colors&apos;),</span><br><span class="line">    stdin = process.stdin,</span><br><span class="line">    stdout = process.stdout,</span><br><span class="line">    path = require(&apos;path&apos;),</span><br><span class="line">    stats = [],</span><br><span class="line">    cwd = process.cwd(),</span><br><span class="line">    files = fs.readdirSync( cwd );</span><br><span class="line"></span><br><span class="line">function file(i) &#123;</span><br><span class="line">    var filename = files[i];</span><br><span class="line">    fs.stat(</span><br><span class="line">        path.resolve(cwd, filename),</span><br><span class="line">        function (err, stat) &#123;</span><br><span class="line">            stats[i] = stat;</span><br><span class="line">            if( stat.isDirectory() ) &#123;</span><br><span class="line">                console.log(`    $&#123;i&#125;    $&#123;filename&#125;/`.blue);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                console.log(`    $&#123;i&#125;    $&#123;filename&#125;`.green);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            if( ++i == files.length ) &#123;</span><br><span class="line">                read();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                file(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function read() &#123;</span><br><span class="line">    console.log(``);</span><br><span class="line">    stdout.write(`    Enter your choice: `.yellow);</span><br><span class="line">    stdin.resume();</span><br><span class="line">    stdin.setEncoding(&apos;utf8&apos;);</span><br><span class="line">    stdin.removeListener(&apos;data&apos;, option);</span><br><span class="line">    stdin.on(&apos;data&apos;, option);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function option(data) &#123;</span><br><span class="line">    var filename = files[Number(data)];</span><br><span class="line">    if( !filename ) &#123;</span><br><span class="line">        stdout.write(`    Enter your choice: `.red);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdin.pause();</span><br><span class="line">        if( stats[Number(data)].isDirectory() ) &#123;</span><br><span class="line">            cwd = path.resolve(cwd, filename);</span><br><span class="line">            fs.readdir(</span><br><span class="line">                cwd,</span><br><span class="line">                function(err, subFiles) &#123;</span><br><span class="line">                    files = subFiles;</span><br><span class="line">                    file(0, cwd);</span><br><span class="line">                &#125;</span><br><span class="line">            );</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            fs.readFile(</span><br><span class="line">                path.resolve(cwd, filename),</span><br><span class="line">                &apos;utf8&apos;,</span><br><span class="line">                function(err, data) &#123;</span><br><span class="line">                    console.log(&apos;&apos;);</span><br><span class="line">                    console.log(data.cyan);</span><br><span class="line">                &#125;</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">file(0);</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2019-03-05T14:45:54.000Z" itemprop="dateUpdated">2019-03-05 22:45:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/03/12/node-js-fs/" target="_blank" rel="external">https://ryansuen.github.io/2018/03/12/node-js-fs/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://ryansuen.github.io">
+            <img src="/img/avatar.jpg" alt="Ryan Suen">
+            Ryan Suen
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/03/12/node-js-fs/&title=《node.js fs》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/03/12/node-js-fs/&title=《node.js fs》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/03/12/node-js-fs/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《node.js fs》 — Microbot Team&url=https://ryansuen.github.io/2018/03/12/node-js-fs/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/03/12/node-js-fs/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/20/在Mac上使用ssh-key免密码登录服务器/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">在Mac上使用ssh-key免密码登录服务器</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/21/performance/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">performance</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Ryan Suen &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://ryansuen.github.io/2018/03/12/node-js-fs/&title=《node.js fs》 — Microbot Team&pic=https://ryansuen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://ryansuen.github.io/2018/03/12/node-js-fs/&title=《node.js fs》 — Microbot Team&source=description" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://ryansuen.github.io/2018/03/12/node-js-fs/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《node.js fs》 — Microbot Team&url=https://ryansuen.github.io/2018/03/12/node-js-fs/&via=https://ryansuen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://ryansuen.github.io/2018/03/12/node-js-fs/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aMXLDMAwEwPz/00rrxvYdxGRG5LLK2LGIVYEhCPz8xOt6We8+f/32erNmuyxbGBgYj2VcH1eyQf6rK155bBgYGOcw3gX3+X/adJyk1GRfDAwMjM+Pmx0Qcx4GBgbGKsa74PKDY/JkDAwMjLaITaizpyWvbFktjoGB8UBGfuv+/3//SX8DAwPjUYyrXElCzI+Sy6LCwMDYmpEnuPxwNitWWzAGBsY5jLY0XRtQ20iIzq0YGBhbM2bjXG3pO2sqfIkQAwNja8asiTgbvEhSZ9uQwMDAOIGRW5PBr3bYIiFFT8PAwNia0TYvk2NifsScHUkX9GAxMDAexWjHs2YtyTaN1hFiYGAcxmibBG1wbSOhvjXEwMDYlHH/+r69UJsVsV8GwjAwMLZmfC5N841nl2J5G2DYKcXAwHg4Y3bR1jYdVxXGw0IaAwPj4Yx2gzwR5yNli3sXGBgYmzLuPLQFz9L0l88xMDC2ZiQPXbBBHHqbvjEwME5jtIG2m7XjX3UMGBgYBzDai7A2xLyFMBvFwMDAOI1xvw2Qv5pZ2RxNjmBgYGzBuMo1awPcudWPSmsMDIytGbMu4aydkP9q1XAGBgbGTow2yQ4v7m+8suSlYGBgnMD4nzZAPpCRJ24MDAyMvM05u4zLU+oXKgYGBsaNmvj+c6KmJgYGxgGM/EItb0a2ifXOYBkGBsbejLx0bK/G7qTXPE1jYGBszfgFCMxLqVRGBdYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
