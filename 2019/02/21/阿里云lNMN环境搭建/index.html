@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Microbot Team">
 <meta property="og:description" content="阿里云lNMN(linux + nginx + mysql + node.js)环境搭建购买服务器登录服务器 略  登录服务器后安装开发包和库文件 输入命令cat /etc/redhat-release,可查看Linux系统版本  执行命令：chkconfig iptables off，关掉防火墙，避免实验中出现服务器无法访问的情况。在真实的生产环境中，请根据实际需求，配置相应的防火墙规则。  执">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-03-18T14:59:10.000Z">
+<meta property="og:updated_time" content="2019-03-18T15:05:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阿里云lNMN环境搭建">
 <meta name="twitter:description" content="阿里云lNMN(linux + nginx + mysql + node.js)环境搭建购买服务器登录服务器 略  登录服务器后安装开发包和库文件 输入命令cat /etc/redhat-release,可查看Linux系统版本  执行命令：chkconfig iptables off，关掉防火墙，避免实验中出现服务器无法访问的情况。在真实的生产环境中，请根据实际需求，配置相应的防火墙规则。  执">
@@ -132,7 +132,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="検索">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -171,7 +171,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#阿里云lNMN-linux-nginx-mysql-node-js-环境搭建"><span class="post-toc-number">1.</span> <span class="post-toc-text">阿里云lNMN(linux + nginx + mysql + node.js)环境搭建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#购买服务器登录服务器"><span class="post-toc-number">1.0.1.</span> <span class="post-toc-text">购买服务器登录服务器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登录服务器后安装开发包和库文件"><span class="post-toc-number">1.0.2.</span> <span class="post-toc-text">登录服务器后安装开发包和库文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装nginx"><span class="post-toc-number">1.0.3.</span> <span class="post-toc-text">安装nginx</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装Mysql"><span class="post-toc-number">1.0.4.</span> <span class="post-toc-text">安装Mysql</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#node-js安装"><span class="post-toc-number">1.0.5.</span> <span class="post-toc-text">node.js安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#linux下nvm安装"><span class="post-toc-number">1.0.5.1.</span> <span class="post-toc-text">linux下nvm安装</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装node-js"><span class="post-toc-number">1.0.6.</span> <span class="post-toc-text">安装node.js</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#验证环境"><span class="post-toc-number">1.0.7.</span> <span class="post-toc-text">验证环境</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#阿里云lNMN-linux-nginx-mysql-node-js-环境搭建"><span class="post-toc-number">1.</span> <span class="post-toc-text">阿里云lNMN(linux + nginx + mysql + node.js)环境搭建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#购买服务器登录服务器"><span class="post-toc-number">2.</span> <span class="post-toc-text">购买服务器登录服务器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登录服务器后安装开发包和库文件"><span class="post-toc-number">3.</span> <span class="post-toc-text">登录服务器后安装开发包和库文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装nginx"><span class="post-toc-number">4.</span> <span class="post-toc-text">安装nginx</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装Mysql"><span class="post-toc-number">5.</span> <span class="post-toc-text">安装Mysql</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#node-js安装"><span class="post-toc-number">6.</span> <span class="post-toc-text">node.js安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#linux下nvm安装"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">linux下nvm安装</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装node-js"><span class="post-toc-number">7.</span> <span class="post-toc-text">安装node.js</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#验证环境"><span class="post-toc-number">8.</span> <span class="post-toc-text">验证环境</span></a></li></ol>
         </nav>
     </aside>
 
@@ -194,7 +194,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="阿里云lNMN-linux-nginx-mysql-node-js-环境搭建"><a href="#阿里云lNMN-linux-nginx-mysql-node-js-环境搭建" class="headerlink" title="阿里云lNMN(linux + nginx + mysql + node.js)环境搭建"></a>阿里云lNMN(linux + nginx + mysql + node.js)环境搭建</h1><h3 id="购买服务器登录服务器"><a href="#购买服务器登录服务器" class="headerlink" title="购买服务器登录服务器"></a>购买服务器登录服务器</h3><blockquote>
+            <h3 id="阿里云lNMN-linux-nginx-mysql-node-js-环境搭建"><a href="#阿里云lNMN-linux-nginx-mysql-node-js-环境搭建" class="headerlink" title="阿里云lNMN(linux + nginx + mysql + node.js)环境搭建"></a>阿里云lNMN(linux + nginx + mysql + node.js)环境搭建</h3><h3 id="购买服务器登录服务器"><a href="#购买服务器登录服务器" class="headerlink" title="购买服务器登录服务器"></a>购买服务器登录服务器</h3><blockquote>
 <p>略</p>
 </blockquote>
 <h3 id="登录服务器后安装开发包和库文件"><a href="#登录服务器后安装开发包和库文件" class="headerlink" title="登录服务器后安装开发包和库文件"></a>登录服务器后安装开发包和库文件</h3><ol>
@@ -280,7 +280,7 @@
     <div class="content">
         
 <span class="post-time">
-    最終更新：<time datetime="2019-03-18T14:59:10.000Z" itemprop="dateUpdated">2019-03-18 22:59:10</time>
+    Last updated: <time datetime="2019-03-18T15:05:26.000Z" itemprop="dateUpdated">2019-03-18 23:05:26</time>
 </span><br>
 
 
@@ -443,7 +443,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>このブログの内容物は<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ 表示 - 非営利 - 継承 4.0 国際ライセンスの下に提供されています</a></span>
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
